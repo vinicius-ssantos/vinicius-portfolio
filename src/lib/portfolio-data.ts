@@ -41,15 +41,21 @@ export const profile = {
   shortName: "Vinicius Santos",
   handle: "vinicius-ssantos",
   role: "Backend Software Engineer",
+  company: "UOL",
   location: "São Paulo, SP — Brazil",
   locationShort: "São Paulo, BR",
   email: "viniciusoli2020@gmail.com",
   phone: "+55 (11) 91676-2083",
+  languages: ["PT (native)", "EN (intermediate)"],
   // Pitch aligned with CV summary, expanded for portfolio tone
   pitch:
     "Backend Software Engineer at UOL, working on authentication, authorization and account-protection flows. I focus on reliability, delivery quality and production stability — the kind of work where small mistakes have outsized consequences.",
   longPitch:
     "Backend Software Engineer with experience in APIs, integrations and security-critical services. I work with a focus on reliability, delivery quality and production stability — building and evolving the kind of systems where small mistakes have outsized consequences. My day-to-day at UOL involves hardening authentication and account-protection flows, standardizing contracts between services, and sustaining CI/CD pipelines on Kubernetes so releases stay boring.",
+  careerPath:
+    "My path into backend was unusual: I started in QA at Autbank in 2021, automating API tests with RestAssured and JMeter. Two years later I moved into the developer seat at the same company, and in 2024 I joined UOL to work on the authentication and account-protection layer that millions of Brazilians rely on daily. The QA years still shape how I write code — I think in terms of failure modes first, happy paths second.",
+  philosophy:
+    "I keep a public GitHub with 52 repositories because I believe in shipping in the open — half-finished experiments included. The most ambitious one is personal-platform-infra, a GitOps-style infrastructure repo that runs my personal platform of MCP servers and BFFs across local + VPS environments. If you want to know how I think, the commit history is a more honest résumé than any PDF.",
   stats: [
     { label: "Years in backend & QA", value: "5+" },
     { label: "Public repositories", value: "52" },
@@ -58,6 +64,7 @@ export const profile = {
   links: {
     github: "https://github.com/vinicius-ssantos",
     linkedin: "https://www.linkedin.com/in/vinicius-oliveira-7ba1bb204/",
+    cv: "/cv-vinicius-santos.pdf",
   },
 };
 

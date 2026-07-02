@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OG</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #0f0e0d; }
+  .og {
+    width: 1200px; height: 630px;
+    background: #0f0e0d;
+    position: relative;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #e6e5e3;
+    overflow: hidden;
+  }
+  /* Subtle grid bg */
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(16,185,129,0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(16,185,129,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 30% 50%, #000 30%, transparent 90%);
+            mask-image: radial-gradient(ellipse 70% 60% at 30% 50%, #000 30%, transparent 90%);
+  }
+  /* Vertical accent line */
+  .accent {
+    position: absolute;
+    left: 80px; top: 80px; bottom: 80px;
+    width: 5px;
+    background: #10b981;
+  }
+  /* Top bar */
+  .top {
+    position: absolute; top: 50px; left: 110px; right: 80px;
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #9b9993;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  /* Hero name */
+  .name {
+    position: absolute;
+    top: 180px; left: 110px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 92px;
+    line-height: 1.0;
+    letter-spacing: -3px;
+    color: #e6e5e3;
+    margin: 0;
+  }
+  .name .accent { color: #10b981; }
+  /* Role */
+  .role {
+    position: absolute;
+    top: 380px; left: 110px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    font-weight: 500;
+    color: #10b981;
+    letter-spacing: 0.5px;
+  }
+  /* Pitch */
+  .pitch {
+    position: absolute;
+    top: 425px; left: 110px;
+    font-family: 'Inter', sans-serif;
+    font-size: 19px;
+    line-height: 1.5;
+    color: #9b9993;
+    max-width: 720px;
+  }
+  /* Stats row at bottom */
+  .stats {
+    position: absolute;
+    bottom: 70px; left: 110px; right: 80px;
+    display: flex;
+    gap: 60px;
+  }
+  .stat {
+    border-left: 1px solid #514a35;
+    padding-left: 18px;
+  }
+  .stat .n {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    color: #10b981;
+    line-height: 1;
+  }
+  .stat .l {
+    margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #9b9993;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  /* Bottom right URL */
+  .url {
+    position: absolute;
+    bottom: 50px; right: 80px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #9b9993;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="og">
+  <div class="grid"></div>
+  <div class="accent"></div>
+  <div class="top">
+    <span><span class="dot"></span>PORTFOLIO · 2026</span>
+    <span>// VINICIUS-SSANTOS</span>
+  </div>
+  <h1 class="name">Vinicius<br><span class="accent">Santos</span></h1>
+  <div class="role">Backend Software Engineer @ UOL · São Paulo, BR</div>
+  <p class="pitch">
+    Authentication, authorization &amp; account-protection flows. Focus on reliability,
+    delivery quality and production stability — the kind of work where small mistakes
+    have outsized consequences.
+  </p>
+  <div class="stats">
+    <div class="stat">
+      <div class="n">5+</div>
+      <div class="l">Years backend &amp; QA</div>
+    </div>
+    <div class="stat">
+      <div class="n">52</div>
+      <div class="l">Public repos</div>
+    </div>
+    <div class="stat">
+      <div class="n">777</div>
+      <div class="l">Contributions / yr</div>
+    </div>
+  </div>
+  <div class="url">vinicius-portfolio-source.vercel.app</div>
+</div>
+</body>
+</html>

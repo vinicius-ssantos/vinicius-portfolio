@@ -7,6 +7,7 @@ import {
   MapPin,
   ArrowUpRight,
   ArrowRight,
+  Download,
   Terminal,
   Boxes,
   Server,
@@ -18,6 +19,7 @@ import {
   Briefcase,
   GraduationCap,
   GitCommitVertical,
+  Globe,
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -107,6 +109,7 @@ function SiteHeader() {
           >
             About
           </Link>
+          {/* GitHub icon — visible on all breakpoints (mobile-friendly) */}
           <a
             href={profile.links.github}
             target="_blank"
@@ -160,27 +163,36 @@ function Hero() {
             {profile.role} · {profile.location}
           </p>
 
+          {/* Languages line — visible early for international recruiters */}
+          <p className="mt-2 inline-flex items-center gap-2 font-mono text-xs text-muted-foreground">
+            <Globe className="h-3.5 w-3.5" />
+            {profile.languages.join("  ·  ")}
+          </p>
+
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
             {profile.pitch}
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
+            {/* Primary CTA: Get in touch (recruiters want this first) */}
             <Button asChild size="default">
-              <a href="#experience">
-                See experience
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
-            </Button>
-            <Button asChild variant="outline" size="default">
               <a href={`mailto:${profile.email}`}>
                 <Mail className="mr-2 h-4 w-4" />
                 Get in touch
               </a>
             </Button>
+            {/* Secondary: Download CV */}
+            <Button asChild variant="outline" size="default">
+              <a href={profile.links.cv} download target="_blank" rel="noopener noreferrer">
+                <Download className="mr-2 h-4 w-4" />
+                Download CV
+              </a>
+            </Button>
+            {/* Tertiary: See experience */}
             <Button asChild variant="ghost" size="default">
-              <a href={profile.links.github} target="_blank" rel="noopener noreferrer">
-                <Github className="mr-2 h-4 w-4" />
-                GitHub
+              <a href="#experience">
+                See experience
+                <ArrowRight className="ml-2 h-4 w-4" />
               </a>
             </Button>
           </div>
@@ -660,31 +672,29 @@ function About() {
           title="A bit more about me"
           description=""
         />
+
+        {/* Two-column layout: long pitch (left) + Currently card (right) */}
         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
           <Card className="border-border/60 bg-card/50 lg:col-span-2">
-            <CardContent className="space-y-4 pt-6 text-base leading-relaxed text-foreground/90">
+            <CardContent className="space-y-6 pt-6 text-base leading-relaxed text-foreground/90">
+              {/* Long intro pitch */}
               <p>{profile.longPitch}</p>
-              <p>
-                My path into backend was unusual: I started in QA at Autbank in
-                2021, automating API tests with RestAssured and JMeter. Two years
-                later I moved into the developer seat at the same company, and in
-                2024 I joined UOL to work on the authentication and
-                account-protection layer that millions of Brazilians rely on
-                daily. The QA years still shape how I write code — I think in
-                terms of failure modes first, happy paths second.
-              </p>
-              <p>
-                Outside of work, I keep a public GitHub with 52 repositories
-                because I believe in shipping in the open — half-finished
-                experiments included. The most ambitious one is{" "}
-                <code className="rounded bg-secondary px-1.5 py-0.5 font-mono text-sm text-primary">
-                  personal-platform-infra
-                </code>
-                , a GitOps-style infrastructure repo that runs my personal
-                platform of MCP servers and BFFs across local + VPS
-                environments. If you want to know how I think, the commit
-                history is a more honest résumé than any PDF.
-              </p>
+
+              {/* Career path — split out for scannability */}
+              <div>
+                <h3 className="mb-2 font-mono text-xs uppercase tracking-wider text-primary">
+                  Career path
+                </h3>
+                <p>{profile.careerPath}</p>
+              </div>
+
+              {/* Philosophy — the "how I think" anchor */}
+              <div>
+                <h3 className="mb-2 font-mono text-xs uppercase tracking-wider text-primary">
+                  How I think
+                </h3>
+                <p>{profile.philosophy}</p>
+              </div>
             </CardContent>
           </Card>
 
@@ -702,6 +712,10 @@ function About() {
               <div className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
                 <span>{profile.location}</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <Globe className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
+                <span>{profile.languages.join(" · ")}</span>
               </div>
               <div className="flex items-start gap-2">
                 <Mail className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
