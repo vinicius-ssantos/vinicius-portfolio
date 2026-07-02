@@ -1,0 +1,78 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+local-*
+.claude
+.z-ai-config
+*.log
+dev.log
+dev.out.log
+test
+prompt
+
+server.log
+# Skills directory
+/skills/
+
+# User-private uploads (CVs, personal docs)
+/upload/
+
+# Local SQLite DB (Prisma)
+/db/*.db
+/db/*.db-journal
+
+# Tool results and intermediates
+/tool-results/
+
+# GitHub scraping intermediates (not part of the portfolio)
+github_*.json
+repo_*.json
+all_repos.json
+pinned_repos.json
+repos_summary.json
+
+# Build artifacts from PDF generation
+/scripts/*.pdf
+
+# Sandbox config
+.zscripts/
+Caddyfile
