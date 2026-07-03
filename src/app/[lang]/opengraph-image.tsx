@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { profile } from "@/lib/portfolio-data";
-import { translations, type Lang } from "@/lib/translations";
+import { translations } from "@/lib/translations";
 import { isLocale } from "@/lib/i18n";
 
 export const size = { width: 1200, height: 630 };
