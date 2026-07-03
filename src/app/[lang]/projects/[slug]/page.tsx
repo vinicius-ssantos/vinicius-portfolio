@@ -55,9 +55,6 @@ export async function generateMetadata({
       title,
       description,
       siteName: `${profile.shortName} — Portfolio`,
-      images: project.image
-        ? [{ url: project.image, width: 1200, height: 630, alt: project.name }]
-        : undefined,
     },
     twitter: {
       card: "summary_large_image",
