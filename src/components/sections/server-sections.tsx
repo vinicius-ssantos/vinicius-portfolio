@@ -1,3 +1,5 @@
+import Link from "next/link";
+import Image from "next/image";
 import {
   Briefcase,
   MapPin,
@@ -26,6 +28,7 @@ import {
   t as tp,
   type Lang,
 } from "@/lib/portfolio-data";
+import { getGitHubStats, formatStat, type ContributionDay } from "@/lib/github";
 import type { translations } from "@/lib/translations";
 
 type T = typeof translations.en;
@@ -74,12 +77,87 @@ export function SectionHeading({
 /* StatsBar                                                            */
 /* ------------------------------------------------------------------ */
 
-export function StatsBar({ lang }: { lang: Lang }) {
+function intensityClass(count: number): string {
+  if (count === 0) return "bg-secondary";
+  if (count <= 2) return "bg-primary/20";
+  if (count <= 5) return "bg-primary/40";
+  if (count <= 9) return "bg-primary/65";
+  return "bg-primary";
+}
+
+function ContributionHeatmap({
+  weeks,
+  total,
+  t,
+}: {
+  weeks: ContributionDay[][];
+  total: number;
+  t: T;
+}) {
+  if (weeks.length === 0) return null;
+  const days = weeks.flat();
+
+  return (
+    <div className="mx-auto mt-6 max-w-5xl px-4 sm:px-6">
+      <div className="rounded-lg border border-border/60 bg-background/50 p-4">
+        <div className="mb-3 flex items-center justify-between">
+          <span className="font-mono text-xs text-foreground">
+            <span className="font-bold text-primary">{formatStat(total)}</span>{" "}
+            <span className="text-muted-foreground">{t.stats.heatmapTitle}</span>
+          </span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[10px] text-muted-foreground">{t.stats.heatmapLess}</span>
+            <span className="h-2.5 w-2.5 rounded-[2px] bg-secondary" />
+            <span className="h-2.5 w-2.5 rounded-[2px] bg-primary/20" />
+            <span className="h-2.5 w-2.5 rounded-[2px] bg-primary/40" />
+            <span className="h-2.5 w-2.5 rounded-[2px] bg-primary/65" />
+            <span className="h-2.5 w-2.5 rounded-[2px] bg-primary" />
+            <span className="text-[10px] text-muted-foreground">{t.stats.heatmapMore}</span>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <div
+            className="grid gap-[3px]"
+            style={{ gridTemplateRows: "repeat(7, 1fr)", gridAutoFlow: "column", width: "max-content" }}
+            role="img"
+            aria-label={`${formatStat(total)} ${t.stats.heatmapTitle}`}
+          >
+            {days.map((day) => (
+              <div
+                key={day.date}
+                title={`${day.date}: ${day.count} contributions`}
+                className={`h-[11px] w-[11px] rounded-[2px] ${intensityClass(day.count)}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export async function StatsBar({ t, lang }: { t: T; lang: Lang }) {
+  const gh = await getGitHubStats();
+  const isLive = process.env.GITHUB_TOKEN !== undefined;
+
+  const stats = [
+    profile.stats[0],
+    { ...profile.stats[1], value: formatStat(gh.publicRepos) },
+    { ...profile.stats[2], value: formatStat(gh.contributions) },
+  ];
+
   return (
     <section className="border-y border-border/60 bg-secondary/20">
       <div className="mx-auto grid max-w-5xl grid-cols-3 divide-x divide-border/60 px-4 sm:px-6">
-        {profile.stats.map((s) => (
-          <div key={tp(s.label, lang)} className="px-3 py-6 text-center sm:px-6">
+        {stats.map((s, i) => (
+          <div key={tp(s.label, lang)} className="relative px-3 py-6 text-center sm:px-6">
+            {isLive && i > 0 && (
+              <span
+                className="absolute right-2 top-2 inline-flex h-1.5 w-1.5 rounded-full bg-primary sm:right-4 sm:top-4"
+                title="Live data"
+                aria-label="Live data"
+              />
+            )}
             <div className="font-mono text-2xl font-bold tabular-nums sm:text-3xl">
               {s.value}
             </div>
@@ -89,6 +167,7 @@ export function StatsBar({ lang }: { lang: Lang }) {
           </div>
         ))}
       </div>
+      {isLive && <ContributionHeatmap weeks={gh.weeks} total={gh.contributions} t={t} />}
     </section>
   );
 }
@@ -182,7 +261,7 @@ function ExperienceCard({
 /* Stack                                                               */
 /* ------------------------------------------------------------------ */
 
-export function Stack({ t }: { t: T }) {
+export function Stack({ t, lang }: { t: T; lang: Lang }) {
   const stackEntries = Object.entries(stack).filter(([cat]) => cat !== "Languages");
   return (
     <section id="stack" className="border-y border-border/60 bg-secondary/20">
@@ -212,15 +291,18 @@ export function Stack({ t }: { t: T }) {
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-1.5">
-                    {items.map((item) => (
-                      <Badge
-                        key={typeof item === "string" ? item : item.en}
-                        variant="secondary"
-                        className="font-mono text-xs font-normal"
-                      >
-                        {typeof item === "string" ? item : ""}
-                      </Badge>
-                    ))}
+                    {items.map((item) => {
+                      const label = typeof item === "string" ? item : tp(item, lang);
+                      return (
+                        <Badge
+                          key={label}
+                          variant="secondary"
+                          className="font-mono text-xs font-normal"
+                        >
+                          {label}
+                        </Badge>
+                      );
+                    })}
                   </div>
                 </CardContent>
               </Card>
@@ -264,6 +346,7 @@ function ProjectCard({
   t: T;
   lang: Lang;
 }) {
+  const detailHref = `/${lang}/projects/${project.slug}`;
   return (
     <Card
       className={`group relative flex flex-col overflow-hidden border-border/60 bg-card/50 transition-all hover:border-primary/40 hover:bg-card ${
@@ -271,18 +354,18 @@ function ProjectCard({
       }`}
     >
       {project.image && (
-        <a
-          href={project.repoUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          href={detailHref}
           className="relative block aspect-[16/10] overflow-hidden border-b border-border/60 bg-secondary/30"
           aria-label={`${t.projects.viewRepository}: ${project.name}`}
         >
-          <img
+          <Image
             src={project.image}
             alt={`${project.name} — README preview`}
-            className="h-full w-full object-cover object-top opacity-80 transition-all duration-300 group-hover:opacity-100 group-hover:scale-[1.02]"
-            loading="lazy"
+            fill
+            sizes="(max-width: 1024px) 100vw, 33vw"
+            className="object-cover object-top opacity-80 transition-all duration-300 group-hover:opacity-100 group-hover:scale-[1.02]"
+            priority={priority}
           />
           <div className="absolute inset-0 flex items-center justify-center bg-background/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <div className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground">
@@ -290,7 +373,7 @@ function ProjectCard({
               {t.projects.viewRepository}
             </div>
           </div>
-        </a>
+        </Link>
       )}
 
       <CardHeader className="pb-3">
@@ -308,7 +391,9 @@ function ProjectCard({
           )}
         </div>
         <CardTitle className="mt-2 font-mono text-lg leading-tight text-primary">
-          {project.name}
+          <Link href={detailHref} className="hover:underline">
+            {project.name}
+          </Link>
         </CardTitle>
         <CardDescription className="text-sm leading-relaxed text-muted-foreground">
           {tp(project.tagline, lang)}
@@ -338,15 +423,24 @@ function ProjectCard({
               </Badge>
             )}
           </div>
-          <a
-            href={project.repoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
-          >
-            {t.projects.viewRepository}
-            <ArrowUpRight className="h-3.5 w-3.5" />
-          </a>
+          <div className="flex items-center gap-3">
+            <Link
+              href={detailHref}
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+            >
+              {t.projects.viewRepository}
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
+            <a
+              href={project.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            >
+              GitHub
+              <ArrowUpRight className="h-3 w-3" />
+            </a>
+          </div>
         </div>
       </CardContent>
     </Card>
@@ -358,7 +452,7 @@ function ProjectCard({
 /* ------------------------------------------------------------------ */
 
 export function CaseStudy({ t, lang }: { t: T; lang: Lang }) {
-  const cs = projects[0];
+  const cs = projects.find((p) => p.featured) ?? projects[0];
   return (
     <section id="case-study" className="border-y border-border/60 bg-secondary/20">
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">

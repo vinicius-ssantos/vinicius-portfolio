@@ -14,12 +14,12 @@ type T = typeof translations.en;
 /* Header (client — has language/theme toggles)                        */
 /* ------------------------------------------------------------------ */
 
-export function SiteHeader({ t }: { t: T }) {
+export function SiteHeader({ t, lang }: { t: T; lang: Lang }) {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4 sm:px-6">
         <Link
-          href="/"
+          href={`/${lang}`}
           className="flex items-center gap-2 font-mono text-sm font-semibold tracking-tight"
         >
           <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground text-xs font-bold">
@@ -29,31 +29,31 @@ export function SiteHeader({ t }: { t: T }) {
         </Link>
         <nav className="flex items-center gap-1 text-sm">
           <Link
-            href="#experience"
+            href={`/${lang}#experience`}
             className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
             {t.nav.experience}
           </Link>
           <Link
-            href="#stack"
+            href={`/${lang}#stack`}
             className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
             {t.nav.stack}
           </Link>
           <Link
-            href="#projects"
+            href={`/${lang}#projects`}
             className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
             {t.nav.projects}
           </Link>
           <Link
-            href="#case-study"
+            href={`/${lang}#case-study`}
             className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground lg:inline"
           >
             {t.nav.caseStudy}
           </Link>
           <Link
-            href="#about"
+            href={`/${lang}#about`}
             className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground lg:inline"
           >
             {t.nav.about}
@@ -148,7 +148,7 @@ export function Hero({
               </a>
             </Button>
             <Button asChild variant="ghost" size="default">
-              <a href="#experience">
+              <a href={`/${lang}#experience`}>
                 {t.hero.seeExperience}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </a>
