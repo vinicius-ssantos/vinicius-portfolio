@@ -101,6 +101,7 @@ export const translations = {
       careerPath: "Career path",
       howIThink: "How I think",
       currently: "Currently",
+      currentlyLearning: "Currently learning",
       currentlyItems: {
         role: "Software Engineer at UOL — auth & account protection",
         runningCluster: "Running a personal k3s cluster on a VPS",
@@ -206,6 +207,7 @@ export const translations = {
       careerPath: "Trajetória",
       howIThink: "Como penso",
       currently: "Atualmente",
+      currentlyLearning: "Estudando agora",
       currentlyItems: {
         role: "Software Engineer na UOL — auth & proteção de conta",
         runningCluster: "Rodando um cluster k3s pessoal em uma VPS",

@@ -416,10 +416,35 @@ function ProjectCard({
   const { t, lang } = useLanguage();
   return (
     <Card
-      className={`group relative flex flex-col border-border/60 bg-card/50 transition-all hover:border-primary/40 hover:bg-card ${
+      className={`group relative flex flex-col overflow-hidden border-border/60 bg-card/50 transition-all hover:border-primary/40 hover:bg-card ${
         priority ? "lg:col-span-1" : ""
       }`}
     >
+      {/* Project screenshot */}
+      {project.image && (
+        <a
+          href={project.repoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative block aspect-[16/10] overflow-hidden border-b border-border/60 bg-secondary/30"
+          aria-label={`${t.projects.viewRepository}: ${project.name}`}
+        >
+          <img
+            src={project.image}
+            alt={`${project.name} — README preview`}
+            className="h-full w-full object-cover object-top opacity-80 transition-all duration-300 group-hover:opacity-100 group-hover:scale-[1.02]"
+            loading="lazy"
+          />
+          {/* Hover overlay with repo icon */}
+          <div className="absolute inset-0 flex items-center justify-center bg-background/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <div className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground">
+              <ArrowUpRight className="h-3.5 w-3.5" />
+              {t.projects.viewRepository}
+            </div>
+          </div>
+        </a>
+      )}
+
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between gap-2">
           <span className="font-mono text-xs text-muted-foreground">
@@ -758,9 +783,23 @@ function About() {
                 <Server className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
                 <span>{t.about.currentlyItems.runningCluster}</span>
               </div>
-              <div className="flex items-start gap-2">
-                <FileCode2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                <span>{t.about.currentlyItems.studying}</span>
+
+              {/* Currently learning — separated by a divider */}
+              <div className="mt-4 border-t border-border/60 pt-3">
+                <div className="mb-2 font-mono text-[10px] uppercase tracking-wider text-primary">
+                  {t.about.currentlyLearning}
+                </div>
+                <ul className="space-y-2">
+                  {profile.currentlyLearning.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <FileCode2 className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary/70" />
+                      <div>
+                        <div className="font-medium text-foreground">{tp(item.topic, lang)}</div>
+                        <div className="text-xs text-muted-foreground">{tp(item.detail, lang)}</div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </CardContent>
           </Card>

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/react";
@@ -66,81 +67,101 @@ const personJsonLd = {
   ],
 };
 
-// Static metadata — locale switching handled client-side via og:locale update
-// We default to en (international audience) but client adjusts on hydration
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: "Vinicius Santos — Backend Software Engineer @ UOL",
-  description:
-    "Backend Software Engineer at UOL working on authentication, authorization and account-protection flows. 5+ years across Java, Spring, Kubernetes and distributed systems. Based in São Paulo, Brazil.",
-  keywords: [
-    "Backend Engineer",
-    "Software Engineer",
-    "Java",
-    "Spring",
-    "Kotlin",
-    "Kubernetes",
-    "Docker",
-    "Authentication",
-    "Account Protection",
-    "Microservices",
-    "UOL",
-    "São Paulo",
-    "Brazil",
-    "Vinicius Santos",
-  ],
-  authors: [{ name: "Vinicius de Oliveira Santos" }],
-  creator: "Vinicius de Oliveira Santos",
-  publisher: "Vinicius de Oliveira Santos",
-  icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
-    shortcut: ["/favicon.svg"],
-    apple: [{ url: "/favicon.svg", type: "image/svg+xml" }],
-  },
-  openGraph: {
-    type: "profile",
-    locale: "pt_BR",
-    url: SITE_URL,
-    title: "Vinicius Santos — Backend Software Engineer @ UOL",
-    description:
-      "Backend Engineer working on authentication, authorization and account-protection flows at UOL. 5+ years across Java, Spring, Kubernetes and distributed systems.",
-    siteName: "Vinicius Santos — Portfolio",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Vinicius Santos — Backend Software Engineer portfolio",
-      },
+// Static metadata with dynamic og:locale based on request headers
+// We use generateMetadata + headers() (safe in Next.js 16 production builds)
+export async function generateMetadata(): Promise<Metadata> {
+  let isPt = true;
+  try {
+    const h = await headers();
+    const cookieHeader = h.get("cookie") || "";
+    const langMatch = cookieHeader.match(/(?:^|;\s*)portfolio-lang=(pt|en)/);
+    if (langMatch) {
+      isPt = langMatch[1] === "pt";
+    } else {
+      const acceptLang = (h.get("accept-language") || "").toLowerCase();
+      if (acceptLang && !acceptLang.startsWith("pt")) {
+        isPt = false;
+      }
+    }
+  } catch {
+    // headers() not available during static generation — keep pt default
+  }
+
+  const title = "Vinicius Santos — Backend Software Engineer @ UOL";
+  const description =
+    "Backend Software Engineer at UOL working on authentication, authorization and account-protection flows. 5+ years across Java, Spring, Kubernetes and distributed systems. Based in São Paulo, Brazil.";
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title,
+    description,
+    keywords: [
+      "Backend Engineer",
+      "Software Engineer",
+      "Java",
+      "Spring",
+      "Kotlin",
+      "Kubernetes",
+      "Docker",
+      "Authentication",
+      "Account Protection",
+      "Microservices",
+      "UOL",
+      "São Paulo",
+      "Brazil",
+      "Vinicius Santos",
     ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Vinicius Santos — Backend Software Engineer @ UOL",
-    description:
-      "Backend Engineer working on authentication, authorization and account-protection flows at UOL. 5+ years across Java, Spring, Kubernetes and distributed systems.",
-    images: ["/og-image.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    authors: [{ name: "Vinicius de Oliveira Santos" }],
+    creator: "Vinicius de Oliveira Santos",
+    publisher: "Vinicius de Oliveira Santos",
+    icons: {
+      icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+      shortcut: ["/favicon.svg"],
+      apple: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    },
+    openGraph: {
+      type: "profile",
+      locale: isPt ? "pt_BR" : "en_US",
+      url: SITE_URL,
+      title,
+      description,
+      siteName: "Vinicius Santos — Portfolio",
+      images: [
+        {
+          url: "/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: "Vinicius Santos — Backend Software Engineer portfolio",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/og-image.png"],
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-  alternates: {
-    canonical: SITE_URL,
-    languages: {
-      "pt-BR": SITE_URL,
-      "en-US": SITE_URL,
-      xDefault: SITE_URL,
+    alternates: {
+      canonical: SITE_URL,
+      languages: {
+        "pt-BR": SITE_URL,
+        "en-US": SITE_URL,
+        xDefault: SITE_URL,
+      },
     },
-  },
-  category: "technology",
-};
+    category: "technology",
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: [

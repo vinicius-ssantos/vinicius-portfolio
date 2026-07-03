@@ -20,6 +20,7 @@ export type Project = {
   highlights: LocalizedText[];
   repoUrl: string;
   liveUrl?: string;
+  image?: string;
   updatedAt: string;
   featured?: boolean;
 };
@@ -67,6 +68,29 @@ export const profile = {
     pt: "Mantenho um GitHub público com 52 repositórios porque acredito em shipping aberto — experimentos pela metade incluídos. O mais ambicioso é o personal-platform-infra, um repositório de infraestrutura estilo GitOps que roda minha plataforma pessoal de MCP servers e BFFs em ambientes local + VPS. Se você quer saber como eu penso, o histórico de commits é um currículo mais honesto do que qualquer PDF.",
     en: "I keep a public GitHub with 52 repositories because I believe in shipping in the open — half-finished experiments included. The most ambitious one is personal-platform-infra, a GitOps-style infrastructure repo that runs my personal platform of MCP servers and BFFs across local + VPS environments. If you want to know how I think, the commit history is a more honest résumé than any PDF.",
   } as LocalizedText,
+  currentlyLearning: [
+    {
+      topic: { pt: "MCP Servers", en: "MCP Servers" },
+      detail: {
+        pt: "Construindo e operando MCP servers no cluster k3s pessoal",
+        en: "Building and operating MCP servers on my personal k3s cluster",
+      },
+    },
+    {
+      topic: { pt: "Spring Cloud", en: "Spring Cloud" },
+      detail: {
+        pt: "Estudando padrões de microserviços: service discovery, gateway, circuit breakers",
+        en: "Studying microservices patterns: service discovery, gateway, circuit breakers",
+      },
+    },
+    {
+      topic: { pt: "GitOps + KEDA", en: "GitOps + KEDA" },
+      detail: {
+        pt: "Autoscaling orientado a eventos no Kubernetes com KEDA",
+        en: "Event-driven autoscaling on Kubernetes with KEDA",
+      },
+    },
+  ] as { topic: LocalizedText; detail: LocalizedText }[],
   stats: [
     { label: { pt: "Anos em backend & QA", en: "Years in backend & QA" }, value: "5" },
     { label: { pt: "Repositórios públicos", en: "Public repositories" }, value: "52" },
@@ -278,6 +302,7 @@ export const projects: Project[] = [
       },
     ],
     repoUrl: "https://github.com/vinicius-ssantos/personal-platform-infra",
+    image: "/projects/personal-platform-infra.png",
     updatedAt: "2026-07-02",
     featured: true,
   },
@@ -354,6 +379,7 @@ export const projects: Project[] = [
       },
     ],
     repoUrl: "https://github.com/vinicius-ssantos/SpringCloud",
+    image: "/projects/springcloud.png",
     updatedAt: "2026-04-27",
     featured: true,
   },
@@ -425,6 +451,7 @@ export const projects: Project[] = [
       },
     ],
     repoUrl: "https://github.com/vinicius-ssantos/api_rest_aplicativo_cars",
+    image: "/projects/api-rest-cars.png",
     updatedAt: "2024-08-10",
     featured: true,
   },
