@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import {
   Github,
@@ -15,7 +16,6 @@ import {
   Server,
   Shield,
   Database,
-  Eye,
   CheckCircle2,
   FileCode2,
   Briefcase,
@@ -37,6 +37,7 @@ import {
 import { useLanguage } from "@/lib/language-context";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageToggle } from "@/components/language-toggle";
+import { ContactModal } from "@/components/contact-modal";
 
 const stackIcons: Record<string, typeof Server> = {
   Backend: Server,
@@ -49,11 +50,12 @@ const stackIcons: Record<string, typeof Server> = {
 };
 
 export default function Home() {
+  const [contactOpen, setContactOpen] = useState(false);
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <SiteHeader />
-      <main className="flex-1">
-        <Hero />
+      <SiteHeader onContactOpen={() => setContactOpen(true)} />
+      <main id="main" className="flex-1">
+        <Hero onContactOpen={() => setContactOpen(true)} />
         <StatsBar />
         <Experience />
         <Stack />
@@ -62,7 +64,8 @@ export default function Home() {
         <Education />
         <About />
       </main>
-      <SiteFooter />
+      <SiteFooter onContactOpen={() => setContactOpen(true)} />
+      <ContactModal open={contactOpen} onOpenChange={setContactOpen} />
     </div>
   );
 }
@@ -71,7 +74,7 @@ export default function Home() {
 /* Header                                                              */
 /* ------------------------------------------------------------------ */
 
-function SiteHeader() {
+function SiteHeader({ onContactOpen }: { onContactOpen: () => void }) {
   const { t } = useLanguage();
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
@@ -86,33 +89,34 @@ function SiteHeader() {
           <span className="hidden sm:inline">{profile.handle}</span>
         </Link>
         <nav className="flex items-center gap-1 text-sm">
+          {/* Nav links — desktop only, hidden on mobile to avoid clutter */}
           <Link
             href="#experience"
-            className="px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground"
+            className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
             {t.nav.experience}
           </Link>
           <Link
             href="#stack"
-            className="px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground"
+            className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
             {t.nav.stack}
           </Link>
           <Link
             href="#projects"
-            className="px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground"
+            className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
             {t.nav.projects}
           </Link>
           <Link
             href="#case-study"
-            className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
+            className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground lg:inline"
           >
             {t.nav.caseStudy}
           </Link>
           <Link
             href="#about"
-            className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
+            className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground lg:inline"
           >
             {t.nav.about}
           </Link>
@@ -138,7 +142,7 @@ function SiteHeader() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            className="hidden inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground sm:inline-flex"
           >
             <Linkedin className="h-4 w-4" />
           </a>
@@ -152,7 +156,7 @@ function SiteHeader() {
 /* Hero                                                                */
 /* ------------------------------------------------------------------ */
 
-function Hero() {
+function Hero({ onContactOpen }: { onContactOpen: () => void }) {
   const { t, lang } = useLanguage();
   return (
     <section className="relative overflow-hidden">
@@ -189,12 +193,10 @@ function Hero() {
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            {/* Primary CTA: Get in touch */}
-            <Button asChild size="default">
-              <a href={`mailto:${profile.email}`}>
-                <Mail className="mr-2 h-4 w-4" />
-                {t.hero.getInTouch}
-              </a>
+            {/* Primary CTA: Get in touch — opens modal with contact channels */}
+            <Button type="button" size="default" onClick={onContactOpen}>
+              <Mail className="mr-2 h-4 w-4" />
+              {t.hero.getInTouch}
             </Button>
             {/* Secondary: Download CV */}
             <Button asChild variant="outline" size="default">
@@ -772,7 +774,7 @@ function About() {
 /* Footer                                                              */
 /* ------------------------------------------------------------------ */
 
-function SiteFooter() {
+function SiteFooter({ onContactOpen }: { onContactOpen: () => void }) {
   const { t } = useLanguage();
   return (
     <footer className="mt-auto border-t border-border/60">
@@ -786,13 +788,14 @@ function SiteFooter() {
           </span>
         </div>
         <div className="flex items-center gap-1">
-          <a
-            href={`mailto:${profile.email}`}
+          <button
+            type="button"
+            onClick={onContactOpen}
             aria-label="E-mail"
             className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
           >
             <Mail className="h-4 w-4" />
-          </a>
+          </button>
           <a
             href={profile.links.github}
             target="_blank"

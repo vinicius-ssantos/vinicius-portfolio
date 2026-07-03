@@ -21,6 +21,19 @@ export const translations = {
       downloadCV: "Download CV",
       seeExperience: "See experience",
     },
+    contactModal: {
+      title: "Let's talk",
+      subtitle:
+        "I'm open to backend & platform roles, contract work, and conversations about distributed systems, k8s operations, or MCP server architecture.",
+      emailLabel: "Email",
+      phoneLabel: "Phone",
+      linkedinLabel: "LinkedIn",
+      githubLabel: "GitHub",
+      copy: "Copy",
+      copied: "Copied!",
+      openEmailClient: "Open email client",
+      orText: "or",
+    },
     stats: {
       yearsLabel: "Years in backend & QA",
       reposLabel: "Public repositories",
@@ -112,6 +125,19 @@ export const translations = {
       getInTouch: "Entrar em contato",
       downloadCV: "Baixar CV",
       seeExperience: "Ver experiência",
+    },
+    contactModal: {
+      title: "Vamos conversar",
+      subtitle:
+        "Estou aberto a vagas de backend & plataforma, trabalho como contratado, e conversas sobre sistemas distribuídos, operação de k8s, ou arquitetura de MCP servers.",
+      emailLabel: "Email",
+      phoneLabel: "Telefone",
+      linkedinLabel: "LinkedIn",
+      githubLabel: "GitHub",
+      copy: "Copiar",
+      copied: "Copiado!",
+      openEmailClient: "Abrir cliente de email",
+      orText: "ou",
     },
     stats: {
       yearsLabel: "Anos em backend & QA",

@@ -50,7 +50,7 @@ export const profile = {
   locationShort: "São Paulo, BR",
   email: "viniciusoli2020@gmail.com",
   phone: "+55 (11) 91676-2083",
-  languages: ["PT (nativo)", "EN (intermediário)"],
+  languages: ["PT (nativo)", "EN (profissional)"],
   pitch: {
     pt: "Engenheiro de Software Backend na UOL, trabalhando em fluxos de autenticação, autorização e proteção de conta. Foco em confiabilidade, qualidade de entrega e estabilidade em produção — o tipo de trabalho onde pequenos erros têm consequências grandes.",
     en: "Backend Software Engineer at UOL, working on authentication, authorization and account-protection flows. I focus on reliability, delivery quality and production stability — the kind of work where small mistakes have outsized consequences.",
@@ -68,7 +68,7 @@ export const profile = {
     en: "I keep a public GitHub with 52 repositories because I believe in shipping in the open — half-finished experiments included. The most ambitious one is personal-platform-infra, a GitOps-style infrastructure repo that runs my personal platform of MCP servers and BFFs across local + VPS environments. If you want to know how I think, the commit history is a more honest résumé than any PDF.",
   } as LocalizedText,
   stats: [
-    { label: { pt: "Anos em backend & QA", en: "Years in backend & QA" }, value: "5+" },
+    { label: { pt: "Anos em backend & QA", en: "Years in backend & QA" }, value: "5" },
     { label: { pt: "Repositórios públicos", en: "Public repositories" }, value: "52" },
     { label: { pt: "Contribuições / ano", en: "GitHub contributions / yr" }, value: "777" },
   ],
@@ -89,7 +89,7 @@ export const stack = {
   Methods: ["Scrum", "Kanban"],
   Languages: [
     { pt: "Português (nativo)", en: "Portuguese (native)" },
-    { pt: "Inglês (intermediário)", en: "English (intermediate)" },
+    { pt: "Inglês (profissional)", en: "English (professional working)" },
   ],
 };
 
