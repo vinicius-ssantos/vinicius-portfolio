@@ -11,15 +11,17 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { profile } from "@/lib/portfolio-data";
-import { useLanguage } from "@/lib/language-context";
+import type { translations } from "@/lib/translations";
+
+type T = typeof translations.en;
 
 type ContactModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  t: T;
 };
 
-export function ContactModal({ open, onOpenChange }: ContactModalProps) {
-  const { t } = useLanguage();
+export function ContactModal({ open, onOpenChange, t }: ContactModalProps) {
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
   const handleCopy = async (value: string, field: string) => {

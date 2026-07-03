@@ -5,7 +5,6 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "next-themes";
-import { LanguageProvider } from "@/lib/language-context";
 import { profile } from "@/lib/portfolio-data";
 
 const geistSans = Geist({
@@ -197,10 +196,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <LanguageProvider>
-            {children}
-            <Toaster />
-          </LanguageProvider>
+          {children}
+          <Toaster />
         </ThemeProvider>
 
         {/* JSON-LD structured data for SEO */}
