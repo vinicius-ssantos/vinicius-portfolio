@@ -6,6 +6,7 @@
 
 import type { Lang } from "./translations";
 
+export type { Lang };
 export type LocalizedText = { pt: string; en: string };
 
 export type Project = {
@@ -93,8 +94,8 @@ export const profile = {
   ] as { topic: LocalizedText; detail: LocalizedText }[],
   stats: [
     { label: { pt: "Anos em backend & QA", en: "Years in backend & QA" }, value: "5" },
-    { label: { pt: "Repositórios públicos", en: "Public repositories" }, value: "52" },
-    { label: { pt: "Contribuições / ano", en: "GitHub contributions / yr" }, value: "777" },
+    { label: { pt: "Repositórios públicos", en: "Public repositories" }, value: "53" },
+    { label: { pt: "Contribuições / ano", en: "GitHub contributions / yr" }, value: "3733" },
   ],
   links: {
     github: "https://github.com/vinicius-ssantos",

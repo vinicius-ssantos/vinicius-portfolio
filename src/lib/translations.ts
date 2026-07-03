@@ -8,6 +8,9 @@ export type Lang = "pt" | "en";
 
 export const translations = {
   en: {
+    a11y: {
+      skipToContent: "Skip to content",
+    },
     nav: {
       experience: "Experience",
       stack: "Stack",
@@ -38,6 +41,9 @@ export const translations = {
       yearsLabel: "Years in backend & QA",
       reposLabel: "Public repositories",
       contribsLabel: "GitHub contributions / yr",
+      heatmapLess: "Less",
+      heatmapMore: "More",
+      heatmapTitle: "contributions in the last year",
     },
     experience: {
       eyebrow: "// experience",
@@ -111,9 +117,27 @@ export const translations = {
     footer: {
       builtWith: "Built with Next.js.",
     },
+    projectDetail: {
+      backToPortfolio: "Back to portfolio",
+      eyebrow: "// case file",
+      taglineLabel: "Summary",
+      problemLabel: "The problem",
+      approachLabel: "The approach",
+      outcomesLabel: "Outcomes",
+      roleLabel: "Role",
+      stackLabel: "Stack",
+      updatedLabel: "Last updated",
+      openRepo: "Open repository",
+      notFound: "Project not found",
+      notFoundDescription:
+        "This project doesn't exist or has been moved. Head back to the portfolio to see all of them.",
+    },
   },
 
   pt: {
+    a11y: {
+      skipToContent: "Pular para o conteúdo",
+    },
     nav: {
       experience: "Experiência",
       stack: "Stack",
@@ -144,6 +168,9 @@ export const translations = {
       yearsLabel: "Anos em backend & QA",
       reposLabel: "Repositórios públicos",
       contribsLabel: "Contribuições / ano no GitHub",
+      heatmapLess: "Menos",
+      heatmapMore: "Mais",
+      heatmapTitle: "contribuições no último ano",
     },
     experience: {
       eyebrow: "// experiência",
@@ -217,7 +244,23 @@ export const translations = {
     footer: {
       builtWith: "Construído com Next.js.",
     },
+    projectDetail: {
+      backToPortfolio: "Voltar ao portfolio",
+      eyebrow: "// dossiê",
+      taglineLabel: "Resumo",
+      problemLabel: "O problema",
+      approachLabel: "A abordagem",
+      outcomesLabel: "Resultados",
+      roleLabel: "Papel",
+      stackLabel: "Stack",
+      updatedLabel: "Última atualização",
+      openRepo: "Abrir repositório",
+      notFound: "Projeto não encontrado",
+      notFoundDescription:
+        "Esse projeto não existe ou foi movido. Volte ao portfolio para ver todos.",
+    },
   },
-} as const;
+};
 
-export type TranslationKeys = typeof translations.en;
+export type Translation = (typeof translations)["en"];
+export type TranslationKeys = Translation;

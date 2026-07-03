@@ -1,3 +1,4 @@
+/// <reference types="vitest/globals" />
 import "@testing-library/jest-dom/vitest";
 import { cleanup } from "@testing-library/react";
 import { afterEach } from "vitest";
@@ -48,4 +49,4 @@ class ResizeObserverStub {
   unobserve() {}
   disconnect() {}
 }
-window.ResizeObserver = ResizeObserverStub as any;
+window.ResizeObserver = ResizeObserverStub as unknown as typeof ResizeObserver;

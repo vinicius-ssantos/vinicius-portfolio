@@ -8,27 +8,28 @@ import type { Lang } from "@/lib/portfolio-data";
 
 type T = typeof translations.en;
 
-/**
- * Client shell that wraps the page content.
- * Holds the contact modal state (the only piece of client state in the whole page).
- * Server-rendered sections are passed as `children`.
- */
-export function PortfolioShell({
-  t,
-  lang,
-  children,
-}: {
+type SiteChromeProps = {
   t: T;
   lang: Lang;
+  withHero?: boolean;
   children: React.ReactNode;
-}) {
+};
+
+export function SiteChrome({
+  t,
+  lang,
+  withHero = false,
+  children,
+}: SiteChromeProps) {
   const [contactOpen, setContactOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <SiteHeader t={t} />
+      <SiteHeader t={t} lang={lang} />
       <main id="main" className="flex-1">
-        <Hero t={t} lang={lang} onContactOpen={() => setContactOpen(true)} />
+        {withHero && (
+          <Hero t={t} lang={lang} onContactOpen={() => setContactOpen(true)} />
+        )}
         {children}
       </main>
       <SiteFooter t={t} onContactOpen={() => setContactOpen(true)} />
@@ -36,4 +37,3 @@ export function PortfolioShell({
     </div>
   );
 }
-
