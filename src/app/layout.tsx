@@ -20,6 +20,9 @@ const geistMono = Geist_Mono({
 
 const SITE_URL = "https://vinicius-portfolio-source.vercel.app";
 
+// Force dynamic rendering since generateMetadata reads cookies()
+export const dynamic = "force-dynamic";
+
 // JSON-LD Person schema for SEO / rich results
 const personJsonLd = {
   "@context": "https://schema.org",
