@@ -90,14 +90,6 @@ export async function generateMetadata({
       title,
       description,
       siteName: `${profile.shortName} — Portfolio`,
-      images: [
-        {
-          url: "/og-image.png",
-          width: 1200,
-          height: 630,
-          alt: `${profile.name} — Backend Software Engineer portfolio`,
-        },
-      ],
     },
     twitter: {
       card: "summary_large_image",
