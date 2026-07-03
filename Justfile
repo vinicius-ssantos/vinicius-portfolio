@@ -106,18 +106,6 @@ env-example:
 	@if (Test-Path .env) { Get-Content .env | ForEach-Object { if ($_ -match "^([A-Z_]+)=") { "$($matches[1])=" } else { $_ } } | Set-Content .env.example; Write-Output "Created .env.example (values stripped)" } else { Write-Error ".env not found"; exit 1 }
 
 # ──────────────────────────────────────────────────────────────
-# Assets
-# ──────────────────────────────────────────────────────────────
-
-# Render the 1200x630 OG image from scripts/og-image.html (requires Playwright).
-render-og:
-	python scripts/render_og.py
-
-# Crop raw GitHub screenshots to README area (requires Pillow).
-crop-screenshots:
-	python scripts/crop_screenshots.py
-
-# ──────────────────────────────────────────────────────────────
 # Diagnostics
 # ──────────────────────────────────────────────────────────────
 

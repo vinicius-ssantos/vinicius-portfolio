@@ -28,7 +28,7 @@ import {
   t as tp,
   type Lang,
 } from "@/lib/portfolio-data";
-import { getGitHubStats, formatStat, type ContributionDay } from "@/lib/github";
+import { getGitHubStats, formatStat, type ContributionDay, type LanguageStat } from "@/lib/github";
 import type { translations } from "@/lib/translations";
 
 type T = typeof translations.en;
@@ -258,10 +258,52 @@ function ExperienceCard({
 }
 
 /* ------------------------------------------------------------------ */
+/* Languages bar (live from GitHub)                                    */
+/* ------------------------------------------------------------------ */
+
+function LanguagesBar({ languages, t }: { languages: LanguageStat[]; t: T }) {
+  if (languages.length === 0) return null;
+
+  return (
+    <div className="mb-8">
+      <div className="mb-3 flex items-center gap-2">
+        <h3 className="font-mono text-xs uppercase tracking-wider text-primary">
+          {t.stack.languagesLabel}
+        </h3>
+        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] text-muted-foreground">
+          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+          {t.stack.languagesLive}
+        </span>
+      </div>
+      <div className="flex h-2.5 w-full overflow-hidden rounded-full border border-border/60">
+        {languages.map((lang) => (
+          <div
+            key={lang.name}
+            style={{ width: `${lang.percentage}%`, backgroundColor: lang.color }}
+            title={`${lang.name}: ${lang.percentage.toFixed(1)}%`}
+          />
+        ))}
+      </div>
+      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
+        {languages.map((lang) => (
+          <div key={lang.name} className="flex items-center gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: lang.color }} />
+            <span className="font-mono text-xs text-muted-foreground">
+              {lang.name} <span className="text-foreground/60">{lang.percentage.toFixed(1)}%</span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Stack                                                               */
 /* ------------------------------------------------------------------ */
 
-export function Stack({ t, lang }: { t: T; lang: Lang }) {
+export async function Stack({ t, lang }: { t: T; lang: Lang }) {
+  const gh = await getGitHubStats();
   const stackEntries = Object.entries(stack).filter(([cat]) => cat !== "Languages");
   return (
     <section id="stack" className="border-y border-border/60 bg-secondary/20">
@@ -271,7 +313,10 @@ export function Stack({ t, lang }: { t: T; lang: Lang }) {
           title={t.stack.title}
           description={t.stack.description}
         />
-        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8">
+          <LanguagesBar languages={gh.languages} t={t} />
+        </div>
+        <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {stackEntries.map(([category, items]) => {
             const Icon = stackIcons[category] ?? Terminal;
             return (
