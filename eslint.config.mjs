@@ -14,7 +14,7 @@ const eslintConfig = [...nextCoreWebVitals, ...nextTypescript, {
     "no-console": ["warn", { allow: ["warn", "error"] }],
   },
 }, {
-  ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts", "examples/**", "skills", "scripts/**"],
+  ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts", "examples/**", "skills"],
 }];
 
 export default eslintConfig;

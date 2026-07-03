@@ -15,7 +15,7 @@ function pickLocale(request: NextRequest) {
     : acceptLanguageLocale(request.headers.get("accept-language") ?? "");
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const firstSegment = pathname.split("/").filter(Boolean)[0];
 
@@ -47,6 +47,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon|og-image|cv-|robots.txt|sitemap.xml).*)",
+    "/((?!api|_next/static|_next/image|favicon|cv-|robots.txt|sitemap.xml).*)",
   ],
 };
