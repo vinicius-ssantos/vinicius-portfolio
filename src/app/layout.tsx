@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/react";
@@ -19,9 +19,6 @@ const geistMono = Geist_Mono({
 });
 
 const SITE_URL = "https://vinicius-portfolio-source.vercel.app";
-
-// Force dynamic rendering since generateMetadata reads cookies()
-export const dynamic = "force-dynamic";
 
 // JSON-LD Person schema for SEO / rich results
 const personJsonLd = {
@@ -70,11 +67,26 @@ const personJsonLd = {
   ],
 };
 
-// Generate metadata dynamically based on the visitor's language cookie
+// Generate metadata dynamically based on the visitor's Accept-Language header
 export async function generateMetadata(): Promise<Metadata> {
-  const cookieStore = await cookies();
-  const lang = cookieStore.get("portfolio-lang")?.value;
-  const isPt = lang !== "en"; // default to pt
+  let isPt = true; // default to pt (user is Brazilian, primary audience)
+  try {
+    const headerStore = await headers();
+    const cookieHeader = headerStore.get("cookie") || "";
+    // Parse cookie manually (more reliable than cookies() during build)
+    const langMatch = cookieHeader.match(/(?:^|;\s*)portfolio-lang=(pt|en)/);
+    if (langMatch) {
+      isPt = langMatch[1] === "pt";
+    } else {
+      // Fallback to Accept-Language
+      const acceptLang = (headerStore.get("accept-language") || "").toLowerCase();
+      if (acceptLang.includes("en") && !acceptLang.includes("pt")) {
+        isPt = false;
+      }
+    }
+  } catch {
+    // During static generation, headers() may not be available — use default
+  }
 
   const title = isPt
     ? "Vinicius Santos — Engenheiro de Software Backend @ UOL"
