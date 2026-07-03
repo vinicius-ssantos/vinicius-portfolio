@@ -6,7 +6,7 @@ import type { NextRequest } from "next/server";
  * and set a cookie so the client can read it.
  * If user has already chosen a language (cookie exists), respect it.
  */
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const cookieName = "portfolio-lang";
   const existing = request.cookies.get(cookieName)?.value;
 
