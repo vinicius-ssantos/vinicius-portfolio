@@ -57,6 +57,8 @@ export const translations = {
       title: "Tools I reach for",
       description:
         "A focused toolkit shaped by production work. I'd rather know five tools deeply than twenty shallowly.",
+      languagesLabel: "Most used languages",
+      languagesLive: "Live from GitHub",
     },
     projects: {
       eyebrow: "// selected work",
@@ -184,6 +186,8 @@ export const translations = {
       title: "Ferramentas que uso",
       description:
         "Um toolkit focado, moldado por trabalho em produção. Prefiro conhecer cinco ferramentas a fundo do que vinte superficialmente.",
+      languagesLabel: "Linguagens mais usadas",
+      languagesLive: "Ao vivo do GitHub",
     },
     projects: {
       eyebrow: "// trabalhos selecionados",

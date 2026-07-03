@@ -5,16 +5,24 @@ export type ContributionDay = {
   count: number;
 };
 
+export type LanguageStat = {
+  name: string;
+  percentage: number;
+  color: string;
+};
+
 export type GitHubStats = {
   publicRepos: number;
   contributions: number;
   weeks: ContributionDay[][];
+  languages: LanguageStat[];
 };
 
 const FALLBACK: GitHubStats = {
   publicRepos: Number(profile.stats[1].value) || 53,
   contributions: Number(profile.stats[2].value) || 3733,
   weeks: [],
+  languages: [],
 };
 
 const REVALIDATE_SECONDS = 60 * 60 * 24;
@@ -22,8 +30,19 @@ const REVALIDATE_SECONDS = 60 * 60 * 24;
 const QUERY = /* GraphQL */ `
   query UserProfile($login: String!) {
     user(login: $login) {
-      repositories(privacy: PUBLIC, ownerAffiliations: [OWNER]) {
+      repositories(first: 50, privacy: PUBLIC, ownerAffiliations: [OWNER], isFork: false, orderBy: {field: STARGAZERS, direction: DESC}) {
         totalCount
+        nodes {
+          languages(first: 8, orderBy: {field: SIZE, direction: DESC}) {
+            edges {
+              size
+              node {
+                name
+                color
+              }
+            }
+          }
+        }
       }
       contributionsCollection {
         contributionCalendar {
@@ -39,6 +58,34 @@ const QUERY = /* GraphQL */ `
     }
   }
 `;
+
+type LangEdge = { size: number; node: { name: string; color: string } };
+
+function aggregateLanguages(nodes: { languages?: { edges?: LangEdge[] } }[]): LanguageStat[] {
+  const totals = new Map<string, { size: number; color: string }>();
+
+  for (const repo of nodes) {
+    for (const edge of repo.languages?.edges ?? []) {
+      const existing = totals.get(edge.node.name);
+      if (existing) {
+        existing.size += edge.size;
+      } else {
+        totals.set(edge.node.name, { size: edge.size, color: edge.node.color || "#6b7280" });
+      }
+    }
+  }
+
+  const grandTotal = Array.from(totals.values()).reduce((sum, l) => sum + l.size, 0);
+
+  return Array.from(totals.entries())
+    .map(([name, { size, color }]) => ({
+      name,
+      percentage: grandTotal > 0 ? (size / grandTotal) * 100 : 0,
+      color,
+    }))
+    .sort((a, b) => b.percentage - a.percentage)
+    .slice(0, 8);
+}
 
 export async function getGitHubStats(): Promise<GitHubStats> {
   const token = process.env.GITHUB_TOKEN;
@@ -70,10 +117,13 @@ export async function getGitHubStats(): Promise<GitHubStats> {
         }))
       ) ?? [];
 
+    const languages = aggregateLanguages(user.repositories?.nodes ?? []);
+
     return {
       publicRepos: user.repositories?.totalCount ?? FALLBACK.publicRepos,
       contributions: calendar?.totalContributions ?? FALLBACK.contributions,
       weeks,
+      languages,
     };
   } catch {
     return FALLBACK;

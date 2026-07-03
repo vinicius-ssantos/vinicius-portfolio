@@ -21,7 +21,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         "x-default": `${SITE_URL}/pt`,
       },
     },
-    images: [`${SITE_URL}/og-image.png`],
   }));
 
   const projectEntries: MetadataRoute.Sitemap = projects.flatMap((project) =>
