@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Languages } from "lucide-react";
 import { useSyncExternalStore } from "react";
 import type { Lang } from "@/lib/translations";
-import { swapLocaleInPath, LOCALE_COOKIE, isLocale } from "@/lib/i18n";
+import { swapLocaleInPath, isLocale } from "@/lib/i18n";
 
 function getCookieLang(): Lang {
   if (typeof document === "undefined") return "pt";
@@ -50,5 +50,3 @@ export function LanguageToggle() {
     </button>
   );
 }
-
-void LOCALE_COOKIE;

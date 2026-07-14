@@ -24,6 +24,10 @@ export const translations = {
       errorId: "Error ID",
       tryAgain: "Try again",
     },
+    themeToggle: {
+      toLight: "Switch to light theme",
+      toDark: "Switch to dark theme",
+    },
     nav: {
       experience: "Experience",
       stack: "Stack",
@@ -88,6 +92,7 @@ export const translations = {
         "Personal projects I build to study patterns I can't always reach at work. Picked for depth, not for showcase value.",
       mostRecent: "Most recent",
       viewRepository: "View repository",
+      viewDetails: "View case file",
     },
     caseStudy: {
       eyebrow: "// case study",
@@ -136,6 +141,8 @@ export const translations = {
         runningCluster: "Running a personal k3s cluster on a VPS",
         studying: "Studying Spring Cloud patterns and MCP servers",
       },
+      showPhone: "Show phone",
+      hidePhone: "Hide phone",
     },
     footer: {
       builtWith: "Built with Next.js.",
@@ -173,6 +180,10 @@ export const translations = {
       description: "Ocorreu um erro inesperado ao renderizar a página. Tente recarregar — se persistir, por favor me avise pelas opções de contato.",
       errorId: "ID do erro",
       tryAgain: "Tentar novamente",
+    },
+    themeToggle: {
+      toLight: "Mudar para tema claro",
+      toDark: "Mudar para tema escuro",
     },
     nav: {
       experience: "Experiência",
@@ -238,6 +249,7 @@ export const translations = {
         "Projetos pessoais que construo para estudar padrões que nem sempre alcanço no trabalho. Escolhidos por profundidade, não para vitrine.",
       mostRecent: "Mais recente",
       viewRepository: "Ver repositório",
+      viewDetails: "Ver dossiê",
     },
     caseStudy: {
       eyebrow: "// case study",
@@ -286,6 +298,8 @@ export const translations = {
         runningCluster: "Rodando um cluster k3s pessoal em uma VPS",
         studying: "Estudando padrões Spring Cloud e MCP servers",
       },
+      showPhone: "Mostrar telefone",
+      hidePhone: "Esconder telefone",
     },
     footer: {
       builtWith: "Construído com Next.js.",

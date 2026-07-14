@@ -9,6 +9,22 @@ import type { Lang } from "./translations";
 export type { Lang };
 export type LocalizedText = { pt: string; en: string };
 
+/**
+ * Returns whole years between `startDate` (ISO date string) and "now".
+ * Used to keep "years of experience" stats accurate without manual edits.
+ */
+export function yearsSince(startDate: string): string {
+  const start = new Date(startDate);
+  if (Number.isNaN(start.getTime())) return "—";
+  const diffMs = Date.now() - start.getTime();
+  const years = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 365.25));
+  return String(Math.max(0, years));
+}
+
+// Career start date — September 2021 = first day at Autbank as QA Analyst.
+// Used to compute years of experience dynamically (see `yearsSince`).
+const CAREER_START = "2021-09-01";
+
 export type Project = {
   slug: string;
   name: string;
@@ -24,6 +40,16 @@ export type Project = {
   image?: string;
   updatedAt: string;
   featured?: boolean;
+  // Optional deep-dive case study content — only the featured project
+  // populates this today, but the structure allows any project to become
+  // a case study without touching the CaseStudy component.
+  caseStudy?: {
+    lessonsLearned: LocalizedText;
+    architectureLabel: LocalizedText;
+    localNodes: LocalizedText[];
+    vpsNodes: LocalizedText[];
+    flowText: LocalizedText;
+  };
 };
 
 export type Experience = {
@@ -53,6 +79,9 @@ export const profile = {
   email: "viniciusoli2020@gmail.com",
   phone: "+55 (11) 91676-2083",
   languages: ["PT (nativo)", "EN (profissional)"],
+  // Career start date — used to compute years of experience dynamically.
+  // September 2021 = first day at Autbank as QA Analyst.
+  careerStart: CAREER_START,
   pitch: {
     pt: "Engenheiro de Software Backend na UOL, trabalhando em fluxos de autenticação, autorização e proteção de conta. Foco em confiabilidade, qualidade de entrega e estabilidade em produção — o tipo de trabalho onde pequenos erros têm consequências grandes.",
     en: "Backend Software Engineer at UOL, working on authentication, authorization and account-protection flows. I focus on reliability, delivery quality and production stability — the kind of work where small mistakes have outsized consequences.",
@@ -66,8 +95,8 @@ export const profile = {
     en: "My path into backend was unusual: I started in QA at Autbank in 2021, automating API tests with RestAssured and JMeter. Two years later I moved into the developer seat at the same company, and in 2024 I joined UOL to work on the authentication and account-protection layer that millions of Brazilians rely on daily. The QA years still shape how I write code — I think in terms of failure modes first, happy paths second.",
   } as LocalizedText,
   philosophy: {
-    pt: "Mantenho um GitHub público com 52 repositórios porque acredito em shipping aberto — experimentos pela metade incluídos. O mais ambicioso é o personal-platform-infra, um repositório de infraestrutura estilo GitOps que roda minha plataforma pessoal de MCP servers e BFFs em ambientes local + VPS. Se você quer saber como eu penso, o histórico de commits é um currículo mais honesto do que qualquer PDF.",
-    en: "I keep a public GitHub with 52 repositories because I believe in shipping in the open — half-finished experiments included. The most ambitious one is personal-platform-infra, a GitOps-style infrastructure repo that runs my personal platform of MCP servers and BFFs across local + VPS environments. If you want to know how I think, the commit history is a more honest résumé than any PDF.",
+    pt: "Mantenho um GitHub público com dezenas de repositórios porque acredito em shipping aberto — experimentos pela metade incluídos. O mais ambicioso é o personal-platform-infra, um repositório de infraestrutura estilo GitOps que roda minha plataforma pessoal de MCP servers e BFFs em ambientes local + VPS. Se você quer saber como eu penso, o histórico de commits é um currículo mais honesto do que qualquer PDF.",
+    en: "I keep a public GitHub with dozens of repositories because I believe in shipping in the open — half-finished experiments included. The most ambitious one is personal-platform-infra, a GitOps-style infrastructure repo that runs my personal platform of MCP servers and BFFs across local + VPS environments. If you want to know how I think, the commit history is a more honest résumé than any PDF.",
   } as LocalizedText,
   currentlyLearning: [
     {
@@ -93,7 +122,7 @@ export const profile = {
     },
   ] as { topic: LocalizedText; detail: LocalizedText }[],
   stats: [
-    { label: { pt: "Anos em backend & QA", en: "Years in backend & QA" }, value: "5" },
+    { label: { pt: "Anos em backend & QA", en: "Years in backend & QA" }, value: yearsSince(CAREER_START) },
     { label: { pt: "Repositórios públicos", en: "Public repositories" }, value: "53" },
     { label: { pt: "Contribuições / ano", en: "GitHub contributions / yr" }, value: "3733" },
   ],
@@ -306,6 +335,30 @@ export const projects: Project[] = [
     image: "/projects/personal-platform-infra.png",
     updatedAt: "2026-07-02",
     featured: true,
+    caseStudy: {
+      lessonsLearned: {
+        pt: "Construir uma plataforma pessoal me forçou a fazer trade-offs que não aparecem em tutoriais. Pinjar tags de imagem por digest é mais chato que tracking latest, mas é a única forma de saber exatamente o que está rodando. SOPS + age adiciona fricção à rotação de secrets, mas significa que posso publicar o repo publicamente sem vazar nada. A maior lição: documentação escrita para você mesmo daqui a seis meses é a única que realmente é lida — então os ADRs são escritos como uma conversa com esse eu futuro.",
+        en: "Building a personal platform forced me to make trade-offs that don't show up in tutorials. Pinning image tags by digest is more annoying than tracking latest, but it's the only way to know exactly what's running. SOPS + age adds friction to secret rotation, but means I can publish the repo publicly without leaking anything. The biggest lesson: documentation that you write for yourself six months from now is the only documentation that actually gets read — so the ADRs are written like a conversation with that future me.",
+      },
+      architectureLabel: {
+        pt: "arquitetura / dois ambientes, uma fonte da verdade",
+        en: "architecture / two environments, one source of truth",
+      },
+      localNodes: [
+        { pt: "Windows 11 + WSL2", en: "Windows 11 + WSL2" },
+        { pt: "Docker Compose", en: "Docker Compose" },
+        { pt: "k3d (validação k8s)", en: "k3d (k8s validation)" },
+      ],
+      vpsNodes: [
+        { pt: "Ubuntu + k3s (single-node)", en: "Ubuntu + k3s (single-node)" },
+        { pt: "Traefik ingress", en: "Traefik ingress" },
+        { pt: "namespaces: mcp / bff / vos / monitoring", en: "namespaces: mcp / bff / vos / monitoring" },
+      ],
+      flowText: {
+        pt: "Cloudflare DNS + TLS + Access + Tunnel  →  VPS :80 → Traefik  →  serviços",
+        en: "Cloudflare DNS + TLS + Access + Tunnel  →  VPS :80 → Traefik  →  services",
+      },
+    },
   },
   {
     slug: "springcloud",

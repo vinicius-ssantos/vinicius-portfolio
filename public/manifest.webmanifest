@@ -1,0 +1,40 @@
+{
+  "name": "Vinicius Santos — Backend Engineer Portfolio",
+  "short_name": "Vinicius Santos",
+  "description": "Backend Software Engineer at UOL — portfolio, projects, and case studies.",
+  "start_url": "/pt",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0f0e0d",
+  "theme_color": "#0f0e0d",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["portfolio", "developer", "technology"],
+  "shortcuts": [
+    {
+      "name": "Projects",
+      "short_name": "Projects",
+      "url": "/pt#projects",
+      "description": "View selected personal projects"
+    },
+    {
+      "name": "Experience",
+      "short_name": "Experience",
+      "url": "/pt#experience",
+      "description": "View work history"
+    },
+    {
+      "name": "Case study",
+      "short_name": "Case study",
+      "url": "/pt#case-study",
+      "description": "Deep dive on personal-platform-infra"
+    }
+  ]
+}

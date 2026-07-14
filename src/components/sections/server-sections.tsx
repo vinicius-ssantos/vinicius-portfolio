@@ -4,11 +4,11 @@ import {
   Briefcase,
   MapPin,
   Mail,
-  Phone,
   Server,
   FileCode2,
   Globe,
   ArrowUpRight,
+  ArrowRight,
   CheckCircle2,
   Terminal,
   Boxes,
@@ -27,8 +27,13 @@ import {
   education,
   t as tp,
   type Lang,
+  type Project,
+  type LocalizedText,
 } from "@/lib/portfolio-data";
 import { getGitHubStats, formatStat, type ContributionDay, type LanguageStat } from "@/lib/github";
+import { RevealPhone } from "@/components/reveal-phone";
+import { RevealOnScroll } from "@/components/animations/reveal-on-scroll";
+import { StatCounter } from "@/components/animations/stat-counter";
 import type { translations } from "@/lib/translations";
 
 type T = typeof translations.en;
@@ -122,11 +127,12 @@ function ContributionHeatmap({
             role="img"
             aria-label={`${formatStat(total)} ${t.stats.heatmapTitle}`}
           >
-            {days.map((day) => (
+            {days.map((day, i) => (
               <div
                 key={day.date}
                 title={`${day.date}: ${day.count} contributions`}
-                className={`h-[11px] w-[11px] rounded-[2px] ${intensityClass(day.count)}`}
+                className={`heatmap-cell h-[11px] w-[11px] rounded-[2px] ${intensityClass(day.count)}`}
+                style={{ "--cell-delay": `${Math.min(i * 4, 800)}ms` } as React.CSSProperties}
               />
             ))}
           </div>
@@ -140,10 +146,12 @@ export async function StatsBar({ t, lang }: { t: T; lang: Lang }) {
   const gh = await getGitHubStats();
   const isLive = process.env.GITHUB_TOKEN !== undefined;
 
-  const stats = [
-    profile.stats[0],
-    { ...profile.stats[1], value: formatStat(gh.publicRepos) },
-    { ...profile.stats[2], value: formatStat(gh.contributions) },
+  // Each stat carries its label + a numeric value for the animated counter.
+  // The label value stays as a fallback string (used when JS is disabled).
+  const stats: { label: LocalizedText; numeric: number; fallback: string }[] = [
+    { label: profile.stats[0].label, numeric: parseInt(profile.stats[0].value, 10) || 0, fallback: profile.stats[0].value },
+    { label: profile.stats[1].label, numeric: gh.publicRepos, fallback: formatStat(gh.publicRepos) },
+    { label: profile.stats[2].label, numeric: gh.contributions, fallback: formatStat(gh.contributions) },
   ];
 
   return (
@@ -159,7 +167,7 @@ export async function StatsBar({ t, lang }: { t: T; lang: Lang }) {
               />
             )}
             <div className="font-mono text-2xl font-bold tabular-nums sm:text-3xl">
-              {s.value}
+              <StatCounter value={s.numeric} />
             </div>
             <div className="mt-1 text-xs text-muted-foreground sm:text-sm">
               {tp(s.label, lang)}
@@ -187,11 +195,13 @@ export function Experience({ t, lang }: { t: T; lang: Lang }) {
         title={t.experience.title}
         description={t.experience.description}
       />
-      <div className="mt-10 space-y-4">
-        {experience.map((exp) => (
-          <ExperienceCard key={`${exp.company}-${exp.period}`} exp={exp} t={t} lang={lang} />
+      <RevealOnScroll stagger className="mt-10 space-y-4">
+        {experience.map((exp, idx) => (
+          <div key={`${exp.company}-${exp.period}`} style={{ "--stagger-index": idx } as React.CSSProperties}>
+            <ExperienceCard exp={exp} t={t} lang={lang} />
+          </div>
         ))}
-      </div>
+      </RevealOnScroll>
     </section>
   );
 }
@@ -206,7 +216,7 @@ function ExperienceCard({
   lang: Lang;
 }) {
   return (
-    <Card className="border-border/60 bg-card/50 transition-colors hover:border-primary/40">
+    <Card className="card-lift border-border/60 bg-card/50 hover:border-primary/40">
       <CardHeader className="pb-3">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <div className="flex items-center gap-2">
@@ -236,7 +246,10 @@ function ExperienceCard({
         <ul className="space-y-2">
           {exp.bullets.map((b, i) => (
             <li key={i} className="flex gap-2.5 text-sm leading-relaxed text-muted-foreground">
-              <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary/70" />
+              <CheckCircle2
+                className="check-pop mt-0.5 h-4 w-4 flex-shrink-0 text-primary/70"
+                style={{ "--check-delay": `${i * 100}ms` } as React.CSSProperties}
+              />
               <span>{tp(b, lang)}</span>
             </li>
           ))}
@@ -276,10 +289,15 @@ function LanguagesBar({ languages, t }: { languages: LanguageStat[]; t: T }) {
         </span>
       </div>
       <div className="flex h-2.5 w-full overflow-hidden rounded-full border border-border/60">
-        {languages.map((lang) => (
+        {languages.map((lang, i) => (
           <div
             key={lang.name}
-            style={{ width: `${lang.percentage}%`, backgroundColor: lang.color }}
+            className="lang-bar-segment"
+            style={{
+              width: `${lang.percentage}%`,
+              backgroundColor: lang.color,
+              animationDelay: `${i * 80}ms`,
+            }}
             title={`${lang.name}: ${lang.percentage.toFixed(1)}%`}
           />
         ))}
@@ -316,44 +334,45 @@ export async function Stack({ t, lang }: { t: T; lang: Lang }) {
         <div className="mt-8">
           <LanguagesBar languages={gh.languages} t={t} />
         </div>
-        <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {stackEntries.map(([category, items]) => {
+        <RevealOnScroll stagger className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {stackEntries.map(([category, items], idx) => {
             const Icon = stackIcons[category] ?? Terminal;
             return (
-              <Card
-                key={category}
-                className="border-border/60 bg-card/50 transition-colors hover:border-primary/40"
-              >
-                <CardHeader className="pb-3">
-                  <div className="flex items-center gap-2">
-                    <div className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-secondary text-muted-foreground">
-                      <Icon className="h-4 w-4" />
+              <div key={category} style={{ "--stagger-index": idx } as React.CSSProperties}>
+                <Card
+                  className="card-lift h-full border-border/60 bg-card/50 hover:border-primary/40"
+                >
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-secondary text-muted-foreground">
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <CardTitle className="text-sm font-mono uppercase tracking-wider text-muted-foreground">
+                        {category}
+                      </CardTitle>
                     </div>
-                    <CardTitle className="text-sm font-mono uppercase tracking-wider text-muted-foreground">
-                      {category}
-                    </CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-1.5">
-                    {items.map((item) => {
-                      const label = typeof item === "string" ? item : tp(item, lang);
-                      return (
-                        <Badge
-                          key={label}
-                          variant="secondary"
-                          className="font-mono text-xs font-normal"
-                        >
-                          {label}
-                        </Badge>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-1.5">
+                      {items.map((item) => {
+                        const label = typeof item === "string" ? item : tp(item, lang);
+                        return (
+                          <Badge
+                            key={label}
+                            variant="secondary"
+                            className="font-mono text-xs font-normal"
+                          >
+                            {label}
+                          </Badge>
+                        );
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             );
           })}
-        </div>
+        </RevealOnScroll>
       </div>
     </section>
   );
@@ -371,11 +390,13 @@ export function FeaturedProjects({ t, lang }: { t: T; lang: Lang }) {
         title={t.projects.title}
         description={t.projects.description}
       />
-      <div className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
+      <RevealOnScroll stagger className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
         {projects.map((p, idx) => (
-          <ProjectCard key={p.slug} project={p} priority={idx === 0} t={t} lang={lang} />
+          <div key={p.slug} style={{ "--stagger-index": idx } as React.CSSProperties}>
+            <ProjectCard project={p} priority={idx === 0} t={t} lang={lang} />
+          </div>
         ))}
-      </div>
+      </RevealOnScroll>
     </section>
   );
 }
@@ -394,7 +415,7 @@ function ProjectCard({
   const detailHref = `/${lang}/projects/${project.slug}`;
   return (
     <Card
-      className={`group relative flex flex-col overflow-hidden border-border/60 bg-card/50 transition-all hover:border-primary/40 hover:bg-card ${
+      className={`card-lift group relative flex flex-col overflow-hidden border-border/60 bg-card/50 hover:border-primary/40 hover:bg-card ${
         priority ? "lg:col-span-1" : ""
       }`}
     >
@@ -402,7 +423,7 @@ function ProjectCard({
         <Link
           href={detailHref}
           className="relative block aspect-[16/10] overflow-hidden border-b border-border/60 bg-secondary/30"
-          aria-label={`${t.projects.viewRepository}: ${project.name}`}
+          aria-label={`${t.projects.viewDetails}: ${project.name}`}
         >
           <Image
             src={project.image}
@@ -471,10 +492,10 @@ function ProjectCard({
           <div className="flex items-center gap-3">
             <Link
               href={detailHref}
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+              className="btn-arrow inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
             >
-              {t.projects.viewRepository}
-              <ArrowUpRight className="h-3.5 w-3.5" />
+              {t.projects.viewDetails}
+              <ArrowUpRight className="arrow-nudge h-3.5 w-3.5" />
             </Link>
             <a
               href={project.repoUrl}
@@ -498,6 +519,10 @@ function ProjectCard({
 
 export function CaseStudy({ t, lang }: { t: T; lang: Lang }) {
   const cs = projects.find((p) => p.featured) ?? projects[0];
+  const csData = cs.caseStudy;
+
+  // If the featured project has no deep-dive content, render only the
+  // problem/approach/outcomes sections and skip the diagram + lessons.
   return (
     <section id="case-study" className="border-y border-border/60 bg-secondary/20">
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
@@ -506,139 +531,174 @@ export function CaseStudy({ t, lang }: { t: T; lang: Lang }) {
           title={`${t.caseStudy.deepDiveTitle} ${cs.name}`}
           description={tp(cs.tagline, lang)}
         />
-        <Card className="mt-10 border-border/60 bg-card/50">
-          <CardHeader>
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="outline" className="font-mono text-[10px] uppercase">
-                {t.caseStudy.role}
-              </Badge>
-              <Badge variant="outline" className="font-mono text-[10px] uppercase">
-                {t.caseStudy.updated} {cs.updatedAt}
-              </Badge>
-              <a
-                href={cs.repoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ml-auto inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80"
-              >
-                {t.caseStudy.openRepo}
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </a>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-8">
-            <div>
-              <h3 className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                {t.caseStudy.problem}
-              </h3>
-              <p className="mt-2 leading-relaxed text-foreground/90">{tp(cs.problem, lang)}</p>
-            </div>
-
-            <ArchitectureDiagram t={t} />
-
-            <div>
-              <h3 className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                {t.caseStudy.approach}
-              </h3>
-              <ul className="mt-3 space-y-2.5">
-                {cs.approach.map((a, i) => (
-                  <li key={i} className="flex gap-3 text-sm leading-relaxed">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                    <span className="text-foreground/90">{tp(a, lang)}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                {t.caseStudy.outcomes}
-              </h3>
-              <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {cs.highlights.map((h) => (
-                  <div
-                    key={tp(h, lang)}
-                    className="flex gap-3 rounded-md border border-border/60 bg-secondary/30 p-3"
-                  >
-                    <FileCode2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                    <span className="text-sm leading-relaxed text-foreground/90">{tp(h, lang)}</span>
-                  </div>
-                ))}
+        <RevealOnScroll className="mt-10">
+          <Card className="border-border/60 bg-card/50">
+            <CardHeader>
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant="outline" className="font-mono text-[10px] uppercase">
+                  {t.caseStudy.role}
+                </Badge>
+                <Badge variant="outline" className="font-mono text-[10px] uppercase">
+                  {t.caseStudy.updated} {cs.updatedAt}
+                </Badge>
+                <a
+                  href={cs.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-auto inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80"
+                >
+                  {t.caseStudy.openRepo}
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
               </div>
-            </div>
-
-            <div>
-              <h3 className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                {t.caseStudy.stack}
-              </h3>
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {cs.stack.map((s) => (
-                  <Badge
-                    key={s}
-                    variant="secondary"
-                    className="font-mono text-xs font-normal"
-                  >
-                    {s}
-                  </Badge>
-                ))}
+            </CardHeader>
+            <CardContent className="space-y-8">
+              <div>
+                <h3 className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                  {t.caseStudy.problem}
+                </h3>
+                <p className="mt-2 leading-relaxed text-foreground/90">{tp(cs.problem, lang)}</p>
               </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        <div className="mt-10">
-          <h3 className="font-mono text-xs uppercase tracking-wider text-primary">
-            {t.caseStudy.lessonsLearned}
-          </h3>
-          <p className="mt-3 leading-relaxed text-foreground/90">
-            {t.caseStudy.lessonsText}
-          </p>
-        </div>
+              {csData && <ArchitectureDiagram t={t} data={csData} lang={lang} />}
+
+              <div>
+                <h3 className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                  {t.caseStudy.approach}
+                </h3>
+                <ul className="mt-3 space-y-2.5">
+                  {cs.approach.map((a, i) => (
+                    <li key={i} className="flex gap-3 text-sm leading-relaxed">
+                      <CheckCircle2
+                        className="check-pop mt-0.5 h-4 w-4 flex-shrink-0 text-primary"
+                        style={{ "--check-delay": `${i * 100}ms` } as React.CSSProperties}
+                      />
+                      <span className="text-foreground/90">{tp(a, lang)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                  {t.caseStudy.outcomes}
+                </h3>
+                <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {cs.highlights.map((h) => (
+                    <div
+                      key={tp(h, lang)}
+                      className="flex gap-3 rounded-md border border-border/60 bg-secondary/30 p-3"
+                    >
+                      <FileCode2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
+                      <span className="text-sm leading-relaxed text-foreground/90">{tp(h, lang)}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                  {t.caseStudy.stack}
+                </h3>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {cs.stack.map((s) => (
+                    <Badge
+                      key={s}
+                      variant="secondary"
+                      className="font-mono text-xs font-normal"
+                    >
+                      {s}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </RevealOnScroll>
+
+        {csData && (
+          <div className="mt-10">
+            <h3 className="font-mono text-xs uppercase tracking-wider text-primary">
+              {t.caseStudy.lessonsLearned}
+            </h3>
+            <p className="mt-3 leading-relaxed text-foreground/90">
+              {tp(csData.lessonsLearned, lang)}
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );
 }
 
-function ArchitectureDiagram({ t }: { t: T }) {
+function ArchitectureDiagram({
+  t,
+  data,
+  lang,
+}: {
+  t: T;
+  data: NonNullable<Project["caseStudy"]>;
+  lang: Lang;
+}) {
   return (
     <div className="overflow-hidden rounded-lg border border-border/60 bg-background/50">
       <div className="border-b border-border/60 bg-secondary/30 px-4 py-2 font-mono text-xs text-muted-foreground">
-        {t.caseStudy.architectureLabel}
+        {tp(data.architectureLabel, lang)}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div className="border-b border-border/60 p-4 md:border-b-0 md:border-r">
-          <div className="mb-3 font-mono text-xs uppercase tracking-wider text-primary">
+          <div className="mb-3 flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-primary">
+            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
             {t.caseStudy.local}
           </div>
           <ul className="space-y-1.5">
-            {t.caseStudy.localNodes.map((n) => (
+            {data.localNodes.map((n, i) => (
               <li
-                key={n}
+                key={`${tp(n, lang)}-${i}`}
                 className="rounded-md border border-border/60 bg-card/50 px-3 py-1.5 font-mono text-xs"
               >
-                {n}
+                {tp(n, lang)}
               </li>
             ))}
           </ul>
         </div>
         <div className="p-4">
-          <div className="mb-3 font-mono text-xs uppercase tracking-wider text-primary">
+          <div className="mb-3 flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-primary">
+            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
             {t.caseStudy.vps}
           </div>
           <ul className="space-y-1.5">
-            {t.caseStudy.vpsNodes.map((n) => (
+            {data.vpsNodes.map((n, i) => (
               <li
-                key={n}
+                key={`${tp(n, lang)}-${i}`}
                 className="rounded-md border border-border/60 bg-card/50 px-3 py-1.5 font-mono text-xs"
               >
-                {n}
+                {tp(n, lang)}
               </li>
             ))}
           </ul>
         </div>
       </div>
-      <div className="border-t border-border/60 bg-secondary/30 px-4 py-2 font-mono text-xs text-muted-foreground text-center">
-        {t.caseStudy.flowText}
+      <div className="border-t border-border/60 bg-secondary/30 px-4 py-3">
+        <div className="mb-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+          {lang === "pt" ? "fluxo de tráfego" : "traffic flow"}
+        </div>
+        <div className="flex flex-wrap items-center gap-1.5 font-mono text-xs text-foreground/90">
+          {tp(data.flowText, lang)
+            .split("→")
+            .map((step) => step.trim())
+            .filter(Boolean)
+            .map((step, i, arr) => (
+              <span key={step} className="flex items-center gap-1.5">
+                <span className="rounded-md border border-border/60 bg-card/50 px-2 py-1">
+                  {step}
+                </span>
+                {i < arr.length - 1 && (
+                  <ArrowRight className="h-3 w-3 text-primary animate-flow-arrow" aria-hidden style={{ animationDelay: `${i * 0.3}s` } as React.CSSProperties} />
+                )}
+              </span>
+            ))}
+        </div>
       </div>
     </div>
   );
@@ -656,24 +716,26 @@ export function EducationSection({ t, lang }: { t: T; lang: Lang }) {
         title={t.education.title}
         description={t.education.description}
       />
-      <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {education.map((e) => (
-          <Card key={`${e.institution}-${tp(e.degree, lang)}`} className="border-border/60 bg-card/50">
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <div className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary">
-                  <GraduationCap className="h-4 w-4" />
+      <RevealOnScroll stagger className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {education.map((e, idx) => (
+          <div key={`${e.institution}-${tp(e.degree, lang)}`} style={{ "--stagger-index": idx } as React.CSSProperties}>
+            <Card className="card-lift h-full border-border/60 bg-card/50">
+              <CardHeader>
+                <div className="flex items-center gap-2">
+                  <div className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary">
+                    <GraduationCap className="h-4 w-4" />
+                  </div>
+                  <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                    {tp(e.period, lang)}
+                  </span>
                 </div>
-                <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                  {tp(e.period, lang)}
-                </span>
-              </div>
-              <CardTitle className="mt-2 text-base">{tp(e.degree, lang)}</CardTitle>
-              <CardDescription>{e.institution}</CardDescription>
-            </CardHeader>
-          </Card>
+                <CardTitle className="mt-2 text-base">{tp(e.degree, lang)}</CardTitle>
+                <CardDescription>{e.institution}</CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
         ))}
-      </div>
+      </RevealOnScroll>
     </section>
   );
 }
@@ -691,7 +753,7 @@ export function About({ t, lang }: { t: T; lang: Lang }) {
           title={t.about.title}
           description=""
         />
-        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <RevealOnScroll className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
           <Card className="border-border/60 bg-card/50 lg:col-span-2">
             <CardContent className="space-y-6 pt-6 text-base leading-relaxed text-foreground/90">
               <p>{tp(profile.longPitch, lang)}</p>
@@ -710,7 +772,7 @@ export function About({ t, lang }: { t: T; lang: Lang }) {
             </CardContent>
           </Card>
 
-          <Card className="border-border/60 bg-card/50">
+          <Card className="card-lift border-border/60 bg-card/50">
             <CardHeader>
               <CardTitle className="font-mono text-sm uppercase tracking-wider text-muted-foreground">
                 {t.about.currently}
@@ -733,10 +795,10 @@ export function About({ t, lang }: { t: T; lang: Lang }) {
                 <Mail className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
                 <span className="break-all">{profile.email}</span>
               </div>
-              <div className="flex items-start gap-2">
-                <Phone className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                <span>{profile.phone}</span>
-              </div>
+              <RevealPhone
+                showLabel={t.about.showPhone}
+                hideLabel={t.about.hidePhone}
+              />
               <div className="flex items-start gap-2">
                 <Server className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
                 <span>{t.about.currentlyItems.runningCluster}</span>
@@ -759,7 +821,7 @@ export function About({ t, lang }: { t: T; lang: Lang }) {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </RevealOnScroll>
       </div>
     </section>
   );
