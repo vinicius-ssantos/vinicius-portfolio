@@ -11,6 +11,19 @@ export const translations = {
     a11y: {
       skipToContent: "Skip to content",
     },
+    notFound: {
+      eyebrow: "404 — error",
+      title: "Page not found",
+      description: "The page you're looking for doesn't exist or has been moved.",
+      back: "Back to portfolio",
+    },
+    errorPage: {
+      eyebrow: "Error",
+      title: "Something went wrong",
+      description: "An unexpected error occurred while rendering the page. Try reloading — if it persists, please let me know via the contact options.",
+      errorId: "Error ID",
+      tryAgain: "Try again",
+    },
     nav: {
       experience: "Experience",
       stack: "Stack",
@@ -36,6 +49,14 @@ export const translations = {
       copied: "Copied!",
       openEmailClient: "Open email client",
       orText: "or",
+      formTitle: "Send a message",
+      formName: "Your name",
+      formEmail: "Your email",
+      formMessage: "Message",
+      formSend: "Send message",
+      formSending: "Sending...",
+      formSuccess: "Message sent! I'll get back to you soon.",
+      formError: "Something went wrong. Please try emailing me directly.",
     },
     stats: {
       yearsLabel: "Years in backend & QA",
@@ -140,6 +161,19 @@ export const translations = {
     a11y: {
       skipToContent: "Pular para o conteúdo",
     },
+    notFound: {
+      eyebrow: "404 — erro",
+      title: "Página não encontrada",
+      description: "A página que você procura não existe ou foi movida.",
+      back: "Voltar ao portfolio",
+    },
+    errorPage: {
+      eyebrow: "Erro",
+      title: "Algo deu errado",
+      description: "Ocorreu um erro inesperado ao renderizar a página. Tente recarregar — se persistir, por favor me avise pelas opções de contato.",
+      errorId: "ID do erro",
+      tryAgain: "Tentar novamente",
+    },
     nav: {
       experience: "Experiência",
       stack: "Stack",
@@ -165,6 +199,14 @@ export const translations = {
       copied: "Copiado!",
       openEmailClient: "Abrir cliente de email",
       orText: "ou",
+      formTitle: "Enviar uma mensagem",
+      formName: "Seu nome",
+      formEmail: "Seu email",
+      formMessage: "Mensagem",
+      formSend: "Enviar mensagem",
+      formSending: "Enviando...",
+      formSuccess: "Mensagem enviada! Responderei em breve.",
+      formError: "Algo deu errado. Tente me enviar um email diretamente.",
     },
     stats: {
       yearsLabel: "Anos em backend & QA",

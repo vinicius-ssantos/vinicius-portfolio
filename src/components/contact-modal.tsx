@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { ContactForm } from "@/components/contact-form";
 import { profile } from "@/lib/portfolio-data";
 import type { translations } from "@/lib/translations";
 
@@ -36,7 +36,7 @@ export function ContactModal({ open, onOpenChange, t }: ContactModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-mono text-lg text-primary">
             {t.contactModal.title}
@@ -89,15 +89,10 @@ export function ContactModal({ open, onOpenChange, t }: ContactModalProps) {
         </div>
 
         <div className="mt-4 border-t border-border/60 pt-4">
-          <p className="mb-2 text-center font-mono text-xs uppercase tracking-wider text-muted-foreground">
-            {t.contactModal.orText}
+          <p className="mb-3 text-center font-mono text-xs uppercase tracking-wider text-muted-foreground">
+            {t.contactModal.formTitle}
           </p>
-          <Button asChild className="w-full">
-            <a href={`mailto:${profile.email}?subject=Portfolio%20contact%20—%20Vinicius%20Santos`}>
-              <Mail className="mr-2 h-4 w-4" />
-              {t.contactModal.openEmailClient}
-            </a>
-          </Button>
+          <ContactForm t={t} />
         </div>
       </DialogContent>
     </Dialog>
