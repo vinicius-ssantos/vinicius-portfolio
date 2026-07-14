@@ -83,6 +83,7 @@ export async function generateMetadata({
       shortcut: ["/favicon.svg"],
       apple: [{ url: "/favicon.svg", type: "image/svg+xml" }],
     },
+    manifest: "/manifest.webmanifest",
     openGraph: {
       type: "profile",
       locale: lang === "pt" ? "pt_BR" : "en_US",

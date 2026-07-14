@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { profile } from "./portfolio-data";
 
 export type ContributionDay = {
@@ -87,7 +88,7 @@ function aggregateLanguages(nodes: { languages?: { edges?: LangEdge[] } }[]): La
     .slice(0, 8);
 }
 
-export async function getGitHubStats(): Promise<GitHubStats> {
+export const getGitHubStats = cache(async (): Promise<GitHubStats> => {
   const token = process.env.GITHUB_TOKEN;
   if (!token) return FALLBACK;
 
@@ -128,7 +129,7 @@ export async function getGitHubStats(): Promise<GitHubStats> {
   } catch {
     return FALLBACK;
   }
-}
+});
 
 export function formatStat(n: number): string {
   if (n >= 1000) {

@@ -23,7 +23,7 @@ All content reflects the real CV — no fabricated experience or projects.
 Bilingual (PT/EN) is implemented as **real locale routing** (not cookie-only):
 
 - `/pt` and `/en` are distinct, indexable URLs with proper `hreflang` alternates.
-- The middleware detects the visitor locale (cookie → `Accept-Language`) and redirects `/` to the right locale.
+- The proxy (`src/proxy.ts`) detects the visitor locale (cookie → `Accept-Language`) and redirects `/` to the right locale. In Next.js 16 the middleware file was renamed to `proxy.ts`, but the role is the same.
 - The language toggle navigates between locale URLs, preserving the current path.
 - Metadata (`title`, `description`, `openGraph.locale`) is localized per route.
 
@@ -98,7 +98,7 @@ To update content (job history, stack, projects), edit `src/lib/portfolio-data.t
 
 ## License
 
-MIT — feel free to fork and adapt for your own portfolio.
+MIT — see [LICENSE](./LICENSE). Feel free to fork and adapt for your own portfolio.
 
 ## Contact
 

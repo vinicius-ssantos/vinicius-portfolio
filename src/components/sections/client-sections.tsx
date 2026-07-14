@@ -30,38 +30,38 @@ export function SiteHeader({ t, lang }: { t: T; lang: Lang }) {
         <nav className="flex items-center gap-1 text-sm">
           <Link
             href={`/${lang}#experience`}
-            className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
+            className="nav-link hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
             {t.nav.experience}
           </Link>
           <Link
             href={`/${lang}#stack`}
-            className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
+            className="nav-link hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
             {t.nav.stack}
           </Link>
           <Link
             href={`/${lang}#projects`}
-            className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
+            className="nav-link hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
             {t.nav.projects}
           </Link>
           <Link
             href={`/${lang}#case-study`}
-            className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground lg:inline"
+            className="nav-link hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground lg:inline"
           >
             {t.nav.caseStudy}
           </Link>
           <Link
             href={`/${lang}#about`}
-            className="hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground lg:inline"
+            className="nav-link hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground lg:inline"
           >
             {t.nav.about}
           </Link>
 
           <div className="ml-1 flex items-center gap-1">
             <LanguageToggle />
-            <ThemeToggle />
+            <ThemeToggle lang={lang} />
           </div>
 
           <a
@@ -111,16 +111,23 @@ export function Hero({
       />
       <div className="relative mx-auto max-w-5xl px-4 py-20 sm:px-6 sm:py-28">
         <div className="max-w-3xl">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-border/60 bg-secondary/50 px-3 py-1 font-mono text-xs text-muted-foreground">
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-border/60 bg-secondary/50 px-3 py-1 font-mono text-xs text-muted-foreground animate-badge-glow">
             <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
             </span>
             {t.hero.badge}
           </div>
 
           <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-            {profile.name}
+            {profile.name.split(" ").map((word, i) => (
+              <span
+                key={`${word}-${i}`}
+                className="hero-word"
+                style={{ "--word-index": i } as React.CSSProperties}
+              >
+                {word}{" "}
+              </span>
+            ))}
           </h1>
 
           <p className="mt-3 font-mono text-base text-primary sm:text-lg">
@@ -137,20 +144,20 @@ export function Hero({
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Button type="button" size="default" onClick={onContactOpen}>
+            <Button type="button" size="default" onClick={onContactOpen} className="btn-press">
               <Mail className="mr-2 h-4 w-4" />
               {t.hero.getInTouch}
             </Button>
-            <Button asChild variant="outline" size="default">
+            <Button asChild variant="outline" size="default" className="btn-press">
               <a href={profile.links.cv} download target="_blank" rel="noopener noreferrer">
                 <Download className="mr-2 h-4 w-4" />
                 {t.hero.downloadCV}
               </a>
             </Button>
-            <Button asChild variant="ghost" size="default">
+            <Button asChild variant="ghost" size="default" className="btn-arrow btn-press">
               <a href={`/${lang}#experience`}>
                 {t.hero.seeExperience}
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="arrow-nudge ml-2 h-4 w-4" />
               </a>
             </Button>
           </div>
