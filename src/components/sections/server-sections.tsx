@@ -242,7 +242,6 @@ function ExperienceCard({
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <p className="text-sm leading-relaxed text-foreground/90">{tp(exp.summary, lang)}</p>
         <ul className="space-y-2">
           {exp.bullets.map((b, i) => (
             <li key={i} className="flex gap-2.5 text-sm leading-relaxed text-muted-foreground">
