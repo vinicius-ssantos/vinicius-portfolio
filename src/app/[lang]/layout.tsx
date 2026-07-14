@@ -171,9 +171,10 @@ export default async function RootLayout({
 }
 
 function buildJsonLd(lang: Lang) {
-  const stackKeywords = Object.values(stack)
-    .flat()
-    .filter((item): item is string => typeof item === "string");
+  const stackKeywords = [
+    ...Object.values(stack.professional).flat(),
+    ...Object.values(stack.personal).flat(),
+  ];
 
   const person = {
     "@context": "https://schema.org",

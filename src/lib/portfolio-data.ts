@@ -78,7 +78,7 @@ export const profile = {
   locationShort: "São Paulo, BR",
   email: "viniciusoli2020@gmail.com",
   phone: "+55 (11) 91676-2083",
-  languages: ["PT (nativo)", "EN (profissional)"],
+  languages: ["PT (nativo)", "EN (intermediário)"],
   // Career start date — used to compute years of experience dynamically.
   // September 2021 = first day at Autbank as QA Analyst.
   careerStart: CAREER_START,
@@ -133,17 +133,26 @@ export const profile = {
   },
 };
 
-// Stack categories stay the same in both languages (tech terms are universal)
+// Stack categories stay the same in both languages (tech terms are universal).
+// Split into "professional" (used on the job, per CV) and "personal" (side
+// projects / experimentation) so the "few tools, deeply" pitch in the Stack
+// section description doesn't read as a contradiction of the full tool list.
 export const stack = {
-  Backend: ["Java", "Kotlin", "Node.js", "Spring", "REST APIs", "Microservices"],
-  Quality: ["JUnit", "Mockito", "TDD", "SOLID", "Design Patterns"],
-  Data: ["SQL Server", "MySQL", "PostgreSQL", "SQLite", "MongoDB", "Firebase / Firestore", "Redis"],
-  DevOps: ["Git", "SVN", "CI/CD", "Jenkins", "Kubernetes", "Docker", "AWS (EC2, S3)"],
-  Infrastructure: ["Traefik", "Cloudflare", "Ansible", "Just", "GHCR", "SOPS + age"],
-  Methods: ["Scrum", "Kanban"],
+  professional: {
+    Backend: ["Java", "Spring", "REST APIs", "Microservices"],
+    Quality: ["JUnit", "Mockito", "TDD", "SOLID", "Design Patterns"],
+    Data: ["SQL Server", "MySQL", "Redis"],
+    DevOps: ["Git", "SVN", "CI/CD", "Jenkins", "Kubernetes", "AWS (EC2, S3)"],
+    Methods: ["Scrum", "Kanban"],
+  },
+  personal: {
+    Backend: ["Kotlin", "Node.js"],
+    Data: ["PostgreSQL", "SQLite", "MongoDB", "Firebase / Firestore"],
+    Infrastructure: ["Docker", "Traefik", "Cloudflare", "Ansible", "Just", "GHCR", "SOPS + age"],
+  },
   Languages: [
     { pt: "Português (nativo)", en: "Portuguese (native)" },
-    { pt: "Inglês (profissional)", en: "English (professional working)" },
+    { pt: "Inglês (intermediário)", en: "English (intermediate)" },
   ],
 };
 
@@ -161,8 +170,8 @@ export const experience: Experience[] = [
     },
     bullets: [
       {
-        pt: "Evoluo APIs e integrações que sustentam fluxos críticos de autenticação, autorização e proteção de conta.",
-        en: "Evolve APIs and integrations powering critical authentication, authorization and account-protection flows.",
+        pt: "Desenho e implemento endpoints REST em Java/Spring para os fluxos de autenticação e proteção de conta, usando Redis para cache/sessão e SQL para persistência.",
+        en: "Design and implement REST endpoints in Java/Spring for authentication and account-protection flows, using Redis for cache/session and SQL for persistence.",
       },
       {
         pt: "Padronizo contratos entre serviços e refino regras de negócio para reduzir falhas de integração entre times.",
@@ -193,8 +202,8 @@ export const experience: Experience[] = [
     },
     bullets: [
       {
-        pt: "Evoluí funcionalidades de frontend e backend com foco em integridade funcional e eficiência operacional.",
-        en: "Evolved frontend and backend features with focus on functional integrity and operational efficiency.",
+        pt: "Implementei e mantive telas em JSF/MVC, com foco em usabilidade e consistência entre módulos do sistema.",
+        en: "Implemented and maintained JSF/MVC screens, focusing on usability and consistency across system modules.",
       },
       {
         pt: "Implementei melhorias de backend em Java e ajustes em integrações de dados entre sistemas legados.",
@@ -277,8 +286,8 @@ export const projects: Project[] = [
         en: "Two deployment targets — Docker Compose for fast local iteration, k3s single-node on the VPS — driven from the same Justfile.",
       },
       {
-        pt: "Três namespaces por cluster (mcp / bff / vos / monitoring) mantêm blast radius pequeno e regras de routing legíveis.",
-        en: "Three namespaces per cluster (mcp / bff / vos / monitoring) keep blast radius small and let routing rules stay readable.",
+        pt: "Quatro namespaces por cluster (mcp / bff / vos / monitoring) mantêm blast radius pequeno e regras de routing legíveis.",
+        en: "Four namespaces per cluster (mcp / bff / vos / monitoring) keep blast radius small and let routing rules stay readable.",
       },
       {
         pt: "Traefik cuida do ingress na VPS; Cloudflare provê DNS, TLS, Access e Tunnel na frente.",
