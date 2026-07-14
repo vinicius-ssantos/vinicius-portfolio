@@ -320,9 +320,48 @@ function LanguagesBar({ languages, t }: { languages: LanguageStat[]; t: T }) {
 /* Stack                                                               */
 /* ------------------------------------------------------------------ */
 
+function StackGrid({ entries, lang }: { entries: [string, string[]][]; lang: Lang }) {
+  return (
+    <RevealOnScroll stagger className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {entries.map(([category, items], idx) => {
+        const Icon = stackIcons[category] ?? Terminal;
+        return (
+          <div key={category} style={{ "--stagger-index": idx } as React.CSSProperties}>
+            <Card className="card-lift h-full border-border/60 bg-card/50 hover:border-primary/40">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-2">
+                  <div className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-secondary text-muted-foreground">
+                    <Icon className="h-4 w-4" />
+                  </div>
+                  <CardTitle className="text-sm font-mono uppercase tracking-wider text-muted-foreground">
+                    {category}
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-1.5">
+                  {items.map((item) => {
+                    const label = typeof item === "string" ? item : tp(item, lang);
+                    return (
+                      <Badge key={label} variant="secondary" className="font-mono text-xs font-normal">
+                        {label}
+                      </Badge>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        );
+      })}
+    </RevealOnScroll>
+  );
+}
+
 export async function Stack({ t, lang }: { t: T; lang: Lang }) {
   const gh = await getGitHubStats();
-  const stackEntries = Object.entries(stack).filter(([cat]) => cat !== "Languages");
+  const professionalEntries = Object.entries(stack.professional);
+  const personalEntries = Object.entries(stack.personal);
   return (
     <section id="stack" className="border-y border-border/60 bg-secondary/20">
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
@@ -334,45 +373,16 @@ export async function Stack({ t, lang }: { t: T; lang: Lang }) {
         <div className="mt-8">
           <LanguagesBar languages={gh.languages} t={t} />
         </div>
-        <RevealOnScroll stagger className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {stackEntries.map(([category, items], idx) => {
-            const Icon = stackIcons[category] ?? Terminal;
-            return (
-              <div key={category} style={{ "--stagger-index": idx } as React.CSSProperties}>
-                <Card
-                  className="card-lift h-full border-border/60 bg-card/50 hover:border-primary/40"
-                >
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center gap-2">
-                      <div className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-secondary text-muted-foreground">
-                        <Icon className="h-4 w-4" />
-                      </div>
-                      <CardTitle className="text-sm font-mono uppercase tracking-wider text-muted-foreground">
-                        {category}
-                      </CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-1.5">
-                      {items.map((item) => {
-                        const label = typeof item === "string" ? item : tp(item, lang);
-                        return (
-                          <Badge
-                            key={label}
-                            variant="secondary"
-                            className="font-mono text-xs font-normal"
-                          >
-                            {label}
-                          </Badge>
-                        );
-                      })}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            );
-          })}
-        </RevealOnScroll>
+
+        <h3 className="mt-10 font-mono text-xs uppercase tracking-wider text-primary">
+          {t.stack.professionalTitle}
+        </h3>
+        <StackGrid entries={professionalEntries} lang={lang} />
+
+        <h3 className="mt-10 font-mono text-xs uppercase tracking-wider text-primary">
+          {t.stack.personalTitle}
+        </h3>
+        <StackGrid entries={personalEntries} lang={lang} />
       </div>
     </section>
   );

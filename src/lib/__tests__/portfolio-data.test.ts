@@ -172,22 +172,23 @@ describe("portfolio-data", () => {
   });
 
   describe("stack", () => {
-    it("has expected categories", () => {
+    it("has professional, personal and Languages groups", () => {
       expect(Object.keys(stack)).toEqual(
-        expect.arrayContaining([
-          "Backend",
-          "Quality",
-          "Data",
-          "DevOps",
-          "Infrastructure",
-          "Methods",
-          "Languages",
-        ])
+        expect.arrayContaining(["professional", "personal", "Languages"])
       );
     });
 
-    it("each category has at least 1 item", () => {
-      Object.entries(stack).forEach(([_, items]) => {
+    it("professional group has expected categories", () => {
+      expect(Object.keys(stack.professional)).toEqual(
+        expect.arrayContaining(["Backend", "Quality", "Data", "DevOps", "Methods"])
+      );
+    });
+
+    it("each category in both groups has at least 1 item", () => {
+      Object.entries(stack.professional).forEach(([_, items]) => {
+        expect(items.length).toBeGreaterThan(0);
+      });
+      Object.entries(stack.personal).forEach(([_, items]) => {
         expect(items.length).toBeGreaterThan(0);
       });
     });
@@ -202,13 +203,23 @@ describe("portfolio-data", () => {
       });
     });
 
-    it("Backend includes Java (primary stack at UOL)", () => {
-      expect(stack.Backend).toContain("Java");
-      expect(stack.Backend).toContain("Spring");
+    it("professional Backend includes Java (primary stack at UOL)", () => {
+      expect(stack.professional.Backend).toContain("Java");
+      expect(stack.professional.Backend).toContain("Spring");
     });
 
-    it("DevOps includes Kubernetes (used at UOL)", () => {
-      expect(stack.DevOps).toContain("Kubernetes");
+    it("professional DevOps includes Kubernetes (used at UOL)", () => {
+      expect(stack.professional.DevOps).toContain("Kubernetes");
+    });
+
+    it("no tool appears in both professional and personal groups", () => {
+      const flatten = (group: Record<string, string[]>) =>
+        Object.values(group).flat();
+      const professionalTools = new Set(flatten(stack.professional));
+      const personalTools = flatten(stack.personal);
+      personalTools.forEach((tool) => {
+        expect(professionalTools.has(tool)).toBe(false);
+      });
     });
   });
 
