@@ -41,7 +41,12 @@ function ContributionHeatmap({
             <span className="text-[10px] text-muted-foreground">{t.stats.heatmapMore}</span>
           </div>
         </div>
-        <div className="overflow-x-auto">
+        <div
+          className="overflow-x-auto"
+          tabIndex={0}
+          role="group"
+          aria-label={t.stats.heatmapTitle}
+        >
           <div
             className="grid gap-[3px]"
             style={{
@@ -105,7 +110,7 @@ export async function StatsBar({ t, lang }: { t: Translation; lang: Lang }) {
               <span
                 className="absolute right-2 top-2 inline-flex h-1.5 w-1.5 rounded-full bg-primary sm:right-4 sm:top-4"
                 title="Live data"
-                aria-label="Live data"
+                aria-hidden="true"
               />
             )}
             <div className="font-mono text-2xl font-bold tabular-nums sm:text-3xl">

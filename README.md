@@ -60,12 +60,29 @@ These npm scripts are the source of truth — used in local dev, CI, and deploy 
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run format` / `format:check` | Prettier write / check |
 | `npm run test` / `test:watch` | Vitest |
-| `npm run preflight` | Everything above, in order — same as CI |
+| `npm run test:e2e` / `test:e2e:ui` | Playwright E2E + accessibility suite |
+| `npm run preflight` | Everything above except E2E, in order — same as CI's `quality`/`build` jobs |
 | `npm run clean` / `clean:all` | Remove `.next` / full reset (also `node_modules`) |
 | `npm run check-env` | Warn about missing optional env vars |
 | `npm run doctor` | Node/npm/env/`build` sanity check |
 
 If you have [`just`](https://github.com/casey/just) installed, `just <recipe>` (e.g. `just up`, `just preflight`) wraps these same scripts for convenience — see the `Justfile`. It's entirely optional; every command above works standalone on Windows, Linux, and macOS.
+
+## Quality budgets
+
+What's checked, and where:
+
+| Layer | Tool | Scope |
+|---|---|---|
+| Unit / component | Vitest | `src/**/__tests__` — content integrity, i18n helpers, SEO helpers, the contact API route, `MobileMenu` interactions |
+| End-to-end | Playwright (`e2e/`) | Locale redirect, PT/EN navigation, anchors, desktop + mobile nav, theme toggle, project detail pages (incl. an unknown slug), CV link, contact modal (open/close/validate/submit — never hits the real API), essential resources (`robots.txt`, `sitemap.xml`, manifest, favicon, apple-icon) and that every sitemap URL actually resolves |
+| Accessibility | `@axe-core/playwright`, run inside the E2E suite | Home (PT + EN), a project detail page, the open mobile menu — fails the build on any `serious`/`critical` violation |
+
+Both Playwright projects (`Desktop Chrome`, `Mobile Chrome`) run on every PR via the `e2e` CI job, with trace/screenshot/video captured `on-failure` and uploaded as a `playwright-report` artifact.
+
+**Lighthouse CI was evaluated and deferred for now** — running it reliably needs either a self-hosted runner or enough retries to absorb shared-GitHub-runner CPU variance, and flaky performance budgets are worse than no performance budget (they train people to ignore red CI). Vercel's own preview deployments already surface Core Web Vitals per-PR without that infra, which covers the immediate need; revisit `@lhci/cli` if a hard performance regression ever slips through unnoticed.
+
+Two E2E findings from building this suite were fixed directly (not just documented): a color-contrast failure on the light theme's primary/accent tokens, and a horizontally-scrollable heatmap region that wasn't keyboard-focusable. One is tracked as a known, documented limitation rather than fixed here: `/en/projects/<unknown-slug>` responds `200` instead of `404` — `/[lang]/loading.tsx`'s Suspense boundary flushes the 200 status before `notFound()` resolves further down the tree, and removing that loading state trades away real UX (the home page's live GitHub stats fetch benefits from it) for correct status codes on a comparatively rare path. See the comment in `e2e/project-pages.spec.ts` for the full explanation.
 
 ## Build for production
 
