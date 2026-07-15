@@ -70,25 +70,15 @@
 .animate-flow-arrow {
   animation: flow-pulse var(--motion-duration-flow) var(--motion-ease-in-out) infinite;
   animation-delay: calc(var(--flow-index, 0) * var(--motion-stagger-flow));
+  animation-play-state: paused;
 }
 
-/* Heatmap cell fade-in — index is capped by the component. */
-@keyframes cell-fade {
-  from {
-    opacity: 0;
-    transform: scale(var(--motion-scale-data-start));
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+[data-motion-in-viewport="true"] .animate-flow-arrow {
+  animation-play-state: running;
 }
 
-.heatmap-cell {
-  opacity: 0;
-  animation: cell-fade var(--motion-duration-standard) var(--motion-ease-standard) forwards;
-  animation-delay: calc(var(--cell-index, 0) * var(--motion-stagger-tight));
-}
+/* The contribution heatmap uses one data-pattern container reveal instead of
+   scheduling an animation for every individual cell. */
 
 /* Hero name: the expressive entrance is reserved for the primary identity. */
 @keyframes word-rise {
@@ -167,7 +157,7 @@
   animation-delay: var(--motion-delay-short);
 }
 
-/* Checkmark pop — confirms list items without moving surrounding content. */
+/* Checkmark pop — starts only after its reveal container becomes visible. */
 @keyframes check-pop {
   0% {
     opacity: 0;
@@ -185,6 +175,10 @@
 
 .check-pop {
   opacity: 0;
+}
+
+.reveal.is-visible .check-pop,
+.reveal-stagger.is-visible .check-pop {
   animation: check-pop var(--motion-duration-enter) var(--motion-ease-pop) forwards;
   animation-delay: calc(var(--check-index, 0) * var(--motion-stagger-relaxed));
 }
@@ -207,7 +201,7 @@
   transform: scale(var(--motion-scale-press));
 }
 
-/* Hero badge — ambient motion is subtle and reserved for live status. */
+/* Hero badge — ambient motion pauses whenever its section is offscreen. */
 @keyframes badge-glow {
   0%,
   100% {
@@ -220,6 +214,11 @@
 
 .animate-badge-glow {
   animation: badge-glow var(--motion-duration-ambient) var(--motion-ease-in-out) infinite;
+  animation-play-state: paused;
+}
+
+[data-motion-in-viewport="true"] .animate-badge-glow {
+  animation-play-state: running;
 }
 
 /* Smooth scroll for anchor navigation. */
@@ -264,16 +263,43 @@ html {
   pointer-events: none;
 }
 
-/* Language share bars: data movement is slower than navigation feedback. */
+/* Language share bars: scale avoids layout work and starts on viewport entry. */
 @keyframes bar-grow {
   from {
-    width: 0 !important;
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
 
 .lang-bar-segment {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.reveal.is-visible .lang-bar-segment,
+.reveal-stagger.is-visible .lang-bar-segment {
   animation: bar-grow var(--motion-duration-data) var(--motion-ease-emphasized) forwards;
   animation-delay: calc(var(--bar-index, 0) * var(--motion-stagger-relaxed));
+}
+
+/* A no-script render must never leave content in a hidden pre-animation state. */
+@media (scripting: none) {
+  .reveal,
+  .reveal-stagger > *,
+  .check-pop,
+  .lang-bar-segment {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .animate-flow-arrow,
+  .animate-badge-glow {
+    animation: none !important;
+  }
 }
 
 /* Reduced motion keeps final states and removes spatial/continuous movement. */
@@ -284,9 +310,9 @@ html {
 
   .reveal,
   .reveal-stagger > *,
-  .heatmap-cell,
   .hero-word,
-  .check-pop {
+  .check-pop,
+  .lang-bar-segment {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
@@ -298,7 +324,6 @@ html {
   .page-transition,
   .animate-error-shake,
   .animate-badge-glow,
-  .lang-bar-segment,
   [data-slot="mobile-menu-overlay"],
   [data-slot="mobile-menu-content"] {
     animation: none !important;
