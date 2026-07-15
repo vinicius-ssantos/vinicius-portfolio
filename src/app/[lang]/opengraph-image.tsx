@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { profile } from "@/lib/portfolio-data";
+import { profile } from "@/content";
 import { translations } from "@/lib/translations";
 import { isLocale } from "@/lib/i18n";
 

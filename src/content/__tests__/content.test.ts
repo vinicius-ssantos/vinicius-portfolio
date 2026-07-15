@@ -10,9 +10,12 @@ import {
   stack,
   t as tp,
   type Lang,
-} from "@/lib/portfolio-data";
+  getFeaturedProject,
+  getProjectBySlug,
+  getVisibleProjects,
+} from "@/content";
 
-describe("portfolio-data", () => {
+describe("content", () => {
   describe("profile", () => {
     it("has name, role, location in both PT and EN", () => {
       expect(profile.name).toBeTruthy();
@@ -168,6 +171,24 @@ describe("portfolio-data", () => {
       for (let i = 1; i < dates.length; i++) {
         expect((dates[i - 1] ?? "") >= (dates[i] ?? "")).toBe(true);
       }
+    });
+  });
+
+  describe("selectors", () => {
+    it("getProjectBySlug returns the matching project", () => {
+      expect(getProjectBySlug("springcloud")?.name).toBe("SpringCloud");
+    });
+
+    it("getProjectBySlug returns undefined for an unknown slug", () => {
+      expect(getProjectBySlug("does-not-exist")).toBeUndefined();
+    });
+
+    it("getFeaturedProject returns the featured project", () => {
+      expect(getFeaturedProject().featured).toBe(true);
+    });
+
+    it("getVisibleProjects returns every project today (no status model yet)", () => {
+      expect(getVisibleProjects()).toEqual(projects);
     });
   });
 

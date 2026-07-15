@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { projects } from "@/lib/portfolio-data";
+import { projects } from "@/content";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vinicius-portfolio-source.vercel.app";
 

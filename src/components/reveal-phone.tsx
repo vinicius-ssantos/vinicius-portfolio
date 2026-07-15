@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Phone, Eye, EyeOff } from "lucide-react";
-import { profile } from "@/lib/portfolio-data";
+import { profile } from "@/content";
 
 /**
  * Phone number is not rendered in plain text by default — visitors must

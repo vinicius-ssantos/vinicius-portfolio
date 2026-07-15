@@ -10,7 +10,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { ContactForm } from "@/components/contact-form";
-import { profile } from "@/lib/portfolio-data";
+import { profile } from "@/content";
 import type { translations } from "@/lib/translations";
 
 type T = typeof translations.en;

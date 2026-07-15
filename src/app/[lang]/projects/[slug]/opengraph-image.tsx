@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { projects, profile, t as tp } from "@/lib/portfolio-data";
+import { profile, t as tp, getProjectBySlug } from "@/content";
 import { translations, type Lang } from "@/lib/translations";
 import { isLocale } from "@/lib/i18n";
 
@@ -12,7 +12,7 @@ export default async function OGImage({ params }: { params: Params }) {
   const { lang: rawLang, slug } = await params;
   const lang = isLocale(rawLang) ? (rawLang as Lang) : "pt";
   const t = translations[lang];
-  const project = projects.find((p) => p.slug === slug);
+  const project = getProjectBySlug(slug);
 
   const name = project?.name ?? "Project";
   const tagline = project ? tp(project.tagline, lang) : "";

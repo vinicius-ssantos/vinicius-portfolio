@@ -5,7 +5,7 @@ import { ContactModal } from "@/components/contact-modal";
 import { SiteHeader, Hero, SiteFooter } from "@/components/sections/client-sections";
 import { ScrollProgress } from "@/components/animations/scroll-progress";
 import type { translations } from "@/lib/translations";
-import type { Lang } from "@/lib/portfolio-data";
+import type { Lang } from "@/content";
 
 type T = typeof translations.en;
 

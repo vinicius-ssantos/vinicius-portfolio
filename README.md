@@ -105,13 +105,16 @@ src/
 │   ├── language-toggle.tsx         # Navigates between /pt and /en
 │   ├── theme-toggle.tsx
 │   └── ui/                         # shadcn/ui primitives
+├── content/                        # Portfolio content domain (no React dependency)
+│   ├── types.ts                    # Project/Experience/Education/LocalizedText + t()/yearsSince()
+│   ├── profile.ts / stack.ts / experience.ts / education.ts
+│   └── projects/                   # One file per project + selectors (getProjectBySlug, etc.)
 └── lib/
     ├── i18n.ts                     # Locale config + helpers
-    ├── portfolio-data.ts           # All profile/experience/projects/stack data
     └── translations.ts             # UI strings (PT + EN)
 ```
 
-To update content (job history, stack, projects), edit `src/lib/portfolio-data.ts` — the UI and sitemap update automatically.
+To update content (job history, stack, projects), edit the relevant file under `src/content/` — the UI and sitemap update automatically.
 
 ## License
 

@@ -4,7 +4,7 @@ import "./../globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "next-themes";
-import { profile, stack, type LocalizedText } from "@/lib/portfolio-data";
+import { profile, stack, type LocalizedText } from "@/content";
 import { translations, type Lang } from "@/lib/translations";
 import { isLocale } from "@/lib/i18n";
 

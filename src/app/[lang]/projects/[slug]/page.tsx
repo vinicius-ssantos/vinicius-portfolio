@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SiteChrome } from "@/components/site-chrome";
-import { projects, profile, t as tp } from "@/lib/portfolio-data";
+import { projects, profile, t as tp, getProjectBySlug } from "@/content";
 import { translations, type Lang } from "@/lib/translations";
 import { isLocale } from "@/lib/i18n";
 
@@ -25,15 +25,11 @@ export function generateStaticParams() {
   return out;
 }
 
-function resolveProject(slug: string) {
-  return projects.find((p) => p.slug === slug);
-}
-
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { lang: rawLang, slug } = await params;
   if (!isLocale(rawLang)) return {};
   const lang = rawLang as Lang;
-  const project = resolveProject(slug);
+  const project = getProjectBySlug(slug);
   if (!project) return {};
 
   const title = `${project.name} — ${profile.shortName}`;
@@ -73,7 +69,7 @@ export default async function ProjectPage({ params }: { params: Params }) {
   if (!isLocale(rawLang)) notFound();
   const lang = rawLang as Lang;
   const t = translations[lang];
-  const project = resolveProject(slug);
+  const project = getProjectBySlug(slug);
   if (!project) notFound();
 
   const jsonLd = {
