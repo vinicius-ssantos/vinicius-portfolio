@@ -3,11 +3,13 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./../globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "next-themes";
 import { profile, t as tp } from "@/content";
 import { translations } from "@/lib/translations";
 import { isLocale } from "@/lib/i18n";
 import { SITE_URL, absoluteUrl } from "@/lib/site-config";
+import { shouldEnableSpeedInsights } from "@/lib/speed-insights";
 import {
   ogLocale,
   buildLocaleAlternates,
@@ -159,6 +161,7 @@ export default async function RootLayout({
         />
 
         <Analytics />
+        {shouldEnableSpeedInsights() ? <SpeedInsights /> : null}
       </body>
     </html>
   );
