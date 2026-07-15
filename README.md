@@ -43,12 +43,29 @@ Bilingual (PT/EN) is implemented as **real locale routing** (not cookie-only):
 ## Local development
 
 ```bash
-# Install dependencies
 npm install
-
-# Start dev server
 npm run dev   # open http://localhost:3000 (redirects to /pt or /en)
 ```
+
+Requires Node 20+ (see `.nvmrc`).
+
+## Canonical commands
+
+These npm scripts are the source of truth — used in local dev, CI, and deploy alike:
+
+| Script | What it does |
+|---|---|
+| `npm run dev` / `build` / `start` | Standard Next.js dev/build/start |
+| `npm run lint` | ESLint, zero warnings allowed |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run format` / `format:check` | Prettier write / check |
+| `npm run test` / `test:watch` | Vitest |
+| `npm run preflight` | Everything above, in order — same as CI |
+| `npm run clean` / `clean:all` | Remove `.next` / full reset (also `node_modules`) |
+| `npm run check-env` | Warn about missing optional env vars |
+| `npm run doctor` | Node/npm/env/`build` sanity check |
+
+If you have [`just`](https://github.com/casey/just) installed, `just <recipe>` (e.g. `just up`, `just preflight`) wraps these same scripts for convenience — see the `Justfile`. It's entirely optional; every command above works standalone on Windows, Linux, and macOS.
 
 ## Build for production
 

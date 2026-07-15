@@ -21,6 +21,12 @@ const eslintConfig = [
     },
   },
   {
+    files: ["scripts/**/*.mjs"],
+    rules: {
+      "no-console": "off",
+    },
+  },
+  {
     ignores: [
       "node_modules/**",
       ".next/**",
