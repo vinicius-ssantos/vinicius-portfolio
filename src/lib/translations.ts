@@ -79,7 +79,7 @@ const en = {
     eyebrow: "// experience",
     title: "Where I've worked",
     description:
-      "Started in QA, grew into backend. Five years across financial software and large-scale internet services — the path matters as much as the destination.",
+      "In software and QA since 2021, focused on backend since 2023 — across financial software and large-scale internet services. The path matters as much as the destination.",
     current: "Current",
     present: "Present",
   },
@@ -232,7 +232,7 @@ const pt: Translation = {
     eyebrow: "// experiência",
     title: "Onde já trabalhei",
     description:
-      "Comecei em QA, cresci em backend. Cinco anos entre software financeiro e serviços de internet em larga escala — o caminho importa tanto quanto o destino.",
+      "Em software e QA desde 2021, com foco em backend desde 2023 — entre software financeiro e serviços de internet em larga escala. O caminho importa tanto quanto o destino.",
     current: "Atual",
     present: "Presente",
   },
