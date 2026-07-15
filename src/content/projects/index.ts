@@ -18,8 +18,11 @@ export function getFeaturedProject(): Project {
   return featured;
 }
 
-// Placeholder seam for #16 (project status/visibility model) — today every
-// project in `projects` is public, so this just returns the full list.
+/** Pure so it's testable without depending on the real `projects` array. */
+export function isProjectVisible(project: Project): boolean {
+  return project.visible !== false;
+}
+
 export function getVisibleProjects(): Project[] {
-  return projects;
+  return projects.filter(isProjectVisible);
 }

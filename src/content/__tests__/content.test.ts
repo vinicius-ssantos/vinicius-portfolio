@@ -10,9 +10,11 @@ import {
   stack,
   t as tp,
   type Lang,
+  type Project,
   getFeaturedProject,
   getProjectBySlug,
   getVisibleProjects,
+  isProjectVisible,
 } from "@/content";
 
 describe("content", () => {
@@ -198,8 +200,36 @@ describe("content", () => {
       expect(getFeaturedProject().featured).toBe(true);
     });
 
-    it("getVisibleProjects returns every project today (no status model yet)", () => {
+    it("getVisibleProjects returns every real project (none are hidden)", () => {
       expect(getVisibleProjects()).toEqual(projects);
+    });
+  });
+
+  describe("isProjectVisible", () => {
+    const base: Project = {
+      slug: "fixture",
+      name: "fixture",
+      tagline: { pt: "x", en: "x" },
+      description: { pt: "x", en: "x" },
+      problem: { pt: "x", en: "x" },
+      approach: [{ pt: "x", en: "x" }],
+      stack: ["x"],
+      role: { pt: "x", en: "x" },
+      highlights: [{ pt: "x", en: "x" }],
+      repoUrl: "https://github.com/x/x",
+      updatedAt: "2026-01-01",
+    };
+
+    it("is visible when `visible` is omitted (default)", () => {
+      expect(isProjectVisible(base)).toBe(true);
+    });
+
+    it("is visible when `visible: true`", () => {
+      expect(isProjectVisible({ ...base, visible: true })).toBe(true);
+    });
+
+    it("is hidden when `visible: false` (e.g. an in-development project)", () => {
+      expect(isProjectVisible({ ...base, status: "development", visible: false })).toBe(false);
     });
   });
 

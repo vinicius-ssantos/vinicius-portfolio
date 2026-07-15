@@ -72,14 +72,21 @@ function ProjectCard({
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between gap-2">
           <span className="font-mono text-xs text-muted-foreground">{project.updatedAt}</span>
-          {priority && (
-            <Badge
-              variant="outline"
-              className="border-primary/40 text-primary font-mono text-[10px] uppercase"
-            >
-              {t.projects.mostRecent}
-            </Badge>
-          )}
+          <div className="flex items-center gap-1.5">
+            {project.status && project.status !== "stable" && (
+              <Badge className="font-mono text-[10px] uppercase">
+                {t.projectDetail.status[project.status]}
+              </Badge>
+            )}
+            {priority && (
+              <Badge
+                variant="outline"
+                className="border-primary/40 text-primary font-mono text-[10px] uppercase"
+              >
+                {t.projects.mostRecent}
+              </Badge>
+            )}
+          </div>
         </div>
         <CardTitle className="mt-2 font-mono text-lg leading-tight text-primary">
           <Link href={detailHref} className="hover:underline">

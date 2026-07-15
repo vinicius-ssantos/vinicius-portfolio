@@ -78,6 +78,11 @@ export default async function ProjectPage({ params }: { params: Params }) {
           </p>
 
           <div className="mt-5 flex flex-wrap items-center gap-2">
+            {project.status && project.status !== "stable" && (
+              <Badge className="font-mono text-[10px] uppercase">
+                {t.projectDetail.status[project.status]}
+              </Badge>
+            )}
             <Badge variant="outline" className="font-mono text-[10px] uppercase">
               {t.projectDetail.updatedLabel}: {project.updatedAt}
             </Badge>
@@ -95,6 +100,55 @@ export default async function ProjectPage({ params }: { params: Params }) {
               <ArrowUpRight className="h-3.5 w-3.5" />
             </a>
           </div>
+
+          {project.links && (
+            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5">
+              {project.links.demo && (
+                <a
+                  href={project.links.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {t.projectDetail.demo}
+                  <ArrowUpRight className="h-3 w-3" />
+                </a>
+              )}
+              {project.links.docs && (
+                <a
+                  href={project.links.docs}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {t.projectDetail.docs}
+                  <ArrowUpRight className="h-3 w-3" />
+                </a>
+              )}
+              {project.links.openApi && (
+                <a
+                  href={project.links.openApi}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {t.projectDetail.openApi}
+                  <ArrowUpRight className="h-3 w-3" />
+                </a>
+              )}
+              {project.links.video && (
+                <a
+                  href={project.links.video}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {t.projectDetail.video}
+                  <ArrowUpRight className="h-3 w-3" />
+                </a>
+              )}
+            </div>
+          )}
         </header>
 
         {project.image && (
@@ -137,6 +191,71 @@ export default async function ProjectPage({ params }: { params: Params }) {
           <Section label={t.projectDetail.stackLabel}>
             <ProjectStackBadges stack={project.stack} />
           </Section>
+
+          {project.architectureNotes && project.architectureNotes.length > 0 && (
+            <Section label={t.projectDetail.architectureLabel}>
+              <ul className="space-y-2.5">
+                {project.architectureNotes.map((a, i) => (
+                  <li key={i} className="flex gap-3 text-sm leading-relaxed">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
+                    <span className="text-foreground/90">{tp(a, lang)}</span>
+                  </li>
+                ))}
+              </ul>
+            </Section>
+          )}
+
+          {project.metrics && project.metrics.length > 0 && (
+            <Section label={t.projectDetail.metricsLabel}>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {project.metrics.map((m) => (
+                  <div
+                    key={tp(m.label, lang)}
+                    className="rounded-md border border-border/60 bg-secondary/30 p-3"
+                  >
+                    <div className="font-mono text-lg font-bold text-primary">{m.value}</div>
+                    <div className="text-xs text-muted-foreground">{tp(m.label, lang)}</div>
+                  </div>
+                ))}
+              </div>
+            </Section>
+          )}
+
+          {project.testingStrategy && (
+            <Section label={t.projectDetail.testingLabel}>
+              <p className="leading-relaxed text-foreground/90">
+                {tp(project.testingStrategy, lang)}
+              </p>
+            </Section>
+          )}
+
+          {project.observability && (
+            <Section label={t.projectDetail.observabilityLabel}>
+              <p className="leading-relaxed text-foreground/90">
+                {tp(project.observability, lang)}
+              </p>
+            </Section>
+          )}
+
+          {project.limitations && project.limitations.length > 0 && (
+            <Section label={t.projectDetail.limitationsLabel}>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                {project.limitations.map((l, i) => (
+                  <li key={i}>{tp(l, lang)}</li>
+                ))}
+              </ul>
+            </Section>
+          )}
+
+          {project.nextSteps && project.nextSteps.length > 0 && (
+            <Section label={t.projectDetail.nextStepsLabel}>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                {project.nextSteps.map((n, i) => (
+                  <li key={i}>{tp(n, lang)}</li>
+                ))}
+              </ul>
+            </Section>
+          )}
         </div>
 
         <div className="mt-10 border-t border-border/60 pt-6">
