@@ -50,7 +50,8 @@ one-time entrance state and `data-motion-in-viewport` for current visibility.
 
 `useViewportMotion` coordinates entrance state, current visibility, delayed work, and static
 fallbacks. Equivalent option sets reuse one native `IntersectionObserver` through
-`src/lib/viewport-observer.ts`.
+`src/lib/viewport-observer.ts`. Counters intentionally use a separate one-shot option set because
+they require a higher visibility threshold and no offscreen pause state.
 
 - Entrance animations execute once and remain in their final state after leaving the viewport.
 - Delayed entrances are cancelled if the element leaves before the delay completes.
