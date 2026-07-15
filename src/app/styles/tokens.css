@@ -65,8 +65,12 @@
 
   --motion-scale-press: 0.97;
   --motion-scale-enter: 0.985;
+  --motion-scale-data-start: 0.85;
   --motion-scale-pop-start: 0.3;
   --motion-scale-pop-overshoot: 1.12;
+
+  --motion-angle-xs: 0.5deg;
+  --motion-angle-sm: 1deg;
 
   --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --motion-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
