@@ -78,7 +78,7 @@ function ExperienceCard({
             <li key={i} className="flex gap-2.5 text-sm leading-relaxed text-muted-foreground">
               <CheckCircle2
                 className="check-pop mt-0.5 h-4 w-4 flex-shrink-0 text-primary/70"
-                style={{ "--check-delay": `${i * 100}ms` } as React.CSSProperties}
+                style={{ "--check-index": i } as React.CSSProperties}
               />
               <span>{tp(b, lang)}</span>
             </li>
