@@ -41,6 +41,38 @@
 :root {
   --radius: 0.625rem;
 
+  /* MOTION — short, predictable and shared by CSS/JS interactions. */
+  --motion-duration-instant: 100ms;
+  --motion-duration-fast: 160ms;
+  --motion-duration-standard: 240ms;
+  --motion-duration-enter: 480ms;
+  --motion-duration-expressive: 700ms;
+  --motion-duration-data: 900ms;
+  --motion-duration-count: 1400ms;
+  --motion-duration-flow: 1800ms;
+  --motion-duration-ambient: 2500ms;
+
+  --motion-delay-short: 160ms;
+  --motion-stagger-tight: 4ms;
+  --motion-stagger-standard: 60ms;
+  --motion-stagger-relaxed: 80ms;
+  --motion-stagger-flow: 300ms;
+
+  --motion-distance-xs: 2px;
+  --motion-distance-sm: 4px;
+  --motion-distance-md: 12px;
+  --motion-distance-lg: 20px;
+
+  --motion-scale-press: 0.97;
+  --motion-scale-enter: 0.985;
+  --motion-scale-pop-start: 0.3;
+  --motion-scale-pop-overshoot: 1.12;
+
+  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+
   /* LIGHT THEME — warm cream base with emerald accent (mirror of dark) */
   --background: oklch(0.98 0.005 80); /* warm cream off-white */
   --foreground: oklch(0.18 0.008 240); /* deep zinc text */
