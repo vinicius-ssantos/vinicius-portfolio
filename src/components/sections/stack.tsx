@@ -36,11 +36,13 @@ function LanguagesBar({ languages, t }: { languages: LanguageStat[]; t: Translat
           <div
             key={lang.name}
             className="lang-bar-segment"
-            style={{
-              width: `${lang.percentage}%`,
-              backgroundColor: lang.color,
-              animationDelay: `${i * 80}ms`,
-            }}
+            style={
+              {
+                width: `${lang.percentage}%`,
+                backgroundColor: lang.color,
+                "--bar-index": i,
+              } as React.CSSProperties
+            }
             title={`${lang.name}: ${lang.percentage.toFixed(1)}%`}
           />
         ))}

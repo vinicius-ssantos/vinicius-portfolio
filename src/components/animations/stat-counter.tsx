@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { MOTION_DURATION_MS, REDUCED_MOTION_QUERY } from "@/lib/motion";
 
 /**
  * Counts from 0 to `value` when the element scrolls into view.
@@ -11,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
  */
 export function StatCounter({
   value,
-  duration = 1400,
+  duration = MOTION_DURATION_MS.count,
   format = "auto",
   className = "",
 }: {
@@ -31,8 +32,7 @@ export function StatCounter({
 
     const runCount = () => {
       const reduced =
-        typeof window !== "undefined" &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        typeof window !== "undefined" && window.matchMedia(REDUCED_MOTION_QUERY).matches;
 
       if (reduced) {
         requestAnimationFrame(() => setDisplay(value));

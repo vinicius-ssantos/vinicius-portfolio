@@ -62,7 +62,7 @@ function ContributionHeatmap({
                 key={day.date}
                 title={`${day.date}: ${day.count} contributions`}
                 className={`heatmap-cell h-[11px] w-[11px] rounded-[2px] ${intensityClass(day.count)}`}
-                style={{ "--cell-delay": `${Math.min(i * 4, 800)}ms` } as React.CSSProperties}
+                style={{ "--cell-index": Math.min(i, 200) } as React.CSSProperties}
               />
             ))}
           </div>
