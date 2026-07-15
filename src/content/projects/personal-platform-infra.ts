@@ -8,11 +8,11 @@ export const personalPlatformInfra: Project = {
     en: "GitOps-style infra for a personal platform of MCP servers and BFFs",
   },
   description: {
-    pt: "Repositório centralizado de infraestrutura gerenciando dois ambientes — local (Windows 11 + WSL2) e VPS (Ubuntu + k3s) — a partir de uma única fonte da verdade. Sem código de aplicação, sem Dockerfiles: repositórios upstream publicam imagens no GHCR, este repo consome.",
+    pt: "Repositório centralizado de infraestrutura gerenciando dois ambientes — local (Windows 11 + WSL2) e VPS (Ubuntu + k3s) — a partir de uma única fonte da verdade. Sem código de aplicação, sem Dockerfiles: repositórios upstream publicam imagens no GHCR, e este repositório apenas as consome.",
     en: "Centralized infrastructure repository managing two environments — local (Windows 11 + WSL2) and VPS (Ubuntu + k3s) — from a single source of truth. No application code, no Dockerfiles: upstream repos publish images to GHCR, this repo consumes them.",
   },
   problem: {
-    pt: "Rodar múltiplos serviços side-project em duas máquinas (dev local + VPS) sem virar um SRE meio período. O desafio: manter ambientes reprodutíveis, secrets seguras e ainda conseguir rebuildar qualquer host do zero em uma tarde.",
+    pt: "Rodar múltiplos serviços pessoais em duas máquinas (desenvolvimento local + VPS) sem virar um SRE de meio período. O desafio: manter ambientes reprodutíveis, segredos protegidos e ainda conseguir reconstruir qualquer host do zero em uma tarde.",
     en: "Running multiple side-project services across two machines (local dev + VPS) without turning into a part-time SRE. The challenge: keep environments reproducible, secrets safe, and still be able to rebuild either host from zero in an afternoon.",
   },
   approach: [
@@ -37,7 +37,7 @@ export const personalPlatformInfra: Project = {
       en: "Every deployment starts with replicas: 0 and scales up on demand via just wake-* commands, keeping the VPS quiet by default.",
     },
     {
-      pt: "20 Architecture Decision Records (ADRs) vivem no repo — toda escolha não-trivial tem contexto, decisão e consequências documentadas.",
+      pt: "20 Architecture Decision Records (ADRs) vivem no repositório — toda escolha não-trivial tem contexto, decisão e consequências documentadas.",
       en: "20 Architecture Decision Records (ADRs) live in the repo — every non-trivial choice has a documented context, decision and consequences.",
     },
   ],
@@ -81,7 +81,7 @@ export const personalPlatformInfra: Project = {
   featured: true,
   caseStudy: {
     lessonsLearned: {
-      pt: "Construir uma plataforma pessoal me forçou a fazer trade-offs que não aparecem em tutoriais. Pinjar tags de imagem por digest é mais chato que tracking latest, mas é a única forma de saber exatamente o que está rodando. SOPS + age adiciona fricção à rotação de secrets, mas significa que posso publicar o repo publicamente sem vazar nada. A maior lição: documentação escrita para você mesmo daqui a seis meses é a única que realmente é lida — então os ADRs são escritos como uma conversa com esse eu futuro.",
+      pt: "Construir uma plataforma pessoal me forçou a fazer trade-offs que não aparecem em tutoriais. Fixar tags de imagem por digest é mais chato do que sempre usar a versão mais recente (latest), mas é a única forma de saber exatamente o que está rodando. SOPS + age adicionam fricção à rotação de segredos, mas significam que posso publicar o repositório publicamente sem vazar nada. A maior lição: documentação escrita para você mesmo daqui a seis meses é a única que realmente é lida — então os ADRs são escritos como uma conversa com esse eu futuro.",
       en: "Building a personal platform forced me to make trade-offs that don't show up in tutorials. Pinning image tags by digest is more annoying than tracking latest, but it's the only way to know exactly what's running. SOPS + age adds friction to secret rotation, but means I can publish the repo publicly without leaking anything. The biggest lesson: documentation that you write for yourself six months from now is the only documentation that actually gets read — so the ADRs are written like a conversation with that future me.",
     },
     architectureLabel: {

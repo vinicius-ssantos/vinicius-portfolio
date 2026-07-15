@@ -171,7 +171,7 @@ const pt: Translation = {
     eyebrow: "404 — erro",
     title: "Página não encontrada",
     description: "A página que você procura não existe ou foi movida.",
-    back: "Voltar ao portfolio",
+    back: "Voltar ao portfólio",
   },
   errorPage: {
     eyebrow: "Erro",
@@ -294,7 +294,7 @@ const pt: Translation = {
     builtWith: "Construído com Next.js.",
   },
   projectDetail: {
-    backToPortfolio: "Voltar ao portfolio",
+    backToPortfolio: "Voltar ao portfólio",
     eyebrow: "// dossiê",
     taglineLabel: "Resumo",
     problemLabel: "O problema",
@@ -306,7 +306,7 @@ const pt: Translation = {
     openRepo: "Abrir repositório",
     notFound: "Projeto não encontrado",
     notFoundDescription:
-      "Esse projeto não existe ou foi movido. Volte ao portfolio para ver todos.",
+      "Esse projeto não existe ou foi movido. Volte ao portfólio para ver todos.",
   },
 };
 
