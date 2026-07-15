@@ -3,6 +3,7 @@
 import { Github, Linkedin, Mail } from "lucide-react";
 import { profile } from "@/content";
 import type { Translation } from "@/lib/translations";
+import { trackEvent } from "@/lib/analytics";
 
 export function SiteFooter({ t, onContactOpen }: { t: Translation; onContactOpen: () => void }) {
   return (
@@ -39,6 +40,7 @@ export function SiteFooter({ t, onContactOpen }: { t: Translation; onContactOpen
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
+            onClick={() => trackEvent("linkedin_click")}
             className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
           >
             <Linkedin className="h-4 w-4" />

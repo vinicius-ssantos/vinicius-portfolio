@@ -9,6 +9,7 @@ import { profile, type Lang } from "@/content";
 import type { Translation } from "@/lib/translations";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageToggle } from "@/components/language-toggle";
+import { trackEvent } from "@/lib/analytics";
 
 export function MobileMenu({ t, lang }: { t: Translation; lang: Lang }) {
   const [open, setOpen] = useState(false);
@@ -99,6 +100,7 @@ export function MobileMenu({ t, lang }: { t: Translation; lang: Lang }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
+                onClick={() => trackEvent("linkedin_click")}
                 className="inline-flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
               >
                 <Linkedin className="h-4 w-4" />

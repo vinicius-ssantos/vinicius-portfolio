@@ -6,6 +6,7 @@ import { profile, type Lang } from "@/content";
 import type { Translation } from "@/lib/translations";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageToggle } from "@/components/language-toggle";
+import { trackEvent } from "@/lib/analytics";
 import { MobileMenu } from "./mobile-menu";
 
 export function SiteHeader({ t, lang }: { t: Translation; lang: Lang }) {
@@ -72,6 +73,7 @@ export function SiteHeader({ t, lang }: { t: Translation; lang: Lang }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
+            onClick={() => trackEvent("linkedin_click")}
             className="hidden inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground sm:inline-flex"
           >
             <Linkedin className="h-4 w-4" />

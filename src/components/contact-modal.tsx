@@ -12,6 +12,7 @@ import {
 import { ContactForm } from "@/components/contact-form";
 import { profile } from "@/content";
 import type { translations } from "@/lib/translations";
+import { trackEvent } from "@/lib/analytics";
 
 type T = typeof translations.en;
 
@@ -75,6 +76,7 @@ export function ContactModal({ open, onOpenChange, t }: ContactModalProps) {
             label={t.contactModal.linkedinLabel}
             value="linkedin.com/in/vinicius-oliveira-7ba1bb204"
             href={profile.links.linkedin}
+            onLinkClick={() => trackEvent("linkedin_click")}
             external
           />
 
@@ -106,6 +108,7 @@ function ContactRow({
   href,
   external,
   onCopy,
+  onLinkClick,
   copied,
   copiedLabel,
   copyLabel,
@@ -116,6 +119,7 @@ function ContactRow({
   href?: string;
   external?: boolean;
   onCopy?: () => void;
+  onLinkClick?: () => void;
   copied?: boolean;
   copiedLabel?: string;
   copyLabel?: string;
@@ -134,6 +138,7 @@ function ContactRow({
             href={href}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={onLinkClick}
             className="block truncate text-sm font-medium text-foreground hover:text-primary"
           >
             {value}
