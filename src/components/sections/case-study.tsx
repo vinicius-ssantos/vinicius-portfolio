@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowRight, ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -101,6 +102,16 @@ export function CaseStudy({ t, lang }: { t: Translation; lang: Lang }) {
             </p>
           </div>
         )}
+
+        <div className="mt-8">
+          <Link
+            href={`/${lang}/projects/${cs.slug}`}
+            className="btn-arrow inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+          >
+            {t.projects.viewDetails}
+            <ArrowUpRight className="arrow-nudge h-3.5 w-3.5" />
+          </Link>
+        </div>
       </div>
     </section>
   );

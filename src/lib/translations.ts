@@ -96,7 +96,6 @@ const en = {
     description:
       "Personal projects I build to study patterns I can't always reach at work. Picked for depth, not for showcase value.",
     mostRecent: "Most recent",
-    viewRepository: "View repository",
     viewDetails: "View case file",
   },
   caseStudy: {
@@ -246,7 +245,6 @@ const pt: Translation = {
     description:
       "Projetos pessoais que construo para estudar padrões que nem sempre alcanço no trabalho. Escolhidos por profundidade, não para vitrine.",
     mostRecent: "Mais recente",
-    viewRepository: "Ver repositório",
     viewDetails: "Ver dossiê",
   },
   caseStudy: {
