@@ -41,7 +41,7 @@ export function useViewportMotion<T extends Element>({
     let disposed = false;
     let delayTimer: number | undefined;
     let fallbackTimer: number | undefined;
-    let stopObserving = () => undefined;
+    let stopObserving: () => void = () => undefined;
 
     const markEntered = () => {
       if (disposed || enteredRef.current) return;
@@ -60,7 +60,9 @@ export function useViewportMotion<T extends Element>({
       }, 0);
     };
 
-    const prefersReducedMotion = window.matchMedia(REDUCED_MOTION_QUERY).matches;
+    const prefersReducedMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia(REDUCED_MOTION_QUERY).matches;
     if (prefersReducedMotion || typeof IntersectionObserver === "undefined") {
       showStaticState();
       return () => {
