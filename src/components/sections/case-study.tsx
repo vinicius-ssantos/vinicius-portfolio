@@ -24,7 +24,7 @@ export function CaseStudy({ t, lang }: { t: Translation; lang: Lang }) {
           title={`${t.caseStudy.deepDiveTitle} ${cs.name}`}
           description={tp(cs.tagline, lang)}
         />
-        <RevealOnScroll className="mt-10">
+        <RevealOnScroll motion="diagram" className="mt-10">
           <Card className="border-border/60 bg-card/50">
             <CardHeader>
               <div className="flex flex-wrap items-center gap-2">
@@ -64,7 +64,7 @@ export function CaseStudy({ t, lang }: { t: Translation; lang: Lang }) {
                     <li key={i} className="flex gap-3 text-sm leading-relaxed">
                       <CheckCircle2
                         className="check-pop mt-0.5 h-4 w-4 flex-shrink-0 text-primary"
-                        style={{ "--check-delay": `${i * 100}ms` } as React.CSSProperties}
+                        style={{ "--check-index": i } as React.CSSProperties}
                       />
                       <span className="text-foreground/90">{tp(a, lang)}</span>
                     </li>
@@ -186,7 +186,7 @@ function ArchitectureDiagram({
                   <ArrowRight
                     className="h-3 w-3 text-primary animate-flow-arrow"
                     aria-hidden
-                    style={{ animationDelay: `${i * 0.3}s` } as React.CSSProperties}
+                    style={{ "--flow-index": i } as React.CSSProperties}
                   />
                 )}
               </span>
