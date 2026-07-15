@@ -49,9 +49,9 @@ export function acceptLanguageLocale(header: string): Locale {
   const parsed = header
     .split(",")
     .map((entry) => {
-      const [tag, ...params] = entry.trim().split(";");
+      const [tag = "", ...params] = entry.trim().split(";");
       const qParam = params.find((p) => p.trim().startsWith("q="));
-      const q = qParam ? parseFloat(qParam.split("=")[1]) : 1;
+      const q = qParam ? parseFloat(qParam.split("=")[1] ?? "") : 1;
       return { tag: tag.trim().toLowerCase(), q: Number.isFinite(q) ? q : 0 };
     })
     .filter((entry) => entry.tag.length > 0 && entry.q > 0)

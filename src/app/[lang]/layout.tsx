@@ -29,11 +29,7 @@ export async function generateStaticParams() {
 
 type Params = Promise<{ lang: string }>;
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Params;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { lang: rawLang } = await params;
   const lang = isLocale(rawLang) ? rawLang : "pt";
 

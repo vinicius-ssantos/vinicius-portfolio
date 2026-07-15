@@ -1,10 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import {
-  LOCALE_COOKIE,
-  acceptLanguageLocale,
-  isLocale,
-} from "@/lib/i18n";
+import { LOCALE_COOKIE, acceptLanguageLocale, isLocale } from "@/lib/i18n";
 
 const ROOT = new Set(["", "/"]);
 

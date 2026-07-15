@@ -72,7 +72,7 @@ describe("portfolio-data", () => {
     it("has exactly 1 current job (UOL)", () => {
       const current = experience.filter((e) => e.current);
       expect(current).toHaveLength(1);
-      expect(current[0].company).toBe("UOL");
+      expect(current[0]?.company).toBe("UOL");
     });
 
     it("each experience has all localized fields", () => {
@@ -89,14 +89,14 @@ describe("portfolio-data", () => {
     });
 
     it("UOL is the first experience (most recent)", () => {
-      expect(experience[0].company).toBe("UOL");
-      expect(experience[0].current).toBe(true);
+      expect(experience[0]?.company).toBe("UOL");
+      expect(experience[0]?.current).toBe(true);
     });
 
     it("experiences are in reverse chronological order", () => {
       // UOL (current) > Autbank dev (2023-2024) > Autbank QA (2021-2023)
-      expect(experience[1].company).toContain("Autbank");
-      expect(experience[2].company).toContain("Autbank");
+      expect(experience[1]?.company).toContain("Autbank");
+      expect(experience[2]?.company).toContain("Autbank");
     });
   });
 
@@ -118,8 +118,8 @@ describe("portfolio-data", () => {
     });
 
     it("first project is the featured one (most recent)", () => {
-      expect(projects[0].featured).toBe(true);
-      expect(projects[0].name).toBe("personal-platform-infra");
+      expect(projects[0]?.featured).toBe(true);
+      expect(projects[0]?.name).toBe("personal-platform-infra");
     });
 
     it("each project has screenshot image", () => {
@@ -166,7 +166,7 @@ describe("portfolio-data", () => {
     it("projects are in reverse chronological order (by updatedAt)", () => {
       const dates = projects.map((p) => p.updatedAt);
       for (let i = 1; i < dates.length; i++) {
-        expect(dates[i - 1] >= dates[i]).toBe(true);
+        expect((dates[i - 1] ?? "") >= (dates[i] ?? "")).toBe(true);
       }
     });
   });
@@ -174,13 +174,13 @@ describe("portfolio-data", () => {
   describe("stack", () => {
     it("has professional, personal and Languages groups", () => {
       expect(Object.keys(stack)).toEqual(
-        expect.arrayContaining(["professional", "personal", "Languages"])
+        expect.arrayContaining(["professional", "personal", "Languages"]),
       );
     });
 
     it("professional group has expected categories", () => {
       expect(Object.keys(stack.professional)).toEqual(
-        expect.arrayContaining(["Backend", "Quality", "Data", "DevOps", "Methods"])
+        expect.arrayContaining(["Backend", "Quality", "Data", "DevOps", "Methods"]),
       );
     });
 
@@ -213,8 +213,7 @@ describe("portfolio-data", () => {
     });
 
     it("no tool appears in both professional and personal groups", () => {
-      const flatten = (group: Record<string, string[]>) =>
-        Object.values(group).flat();
+      const flatten = (group: Record<string, string[]>) => Object.values(group).flat();
       const professionalTools = new Set(flatten(stack.professional));
       const personalTools = flatten(stack.personal);
       personalTools.forEach((tool) => {

@@ -33,9 +33,7 @@ export function LanguageToggle() {
     router.push(next);
   };
 
-  const inferred = isLocale(pathname.split("/")[1])
-    ? (pathname.split("/")[1] as Lang)
-    : lang;
+  const inferred = isLocale(pathname.split("/")[1]) ? (pathname.split("/")[1] as Lang) : lang;
 
   return (
     <button

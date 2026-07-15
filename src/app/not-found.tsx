@@ -18,12 +18,8 @@ export default function NotFound() {
         <p className="font-mono text-xs uppercase tracking-wider text-primary">
           {t.notFound.eyebrow}
         </p>
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-          {t.notFound.title}
-        </h1>
-        <p className="text-base leading-relaxed text-muted-foreground">
-          {t.notFound.description}
-        </p>
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{t.notFound.title}</h1>
+        <p className="text-base leading-relaxed text-muted-foreground">{t.notFound.description}</p>
         <div className="pt-2">
           <Button asChild size="default">
             <Link href={`/${lang}`}>

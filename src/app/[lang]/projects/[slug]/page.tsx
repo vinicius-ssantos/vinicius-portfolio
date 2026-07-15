@@ -11,8 +11,7 @@ import { projects, profile, t as tp } from "@/lib/portfolio-data";
 import { translations, type Lang } from "@/lib/translations";
 import { isLocale } from "@/lib/i18n";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://vinicius-portfolio-source.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vinicius-portfolio-source.vercel.app";
 
 type Params = Promise<{ lang: string; slug: string }>;
 
@@ -30,11 +29,7 @@ function resolveProject(slug: string) {
   return projects.find((p) => p.slug === slug);
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Params;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { lang: rawLang, slug } = await params;
   if (!isLocale(rawLang)) return {};
   const lang = rawLang as Lang;
@@ -178,15 +173,11 @@ export default async function ProjectPage({ params }: { params: Params }) {
 
         <div className="mt-10 space-y-8">
           <Section label={t.projectDetail.taglineLabel}>
-            <p className="leading-relaxed text-foreground/90">
-              {tp(project.description, lang)}
-            </p>
+            <p className="leading-relaxed text-foreground/90">{tp(project.description, lang)}</p>
           </Section>
 
           <Section label={t.projectDetail.problemLabel}>
-            <p className="leading-relaxed text-foreground/90">
-              {tp(project.problem, lang)}
-            </p>
+            <p className="leading-relaxed text-foreground/90">{tp(project.problem, lang)}</p>
           </Section>
 
           <Section label={t.projectDetail.approachLabel}>
@@ -208,9 +199,7 @@ export default async function ProjectPage({ params }: { params: Params }) {
                   className="flex gap-3 rounded-md border border-border/60 bg-secondary/30 p-3"
                 >
                   <FileCode2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                  <span className="text-sm leading-relaxed text-foreground/90">
-                    {tp(h, lang)}
-                  </span>
+                  <span className="text-sm leading-relaxed text-foreground/90">{tp(h, lang)}</span>
                 </div>
               ))}
             </div>
@@ -229,11 +218,7 @@ export default async function ProjectPage({ params }: { params: Params }) {
 
         <div className="mt-10 border-t border-border/60 pt-6">
           <Button asChild>
-            <a
-              href={project.repoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
               <Github className="mr-2 h-4 w-4" />
               {t.projectDetail.openRepo}
               <ArrowUpRight className="ml-2 h-4 w-4" />
@@ -245,13 +230,7 @@ export default async function ProjectPage({ params }: { params: Params }) {
   );
 }
 
-function Section({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <Card className="border-border/60 bg-card/50">
       <CardHeader className="pb-3">

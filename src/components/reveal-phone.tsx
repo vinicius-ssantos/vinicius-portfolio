@@ -13,13 +13,7 @@ import { profile } from "@/lib/portfolio-data";
  *
  * The reveal/collapse uses a slide+fade so the action is acknowledged.
  */
-export function RevealPhone({
-  showLabel,
-  hideLabel,
-}: {
-  showLabel: string;
-  hideLabel: string;
-}) {
+export function RevealPhone({ showLabel, hideLabel }: { showLabel: string; hideLabel: string }) {
   const [revealed, setRevealed] = useState(false);
 
   return (

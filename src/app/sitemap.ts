@@ -1,8 +1,7 @@
 import type { MetadataRoute } from "next";
 import { projects } from "@/lib/portfolio-data";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://vinicius-portfolio-source.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vinicius-portfolio-source.vercel.app";
 
 const LOCALES = ["pt", "en"] as const;
 
@@ -37,7 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
       },
       images: project.image ? [`${SITE_URL}${project.image}`] : undefined,
-    }))
+    })),
   );
 
   return [

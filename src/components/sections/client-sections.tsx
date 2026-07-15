@@ -94,21 +94,10 @@ export function SiteHeader({ t, lang }: { t: T; lang: Lang }) {
 
 import { Globe } from "lucide-react";
 
-export function Hero({
-  t,
-  lang,
-  onContactOpen,
-}: {
-  t: T;
-  lang: Lang;
-  onContactOpen: () => void;
-}) {
+export function Hero({ t, lang, onContactOpen }: { t: T; lang: Lang; onContactOpen: () => void }) {
   return (
     <section className="relative overflow-hidden">
-      <div
-        aria-hidden
-        className="absolute inset-0 grid-bg pointer-events-none"
-      />
+      <div aria-hidden className="absolute inset-0 grid-bg pointer-events-none" />
       <div className="relative mx-auto max-w-5xl px-4 py-20 sm:px-6 sm:py-28">
         <div className="max-w-3xl">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-border/60 bg-secondary/50 px-3 py-1 font-mono text-xs text-muted-foreground animate-badge-glow">
@@ -171,13 +160,7 @@ export function Hero({
 /* Footer (client — has contact modal trigger)                         */
 /* ------------------------------------------------------------------ */
 
-export function SiteFooter({
-  t,
-  onContactOpen,
-}: {
-  t: T;
-  onContactOpen: () => void;
-}) {
+export function SiteFooter({ t, onContactOpen }: { t: T; onContactOpen: () => void }) {
   return (
     <footer className="mt-auto border-t border-border/60">
       <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 px-4 py-8 text-sm sm:flex-row sm:px-6">

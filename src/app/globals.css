@@ -47,52 +47,52 @@
   --radius: 0.625rem;
 
   /* LIGHT THEME — warm cream base with emerald accent (mirror of dark) */
-  --background: oklch(0.98 0.005 80);            /* warm cream off-white */
-  --foreground: oklch(0.18 0.008 240);           /* deep zinc text */
-  --card: oklch(1 0 0);                          /* pure white card */
+  --background: oklch(0.98 0.005 80); /* warm cream off-white */
+  --foreground: oklch(0.18 0.008 240); /* deep zinc text */
+  --card: oklch(1 0 0); /* pure white card */
   --card-foreground: oklch(0.18 0.008 240);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.18 0.008 240);
-  --primary: oklch(0.55 0.15 160);               /* emerald slightly darker for contrast on light */
+  --primary: oklch(0.55 0.15 160); /* emerald slightly darker for contrast on light */
   --primary-foreground: oklch(0.98 0.005 80);
-  --secondary: oklch(0.94 0.008 80);             /* subtle cream surface */
+  --secondary: oklch(0.94 0.008 80); /* subtle cream surface */
   --secondary-foreground: oklch(0.18 0.008 240);
   --muted: oklch(0.95 0.006 80);
   --muted-foreground: oklch(0.45 0.01 240);
   --accent: oklch(0.55 0.15 160);
   --accent-foreground: oklch(0.98 0.005 80);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.20 0.008 240 / 12%);
-  --input: oklch(0.20 0.008 240 / 10%);
+  --border: oklch(0.2 0.008 240 / 12%);
+  --input: oklch(0.2 0.008 240 / 10%);
   --ring: oklch(0.55 0.15 160 / 50%);
-  --chart-1: oklch(0.55 0.15 160);               /* emerald */
-  --chart-2: oklch(0.6 0.14 80);                 /* amber */
-  --chart-3: oklch(0.5 0.18 250);                /* sky */
-  --chart-4: oklch(0.55 0.18 350);               /* rose */
-  --chart-5: oklch(0.5 0.12 30);                 /* orange */
+  --chart-1: oklch(0.55 0.15 160); /* emerald */
+  --chart-2: oklch(0.6 0.14 80); /* amber */
+  --chart-3: oklch(0.5 0.18 250); /* sky */
+  --chart-4: oklch(0.55 0.18 350); /* rose */
+  --chart-5: oklch(0.5 0.12 30); /* orange */
   --sidebar: oklch(0.96 0.006 80);
   --sidebar-foreground: oklch(0.18 0.008 240);
   --sidebar-primary: oklch(0.55 0.15 160);
   --sidebar-primary-foreground: oklch(0.98 0.005 80);
   --sidebar-accent: oklch(0.94 0.008 80);
   --sidebar-accent-foreground: oklch(0.18 0.008 240);
-  --sidebar-border: oklch(0.20 0.008 240 / 12%);
+  --sidebar-border: oklch(0.2 0.008 240 / 12%);
   --sidebar-ring: oklch(0.55 0.15 160 / 50%);
 }
 
 .dark {
   /* Deep zinc base with emerald accent — backend engineer portfolio */
-  --background: oklch(0.13 0.005 240);          /* near-black with subtle cool */
-  --foreground: oklch(0.96 0.005 240);          /* warm off-white */
-  --card: oklch(0.17 0.006 240);                /* card surface */
+  --background: oklch(0.13 0.005 240); /* near-black with subtle cool */
+  --foreground: oklch(0.96 0.005 240); /* warm off-white */
+  --card: oklch(0.17 0.006 240); /* card surface */
   --card-foreground: oklch(0.96 0.005 240);
   --popover: oklch(0.17 0.006 240);
   --popover-foreground: oklch(0.96 0.005 240);
-  --primary: oklch(0.7 0.16 160);               /* emerald accent */
+  --primary: oklch(0.7 0.16 160); /* emerald accent */
   --primary-foreground: oklch(0.13 0.005 240);
   --secondary: oklch(0.23 0.008 240);
   --secondary-foreground: oklch(0.96 0.005 240);
-  --muted: oklch(0.20 0.006 240);
+  --muted: oklch(0.2 0.006 240);
   --muted-foreground: oklch(0.68 0.01 240);
   --accent: oklch(0.7 0.16 160);
   --accent-foreground: oklch(0.13 0.005 240);
@@ -100,11 +100,11 @@
   --border: oklch(1 0 0 / 8%);
   --input: oklch(1 0 0 / 12%);
   --ring: oklch(0.7 0.16 160 / 50%);
-  --chart-1: oklch(0.7 0.16 160);               /* emerald */
-  --chart-2: oklch(0.75 0.15 80);               /* amber */
-  --chart-3: oklch(0.65 0.18 250);              /* sky */
-  --chart-4: oklch(0.7 0.18 350);               /* rose */
-  --chart-5: oklch(0.6 0.12 30);                /* orange */
+  --chart-1: oklch(0.7 0.16 160); /* emerald */
+  --chart-2: oklch(0.75 0.15 80); /* amber */
+  --chart-3: oklch(0.65 0.18 250); /* sky */
+  --chart-4: oklch(0.7 0.18 350); /* rose */
+  --chart-5: oklch(0.6 0.12 30); /* orange */
   --sidebar: oklch(0.17 0.006 240);
   --sidebar-foreground: oklch(0.96 0.005 240);
   --sidebar-primary: oklch(0.7 0.16 160);
@@ -118,8 +118,8 @@
 /* Subtle grid background pattern for hero section */
 .grid-bg {
   background-image:
-    linear-gradient(to right, rgba(120,120,120,0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(120,120,120,0.08) 1px, transparent 1px);
+    linear-gradient(to right, rgba(120, 120, 120, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(120, 120, 120, 0.08) 1px, transparent 1px);
   background-size: 48px 48px;
   -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
@@ -127,12 +127,14 @@
 
 .dark .grid-bg {
   background-image:
-    linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
 .glow-emerald {
-  box-shadow: 0 0 0 1px oklch(0.7 0.16 160 / 20%), 0 8px 32px -8px oklch(0.7 0.16 160 / 25%);
+  box-shadow:
+    0 0 0 1px oklch(0.7 0.16 160 / 20%),
+    0 8px 32px -8px oklch(0.7 0.16 160 / 25%);
 }
 
 /* Mono numerals for stats */
@@ -190,8 +192,15 @@
 
 /* Flow arrow pulse — used in ArchitectureDiagram. */
 @keyframes flow-pulse {
-  0%, 100% { opacity: 0.4; transform: translateX(0); }
-  50%      { opacity: 1;   transform: translateX(2px); }
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translateX(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(2px);
+  }
 }
 .animate-flow-arrow {
   animation: flow-pulse 1.8s ease-in-out infinite;
@@ -199,8 +208,14 @@
 
 /* Heatmap cell fade-in — delay set via inline style. */
 @keyframes cell-fade {
-  from { opacity: 0; transform: scale(0.6); }
-  to   { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 .heatmap-cell {
   opacity: 0;
@@ -216,8 +231,14 @@
 
 /* Hero name staggered reveal — words appear in sequence. */
 @keyframes word-rise {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .hero-word {
   display: inline-block;
@@ -249,14 +270,22 @@
 /* ------------------------------------------------------------------ */
 
 @keyframes page-fade-in {
-  from { opacity: 0; transform: translateY(4px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .page-transition {
   animation: page-fade-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 @media (prefers-reduced-motion: reduce) {
-  .page-transition { animation: none; }
+  .page-transition {
+    animation: none;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -264,18 +293,31 @@
 /* ------------------------------------------------------------------ */
 
 @keyframes error-shake {
-  0%, 100% { transform: translateX(0); }
-  20%      { transform: translateX(-4px) rotate(-1deg); }
-  40%      { transform: translateX(4px)  rotate(1deg); }
-  60%      { transform: translateX(-3px) rotate(-0.5deg); }
-  80%      { transform: translateX(3px)  rotate(0.5deg); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-4px) rotate(-1deg);
+  }
+  40% {
+    transform: translateX(4px) rotate(1deg);
+  }
+  60% {
+    transform: translateX(-3px) rotate(-0.5deg);
+  }
+  80% {
+    transform: translateX(3px) rotate(0.5deg);
+  }
 }
 .animate-error-shake {
   animation: error-shake 0.6s ease-in-out;
   animation-delay: 0.2s;
 }
 @media (prefers-reduced-motion: reduce) {
-  .animate-error-shake { animation: none; }
+  .animate-error-shake {
+    animation: none;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -283,9 +325,18 @@
 /* ------------------------------------------------------------------ */
 
 @keyframes check-pop {
-  0%   { opacity: 0; transform: scale(0.3); }
-  60%  { opacity: 1; transform: scale(1.15); }
-  100% { opacity: 1; transform: scale(1); }
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 .check-pop {
   opacity: 0;
@@ -293,7 +344,10 @@
   animation-delay: var(--check-delay, 0ms);
 }
 @media (prefers-reduced-motion: reduce) {
-  .check-pop { opacity: 1; animation: none; }
+  .check-pop {
+    opacity: 1;
+    animation: none;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -322,14 +376,21 @@
 /* ------------------------------------------------------------------ */
 
 @keyframes badge-glow {
-  0%, 100% { box-shadow: 0 0 0 0 oklch(0.7 0.16 160 / 0); }
-  50%      { box-shadow: 0 0 0 4px oklch(0.7 0.16 160 / 12%); }
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 oklch(0.7 0.16 160 / 0);
+  }
+  50% {
+    box-shadow: 0 0 0 4px oklch(0.7 0.16 160 / 12%);
+  }
 }
 .animate-badge-glow {
   animation: badge-glow 2.5s ease-in-out infinite;
 }
 @media (prefers-reduced-motion: reduce) {
-  .animate-badge-glow { animation: none; }
+  .animate-badge-glow {
+    animation: none;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -341,7 +402,9 @@ html {
   scroll-padding-top: 80px; /* offset for sticky header */
 }
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -402,19 +465,24 @@ img.fade-in-on-load[data-loaded="true"] {
 /* ------------------------------------------------------------------ */
 
 @keyframes bar-grow {
-  from { width: 0 !important; }
+  from {
+    width: 0 !important;
+  }
 }
 .lang-bar-segment {
   animation: bar-grow 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 @media (prefers-reduced-motion: reduce) {
-  .lang-bar-segment { animation: none; }
+  .lang-bar-segment {
+    animation: none;
+  }
 }
 
 /* Print stylesheet — for recruiters who print the page as PDF */
 @media print {
   /* Force light theme + black-on-white */
-  html, body {
+  html,
+  body {
     background: #fff !important;
     color: #000 !important;
   }
@@ -454,7 +522,7 @@ img.fade-in-on-load[data-loaded="true"] {
 
   /* Use serif font for body in print (more readable on paper) */
   body {
-    font-family: Georgia, 'Times New Roman', serif !important;
+    font-family: Georgia, "Times New Roman", serif !important;
   }
 
   /* Show URL footer */
