@@ -1,0 +1,44 @@
+name: Format viewport motion once
+
+on:
+  push:
+    branches:
+      - feat/43-viewport-motion
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/43-viewport-motion
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Apply repository formatting
+        run: npm run format
+
+      - name: Remove one-shot workflow and commit formatting
+        shell: bash
+        run: |
+          rm .github/workflows/format-viewport-motion-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No formatting changes were required."
+            exit 0
+          fi
+          git commit -m "style: apply repository formatting"
+          git push origin HEAD:feat/43-viewport-motion
