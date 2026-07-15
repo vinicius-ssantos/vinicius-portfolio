@@ -8,6 +8,7 @@ default.
 - Keep movement short, restrained, and predictable.
 - Prefer opacity and transform to layout-changing properties.
 - Use the same timing for equivalent interactions.
+- Select motion by semantic intent instead of component-specific timing values.
 - Reserve continuous animation for meaningful live status or directional flow.
 - Never hide information exclusively inside animation.
 - Treat `prefers-reduced-motion: reduce` as a first-class static experience.
