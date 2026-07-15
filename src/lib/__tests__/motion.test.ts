@@ -23,12 +23,8 @@ describe("motion tokens", () => {
   it("gates child and continuous animation through viewport state", () => {
     expect(animationSource).toContain(".reveal.is-visible .check-pop");
     expect(animationSource).toContain(".reveal.is-visible .lang-bar-segment");
-    expect(animationSource).toContain(
-      '[data-motion-in-viewport="true"] .animate-flow-arrow',
-    );
-    expect(animationSource).toContain(
-      '[data-motion-in-viewport="true"] .animate-badge-glow',
-    );
+    expect(animationSource).toContain('[data-motion-in-viewport="true"] .animate-flow-arrow');
+    expect(animationSource).toContain('[data-motion-in-viewport="true"] .animate-badge-glow');
   });
 
   it("uses one heatmap container reveal and keeps static fallbacks", () => {

@@ -12,10 +12,7 @@ type ObserverPool = {
 
 const observerPools = new Map<string, ObserverPool>();
 
-function observerKey({
-  rootMargin = "0px",
-  threshold = 0,
-}: ViewportObserverOptions): string {
+function observerKey({ rootMargin = "0px", threshold = 0 }: ViewportObserverOptions): string {
   return `${rootMargin}|${threshold}`;
 }
 

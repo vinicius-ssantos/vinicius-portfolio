@@ -25,10 +25,7 @@ function ContributionHeatmap({
   const days = weeks.flat();
 
   return (
-    <RevealOnScroll
-      motion="data"
-      className="motion-heatmap mx-auto mt-6 max-w-5xl px-4 sm:px-6"
-    >
+    <RevealOnScroll motion="data" className="motion-heatmap mx-auto mt-6 max-w-5xl px-4 sm:px-6">
       <div className="rounded-lg border border-border/60 bg-background/50 p-4">
         <div className="mb-3 flex items-center justify-between">
           <span className="font-mono text-xs text-foreground">

@@ -61,8 +61,7 @@ export function useViewportMotion<T extends Element>({
     };
 
     const prefersReducedMotion =
-      typeof window.matchMedia === "function" &&
-      window.matchMedia(REDUCED_MOTION_QUERY).matches;
+      typeof window.matchMedia === "function" && window.matchMedia(REDUCED_MOTION_QUERY).matches;
     if (prefersReducedMotion || typeof IntersectionObserver === "undefined") {
       showStaticState();
       return () => {
@@ -75,9 +74,7 @@ export function useViewportMotion<T extends Element>({
       target,
       (entry) => {
         if (entry.isIntersecting) {
-          setState((current) =>
-            current.inViewport ? current : { ...current, inViewport: true },
-          );
+          setState((current) => (current.inViewport ? current : { ...current, inViewport: true }));
 
           if (!enteredRef.current && delayTimer === undefined) {
             if (delay > 0) {
@@ -100,9 +97,7 @@ export function useViewportMotion<T extends Element>({
         }
 
         if (trackVisibility) {
-          setState((current) =>
-            current.inViewport ? { ...current, inViewport: false } : current,
-          );
+          setState((current) => (current.inViewport ? { ...current, inViewport: false } : current));
         }
       },
       { rootMargin, threshold },
