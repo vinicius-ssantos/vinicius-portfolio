@@ -4,4 +4,10 @@ export { profile } from "./profile";
 export { stack } from "./stack";
 export { experience } from "./experience";
 export { education } from "./education";
-export { projects, getProjectBySlug, getFeaturedProject, getVisibleProjects } from "./projects";
+export {
+  projects,
+  getProjectBySlug,
+  getFeaturedProject,
+  getVisibleProjects,
+  isProjectVisible,
+} from "./projects";

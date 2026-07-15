@@ -7,6 +7,16 @@ import type { Lang } from "@/lib/translations";
 export type { Lang };
 export type LocalizedText = { pt: string; en: string };
 
+/**
+ * Maturity of a project. Omit entirely for a finished, polished project —
+ * the UI only renders a status badge for "development"/"beta" so existing
+ * complete projects don't get visual clutter from a "stable" tag no one
+ * needs to see.
+ */
+export type ProjectStatus = "development" | "beta" | "stable";
+
+export type ProjectMetric = { label: LocalizedText; value: string };
+
 export type Project = {
   slug: string;
   name: string;
@@ -22,6 +32,32 @@ export type Project = {
   image?: string;
   updatedAt: string;
   featured?: boolean;
+  status?: ProjectStatus;
+  /**
+   * Explicit visibility switch — defaults to visible (true) when omitted.
+   * Set to `false` while a project is still short of the minimum bar for
+   * public display (defined problem, consistent README, initial
+   * architecture, public activity, clear next milestone). See
+   * `getVisibleProjects` in `./projects/index.ts`.
+   */
+  visible?: boolean;
+  // Optional external evidence — only render what's actually provided.
+  links?: {
+    demo?: string;
+    docs?: string;
+    openApi?: string;
+    video?: string;
+  };
+  // Architecture/decision bullets for the project detail page. Distinct
+  // from `caseStudy` below, which is the richer home-page deep dive.
+  architectureNotes?: LocalizedText[];
+  // Numbers that are actually verifiable (e.g. from a public dashboard,
+  // CI badge, or repo insight) — never invented for narrative effect.
+  metrics?: ProjectMetric[];
+  testingStrategy?: LocalizedText;
+  observability?: LocalizedText;
+  limitations?: LocalizedText[];
+  nextSteps?: LocalizedText[];
   // Optional deep-dive case study content — only the featured project
   // populates this today, but the structure allows any project to become
   // a case study without touching the CaseStudy component.

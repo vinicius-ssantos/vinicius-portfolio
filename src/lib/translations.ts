@@ -153,6 +153,21 @@ const en = {
     notFound: "Project not found",
     notFoundDescription:
       "This project doesn't exist or has been moved. Head back to the portfolio to see all of them.",
+    status: {
+      development: "In development",
+      beta: "Beta",
+      stable: "Stable",
+    },
+    demo: "Live demo",
+    docs: "Documentation",
+    openApi: "API reference",
+    video: "Video walkthrough",
+    architectureLabel: "Architecture & decisions",
+    metricsLabel: "Metrics",
+    testingLabel: "Testing strategy",
+    observabilityLabel: "Observability",
+    limitationsLabel: "Known limitations",
+    nextStepsLabel: "Next steps",
   },
 };
 
@@ -305,6 +320,21 @@ const pt: Translation = {
     notFound: "Projeto não encontrado",
     notFoundDescription:
       "Esse projeto não existe ou foi movido. Volte ao portfólio para ver todos.",
+    status: {
+      development: "Em desenvolvimento",
+      beta: "Beta",
+      stable: "Estável",
+    },
+    demo: "Demo ao vivo",
+    docs: "Documentação",
+    openApi: "Referência da API",
+    video: "Vídeo demonstrativo",
+    architectureLabel: "Arquitetura e decisões",
+    metricsLabel: "Métricas",
+    testingLabel: "Estratégia de testes",
+    observabilityLabel: "Observabilidade",
+    limitationsLabel: "Limitações conhecidas",
+    nextStepsLabel: "Próximos passos",
   },
 };
 
