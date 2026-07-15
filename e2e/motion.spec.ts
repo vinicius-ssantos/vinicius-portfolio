@@ -24,9 +24,6 @@ test.describe("motion language", () => {
     await expect(card).toHaveCSS("transition-property", "none");
     await expect(checkmark).toHaveCSS("animation-name", "none");
     await expect(checkmark).toHaveCSS("opacity", "1");
-
-    if ((await languageBar.count()) > 0) {
-      await expect(languageBar).toHaveCSS("animation-name", "none");
-    }
+    await expect(languageBar).toHaveCSS("animation-name", "none");
   });
 });
