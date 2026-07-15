@@ -54,7 +54,7 @@ function ProjectCard({
         >
           <Image
             src={project.image}
-            alt={`${project.name} — README preview`}
+            alt={`${project.name} — project screenshot`}
             fill
             sizes="(max-width: 1024px) 100vw, 33vw"
             className="object-cover object-top opacity-80 transition-all duration-300 group-hover:opacity-100 group-hover:scale-[1.02]"
