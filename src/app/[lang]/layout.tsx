@@ -66,10 +66,13 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     authors: [{ name: profile.name }],
     creator: profile.name,
     publisher: profile.name,
+    // Manually declaring `icons` opts out of Next's file-convention
+    // auto-injection entirely, so the generated apple-icon route
+    // (src/app/apple-icon.tsx) has to be listed here explicitly too.
     icons: {
       icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
       shortcut: ["/favicon.svg"],
-      apple: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+      apple: [{ url: "/apple-icon", type: "image/png", sizes: "180x180" }],
     },
     manifest: "/manifest.webmanifest",
     openGraph: {
@@ -80,11 +83,12 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       description,
       siteName: `${profile.shortName} — Portfolio`,
     },
+    // No `creator` handle — profile.handle is the GitHub username, not a
+    // verified X/Twitter account, and fabricating one would be misleading.
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      creator: profile.handle ? `@${profile.handle}` : undefined,
     },
     robots: {
       index: true,
