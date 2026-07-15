@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { ContactModal } from "@/components/contact-modal";
-import { SiteHeader, Hero, SiteFooter } from "@/components/sections/client-sections";
+import { SiteHeader } from "@/components/sections/header";
+import { Hero } from "@/components/sections/hero";
+import { SiteFooter } from "@/components/sections/footer";
 import { ScrollProgress } from "@/components/animations/scroll-progress";
 import type { translations } from "@/lib/translations";
 import type { Lang } from "@/content";

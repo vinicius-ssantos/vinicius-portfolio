@@ -1,14 +1,12 @@
 import { notFound } from "next/navigation";
 import { SiteChrome } from "@/components/site-chrome";
-import {
-  StatsBar,
-  Experience,
-  Stack,
-  FeaturedProjects,
-  CaseStudy,
-  EducationSection,
-  About,
-} from "@/components/sections/server-sections";
+import { StatsBar } from "@/components/sections/stats";
+import { Experience } from "@/components/sections/experience";
+import { Stack } from "@/components/sections/stack";
+import { FeaturedProjects } from "@/components/sections/projects";
+import { CaseStudy } from "@/components/sections/case-study";
+import { EducationSection } from "@/components/sections/education";
+import { About } from "@/components/sections/about";
 import { translations, type Lang } from "@/lib/translations";
 import { isLocale } from "@/lib/i18n";
 
