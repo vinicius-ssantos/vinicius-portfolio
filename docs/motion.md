@@ -9,7 +9,8 @@ default.
 - Prefer opacity and transform to layout-changing properties.
 - Use the same timing for equivalent interactions.
 - Select motion by semantic intent instead of component-specific timing values.
-- Reserve continuous animation for meaningful live status or directional flow.
+- Start entrance motion only when the related content reaches the viewport.
+- Pause continuous animation when its section is not visible.
 - Never hide information exclusively inside animation.
 - Treat `prefers-reduced-motion: reduce` as a first-class static experience.
 
@@ -42,8 +43,23 @@ model. Components should not add an arbitrary duration or easing when an equival
 - `data`: restrained scale/fade for measurable information;
 - `diagram`: slower reveal reserved for architecture and system flow.
 
-Use `motion="..."` only to describe intent. Viewport lifecycle, pausing, observer reuse, and cleanup
-are handled separately by #43.
+Use `motion="..."` only to describe intent. The component exposes `data-motion-entered` for its
+one-time entrance state and `data-motion-in-viewport` for current visibility.
+
+## Viewport lifecycle
+
+`useViewportMotion` coordinates entrance state, current visibility, delayed work, and static
+fallbacks. Equivalent option sets reuse one native `IntersectionObserver` through
+`src/lib/viewport-observer.ts`.
+
+- Entrance animations execute once and remain in their final state after leaving the viewport.
+- Delayed entrances are cancelled if the element leaves before the delay completes.
+- Timers, observers, and counter animation frames are cancelled during cleanup.
+- Checkmarks and language bars begin only after their reveal container enters.
+- Architecture flow arrows and the Hero badge pause while their container is offscreen.
+- The contribution heatmap uses one container reveal rather than hundreds of cell animations.
+- Missing `IntersectionObserver`, disabled scripting, and reduced motion keep content available in
+  its final static state.
 
 ## Interaction vocabulary
 
@@ -59,20 +75,22 @@ are handled separately by #43.
 
 The reduced-motion stylesheet:
 
-- renders reveal content, Hero words, heatmap cells, and checkmarks in their final state;
+- renders reveal content, Hero words, language bars, and checkmarks in their final state;
 - removes continuous pulses, badge glow, page transitions, and smooth scrolling;
 - removes hover/press transforms and transition timing;
+- makes counters resolve directly to their final value;
 - keeps content, focus, navigation, and component state fully available.
 
-Automated coverage exists in `src/lib/__tests__/motion.test.ts`, `e2e/motion.spec.ts`, and the
-existing Hero E2E test.
+Automated coverage exists in the viewport lifecycle unit tests, `src/lib/__tests__/motion.test.ts`,
+`e2e/motion.spec.ts`, and the existing Hero E2E test.
 
 ## Adding motion
 
 1. Identify whether movement communicates hierarchy, state, data, or flow.
 2. Reuse a semantic reveal pattern or an existing interaction class.
 3. Use shared tokens for duration, easing, distance, and stagger.
-4. Define the static reduced-motion result in the same change.
-5. Add proportional automated coverage when behavior changes.
-6. Avoid a new animation library unless native CSS and the current observer abstraction cannot meet
+4. Connect child or continuous motion to the nearest viewport-aware container.
+5. Define static no-script and reduced-motion results in the same change.
+6. Add proportional automated coverage when behavior changes.
+7. Avoid a new animation library unless native CSS and the current observer abstraction cannot meet
    a measured requirement.
