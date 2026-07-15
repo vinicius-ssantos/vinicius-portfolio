@@ -115,9 +115,9 @@ export async function Stack({ t, lang }: { t: Translation; lang: Lang }) {
           title={t.stack.title}
           description={t.stack.description}
         />
-        <div className="mt-8">
+        <RevealOnScroll motion="data" className="motion-language-bars mt-8">
           <LanguagesBar languages={gh.languages} t={t} />
-        </div>
+        </RevealOnScroll>
 
         <h3 className="mt-10 font-mono text-xs uppercase tracking-wider text-primary">
           {t.stack.professionalTitle}

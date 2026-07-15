@@ -1,5 +1,6 @@
 import { profile, t as tp, type Lang, type LocalizedText } from "@/content";
 import { getGitHubStats, formatStat, type ContributionDay } from "@/lib/github";
+import { RevealOnScroll } from "@/components/animations/reveal-on-scroll";
 import { StatCounter } from "@/components/animations/stat-counter";
 import type { Translation } from "@/lib/translations";
 
@@ -24,7 +25,7 @@ function ContributionHeatmap({
   const days = weeks.flat();
 
   return (
-    <div className="mx-auto mt-6 max-w-5xl px-4 sm:px-6">
+    <RevealOnScroll motion="data" className="motion-heatmap mx-auto mt-6 max-w-5xl px-4 sm:px-6">
       <div className="rounded-lg border border-border/60 bg-background/50 p-4">
         <div className="mb-3 flex items-center justify-between">
           <span className="font-mono text-xs text-foreground">
@@ -57,18 +58,17 @@ function ContributionHeatmap({
             role="img"
             aria-label={`${formatStat(total)} ${t.stats.heatmapTitle}`}
           >
-            {days.map((day, i) => (
+            {days.map((day) => (
               <div
                 key={day.date}
                 title={`${day.date}: ${day.count} contributions`}
-                className={`heatmap-cell h-[11px] w-[11px] rounded-[2px] ${intensityClass(day.count)}`}
-                style={{ "--cell-index": Math.min(i, 200) } as React.CSSProperties}
+                className={`h-[11px] w-[11px] rounded-[2px] ${intensityClass(day.count)}`}
               />
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </RevealOnScroll>
   );
 }
 
