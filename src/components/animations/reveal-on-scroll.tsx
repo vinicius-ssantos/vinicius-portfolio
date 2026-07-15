@@ -52,7 +52,7 @@ export function RevealOnScroll({
         }
       },
       // Trigger when ~10% of the element is visible — feels snappier than 0.
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
     );
 
     observer.observe(el);
@@ -63,10 +63,7 @@ export function RevealOnScroll({
   const visibleClass = visible ? "is-visible" : "";
 
   return (
-    <Tag
-      ref={ref as never}
-      className={`${baseClass} ${visibleClass} ${className}`.trim()}
-    >
+    <Tag ref={ref as never} className={`${baseClass} ${visibleClass} ${className}`.trim()}>
       {children}
     </Tag>
   );

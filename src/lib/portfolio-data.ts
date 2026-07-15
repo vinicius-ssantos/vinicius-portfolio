@@ -68,6 +68,18 @@ export type Education = {
   degree: LocalizedText;
 };
 
+export type StatItem = { label: LocalizedText; value: string };
+
+// Fixed-length tuple: StatsBar reads indices 0-2 by design (years, repos, contributions).
+const profileStats: [StatItem, StatItem, StatItem] = [
+  {
+    label: { pt: "Anos em backend & QA", en: "Years in backend & QA" },
+    value: yearsSince(CAREER_START),
+  },
+  { label: { pt: "Repositórios públicos", en: "Public repositories" }, value: "53" },
+  { label: { pt: "Contribuições / ano", en: "GitHub contributions / yr" }, value: "3733" },
+];
+
 export const profile = {
   name: "Vinicius de Oliveira Santos",
   shortName: "Vinicius Santos",
@@ -121,11 +133,7 @@ export const profile = {
       },
     },
   ] as { topic: LocalizedText; detail: LocalizedText }[],
-  stats: [
-    { label: { pt: "Anos em backend & QA", en: "Years in backend & QA" }, value: yearsSince(CAREER_START) },
-    { label: { pt: "Repositórios públicos", en: "Public repositories" }, value: "53" },
-    { label: { pt: "Contribuições / ano", en: "GitHub contributions / yr" }, value: "3733" },
-  ],
+  stats: profileStats,
   links: {
     github: "https://github.com/vinicius-ssantos",
     linkedin: "https://www.linkedin.com/in/vinicius-oliveira-7ba1bb204/",
@@ -186,7 +194,18 @@ export const experience: Experience[] = [
         en: "Sustain CI/CD pipelines and Kubernetes operations to keep releases stable across QA and production.",
       },
     ],
-    stack: ["Java", "Spring", "REST APIs", "SQL", "Redis", "JUnit", "Jenkins", "CI/CD", "Kubernetes", "Git"],
+    stack: [
+      "Java",
+      "Spring",
+      "REST APIs",
+      "SQL",
+      "Redis",
+      "JUnit",
+      "Jenkins",
+      "CI/CD",
+      "Kubernetes",
+      "Git",
+    ],
     current: true,
   },
   {
@@ -361,7 +380,10 @@ export const projects: Project[] = [
       vpsNodes: [
         { pt: "Ubuntu + k3s (single-node)", en: "Ubuntu + k3s (single-node)" },
         { pt: "Traefik ingress", en: "Traefik ingress" },
-        { pt: "namespaces: mcp / bff / vos / monitoring", en: "namespaces: mcp / bff / vos / monitoring" },
+        {
+          pt: "namespaces: mcp / bff / vos / monitoring",
+          en: "namespaces: mcp / bff / vos / monitoring",
+        },
       ],
       flowText: {
         pt: "Cloudflare DNS + TLS + Access + Tunnel  →  VPS :80 → Traefik  →  serviços",
@@ -483,14 +505,7 @@ export const projects: Project[] = [
         en: "Unit + integration tests included — `gradle test` runs the full suite.",
       },
     ],
-    stack: [
-      "Kotlin",
-      "Spring Boot",
-      "Spring Data JPA",
-      "Hibernate",
-      "H2",
-      "Gradle",
-    ],
+    stack: ["Kotlin", "Spring Boot", "Spring Data JPA", "Hibernate", "H2", "Gradle"],
     role: {
       pt: "Projeto pessoal — autor único",
       en: "Personal project — sole author",

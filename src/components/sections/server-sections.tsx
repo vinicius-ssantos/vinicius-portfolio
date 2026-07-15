@@ -63,16 +63,10 @@ export function SectionHeading({
 }) {
   return (
     <div className="max-w-2xl">
-      <div className="font-mono text-xs uppercase tracking-wider text-primary">
-        {eyebrow}
-      </div>
-      <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
-        {title}
-      </h2>
+      <div className="font-mono text-xs uppercase tracking-wider text-primary">{eyebrow}</div>
+      <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">{title}</h2>
       {description && (
-        <p className="mt-3 text-base leading-relaxed text-muted-foreground">
-          {description}
-        </p>
+        <p className="mt-3 text-base leading-relaxed text-muted-foreground">{description}</p>
       )}
     </div>
   );
@@ -123,7 +117,11 @@ function ContributionHeatmap({
         <div className="overflow-x-auto">
           <div
             className="grid gap-[3px]"
-            style={{ gridTemplateRows: "repeat(7, 1fr)", gridAutoFlow: "column", width: "max-content" }}
+            style={{
+              gridTemplateRows: "repeat(7, 1fr)",
+              gridAutoFlow: "column",
+              width: "max-content",
+            }}
             role="img"
             aria-label={`${formatStat(total)} ${t.stats.heatmapTitle}`}
           >
@@ -149,9 +147,21 @@ export async function StatsBar({ t, lang }: { t: T; lang: Lang }) {
   // Each stat carries its label + a numeric value for the animated counter.
   // The label value stays as a fallback string (used when JS is disabled).
   const stats: { label: LocalizedText; numeric: number; fallback: string }[] = [
-    { label: profile.stats[0].label, numeric: parseInt(profile.stats[0].value, 10) || 0, fallback: profile.stats[0].value },
-    { label: profile.stats[1].label, numeric: gh.publicRepos, fallback: formatStat(gh.publicRepos) },
-    { label: profile.stats[2].label, numeric: gh.contributions, fallback: formatStat(gh.contributions) },
+    {
+      label: profile.stats[0].label,
+      numeric: parseInt(profile.stats[0].value, 10) || 0,
+      fallback: profile.stats[0].value,
+    },
+    {
+      label: profile.stats[1].label,
+      numeric: gh.publicRepos,
+      fallback: formatStat(gh.publicRepos),
+    },
+    {
+      label: profile.stats[2].label,
+      numeric: gh.contributions,
+      fallback: formatStat(gh.contributions),
+    },
   ];
 
   return (
@@ -169,9 +179,7 @@ export async function StatsBar({ t, lang }: { t: T; lang: Lang }) {
             <div className="font-mono text-2xl font-bold tabular-nums sm:text-3xl">
               <StatCounter value={s.numeric} />
             </div>
-            <div className="mt-1 text-xs text-muted-foreground sm:text-sm">
-              {tp(s.label, lang)}
-            </div>
+            <div className="mt-1 text-xs text-muted-foreground sm:text-sm">{tp(s.label, lang)}</div>
           </div>
         ))}
       </div>
@@ -186,10 +194,7 @@ export async function StatsBar({ t, lang }: { t: T; lang: Lang }) {
 
 export function Experience({ t, lang }: { t: T; lang: Lang }) {
   return (
-    <section
-      id="experience"
-      className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20"
-    >
+    <section id="experience" className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
       <SectionHeading
         eyebrow={t.experience.eyebrow}
         title={t.experience.title}
@@ -197,7 +202,10 @@ export function Experience({ t, lang }: { t: T; lang: Lang }) {
       />
       <RevealOnScroll stagger className="mt-10 space-y-4">
         {experience.map((exp, idx) => (
-          <div key={`${exp.company}-${exp.period}`} style={{ "--stagger-index": idx } as React.CSSProperties}>
+          <div
+            key={`${exp.company}-${exp.period}`}
+            style={{ "--stagger-index": idx } as React.CSSProperties}
+          >
             <ExperienceCard exp={exp} t={t} lang={lang} />
           </div>
         ))}
@@ -206,15 +214,7 @@ export function Experience({ t, lang }: { t: T; lang: Lang }) {
   );
 }
 
-function ExperienceCard({
-  exp,
-  t,
-  lang,
-}: {
-  exp: (typeof experience)[number];
-  t: T;
-  lang: Lang;
-}) {
+function ExperienceCard({ exp, t, lang }: { exp: (typeof experience)[number]; t: T; lang: Lang }) {
   return (
     <Card className="card-lift border-border/60 bg-card/50 hover:border-primary/40">
       <CardHeader className="pb-3">
@@ -233,9 +233,7 @@ function ExperienceCard({
               </Badge>
             )}
           </div>
-          <span className="font-mono text-xs text-muted-foreground">
-            {exp.period}
-          </span>
+          <span className="font-mono text-xs text-muted-foreground">{exp.period}</span>
         </div>
         <CardDescription className="text-sm font-medium text-foreground/70">
           {exp.company}
@@ -256,11 +254,7 @@ function ExperienceCard({
         </ul>
         <div className="flex flex-wrap gap-1.5 pt-1">
           {exp.stack.map((s) => (
-            <Badge
-              key={s}
-              variant="secondary"
-              className="font-mono text-[10px] font-normal"
-            >
+            <Badge key={s} variant="secondary" className="font-mono text-[10px] font-normal">
               {s}
             </Badge>
           ))}
@@ -343,7 +337,11 @@ function StackGrid({ entries, lang }: { entries: [string, string[]][]; lang: Lan
                   {items.map((item) => {
                     const label = typeof item === "string" ? item : tp(item, lang);
                     return (
-                      <Badge key={label} variant="secondary" className="font-mono text-xs font-normal">
+                      <Badge
+                        key={label}
+                        variant="secondary"
+                        className="font-mono text-xs font-normal"
+                      >
                         {label}
                       </Badge>
                     );
@@ -454,9 +452,7 @@ function ProjectCard({
 
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between gap-2">
-          <span className="font-mono text-xs text-muted-foreground">
-            {project.updatedAt}
-          </span>
+          <span className="font-mono text-xs text-muted-foreground">{project.updatedAt}</span>
           {priority && (
             <Badge
               variant="outline"
@@ -482,11 +478,7 @@ function ProjectCard({
         <div className="mt-auto">
           <div className="mb-2 flex flex-wrap gap-1.5">
             {project.stack.slice(0, 5).map((s) => (
-              <Badge
-                key={s}
-                variant="secondary"
-                className="font-mono text-[10px] font-normal"
-              >
+              <Badge key={s} variant="secondary" className="font-mono text-[10px] font-normal">
                 {s}
               </Badge>
             ))}
@@ -529,6 +521,9 @@ function ProjectCard({
 
 export function CaseStudy({ t, lang }: { t: T; lang: Lang }) {
   const cs = projects.find((p) => p.featured) ?? projects[0];
+  if (!cs) {
+    throw new Error("CaseStudy requires at least one project in `projects`.");
+  }
   const csData = cs.caseStudy;
 
   // If the featured project has no deep-dive content, render only the
@@ -600,7 +595,9 @@ export function CaseStudy({ t, lang }: { t: T; lang: Lang }) {
                       className="flex gap-3 rounded-md border border-border/60 bg-secondary/30 p-3"
                     >
                       <FileCode2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                      <span className="text-sm leading-relaxed text-foreground/90">{tp(h, lang)}</span>
+                      <span className="text-sm leading-relaxed text-foreground/90">
+                        {tp(h, lang)}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -612,11 +609,7 @@ export function CaseStudy({ t, lang }: { t: T; lang: Lang }) {
                 </h3>
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {cs.stack.map((s) => (
-                    <Badge
-                      key={s}
-                      variant="secondary"
-                      className="font-mono text-xs font-normal"
-                    >
+                    <Badge key={s} variant="secondary" className="font-mono text-xs font-normal">
                       {s}
                     </Badge>
                   ))}
@@ -704,7 +697,11 @@ function ArchitectureDiagram({
                   {step}
                 </span>
                 {i < arr.length - 1 && (
-                  <ArrowRight className="h-3 w-3 text-primary animate-flow-arrow" aria-hidden style={{ animationDelay: `${i * 0.3}s` } as React.CSSProperties} />
+                  <ArrowRight
+                    className="h-3 w-3 text-primary animate-flow-arrow"
+                    aria-hidden
+                    style={{ animationDelay: `${i * 0.3}s` } as React.CSSProperties}
+                  />
                 )}
               </span>
             ))}
@@ -728,7 +725,10 @@ export function EducationSection({ t, lang }: { t: T; lang: Lang }) {
       />
       <RevealOnScroll stagger className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
         {education.map((e, idx) => (
-          <div key={`${e.institution}-${tp(e.degree, lang)}`} style={{ "--stagger-index": idx } as React.CSSProperties}>
+          <div
+            key={`${e.institution}-${tp(e.degree, lang)}`}
+            style={{ "--stagger-index": idx } as React.CSSProperties}
+          >
             <Card className="card-lift h-full border-border/60 bg-card/50">
               <CardHeader>
                 <div className="flex items-center gap-2">
@@ -758,11 +758,7 @@ export function About({ t, lang }: { t: T; lang: Lang }) {
   return (
     <section id="about" className="border-t border-border/60 bg-secondary/20">
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
-        <SectionHeading
-          eyebrow={t.about.eyebrow}
-          title={t.about.title}
-          description=""
-        />
+        <SectionHeading eyebrow={t.about.eyebrow} title={t.about.title} description="" />
         <RevealOnScroll className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
           <Card className="border-border/60 bg-card/50 lg:col-span-2">
             <CardContent className="space-y-6 pt-6 text-base leading-relaxed text-foreground/90">
@@ -799,16 +795,15 @@ export function About({ t, lang }: { t: T; lang: Lang }) {
               </div>
               <div className="flex items-start gap-2">
                 <Globe className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                <span>{stack.Languages.map((l) => (typeof l === "string" ? l : l[lang])).join(" · ")}</span>
+                <span>
+                  {stack.Languages.map((l) => (typeof l === "string" ? l : l[lang])).join(" · ")}
+                </span>
               </div>
               <div className="flex items-start gap-2">
                 <Mail className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
                 <span className="break-all">{profile.email}</span>
               </div>
-              <RevealPhone
-                showLabel={t.about.showPhone}
-                hideLabel={t.about.hidePhone}
-              />
+              <RevealPhone showLabel={t.about.showPhone} hideLabel={t.about.hidePhone} />
               <div className="flex items-start gap-2">
                 <Server className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
                 <span>{t.about.currentlyItems.runningCluster}</span>

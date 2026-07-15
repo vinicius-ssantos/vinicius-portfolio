@@ -16,12 +16,7 @@ type SiteChromeProps = {
   children: React.ReactNode;
 };
 
-export function SiteChrome({
-  t,
-  lang,
-  withHero = false,
-  children,
-}: SiteChromeProps) {
+export function SiteChrome({ t, lang, withHero = false, children }: SiteChromeProps) {
   const [contactOpen, setContactOpen] = useState(false);
 
   return (
@@ -29,9 +24,7 @@ export function SiteChrome({
       <ScrollProgress />
       <SiteHeader t={t} lang={lang} />
       <main id="main" className="flex-1 page-transition">
-        {withHero && (
-          <Hero t={t} lang={lang} onContactOpen={() => setContactOpen(true)} />
-        )}
+        {withHero && <Hero t={t} lang={lang} onContactOpen={() => setContactOpen(true)} />}
         {children}
       </main>
       <SiteFooter t={t} onContactOpen={() => setContactOpen(true)} />

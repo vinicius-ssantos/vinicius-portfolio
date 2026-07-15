@@ -28,12 +28,8 @@ export default function Error({
         <p className="font-mono text-xs uppercase tracking-wider text-primary">
           {t.errorPage.eyebrow}
         </p>
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          {t.errorPage.title}
-        </h1>
-        <p className="text-base leading-relaxed text-muted-foreground">
-          {t.errorPage.description}
-        </p>
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{t.errorPage.title}</h1>
+        <p className="text-base leading-relaxed text-muted-foreground">{t.errorPage.description}</p>
         {error.digest && (
           <p className="font-mono text-xs text-muted-foreground">
             {t.errorPage.errorId}: {error.digest}

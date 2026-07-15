@@ -156,9 +156,7 @@ function ContactRow({
           )}
         </button>
       )}
-      {external && (
-        <ExternalLink className="h-3.5 w-3.5 flex-shrink-0 text-muted-foreground" />
-      )}
+      {external && <ExternalLink className="h-3.5 w-3.5 flex-shrink-0 text-muted-foreground" />}
     </div>
   );
 }

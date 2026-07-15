@@ -28,12 +28,8 @@ export default function NotFound() {
         <p className="animate-error-shake font-mono text-xs uppercase tracking-wider text-primary">
           {t.eyebrow}
         </p>
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-          {t.title}
-        </h1>
-        <p className="text-base leading-relaxed text-muted-foreground">
-          {t.description}
-        </p>
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{t.title}</h1>
+        <p className="text-base leading-relaxed text-muted-foreground">{t.description}</p>
         <div className="pt-2">
           <Button asChild size="default">
             <Link href={`/${lang}`}>

@@ -20,7 +20,8 @@ export const translations = {
     errorPage: {
       eyebrow: "Error",
       title: "Something went wrong",
-      description: "An unexpected error occurred while rendering the page. Try reloading — if it persists, please let me know via the contact options.",
+      description:
+        "An unexpected error occurred while rendering the page. Try reloading — if it persists, please let me know via the contact options.",
       errorId: "Error ID",
       tryAgain: "Try again",
     },
@@ -112,18 +113,13 @@ export const translations = {
       architectureLabel: "architecture / two environments, one source of truth",
       local: "Local",
       vps: "VPS",
-      localNodes: [
-        "Windows 11 + WSL2",
-        "Docker Compose",
-        "k3d (k8s validation)",
-      ],
+      localNodes: ["Windows 11 + WSL2", "Docker Compose", "k3d (k8s validation)"],
       vpsNodes: [
         "Ubuntu + k3s (single-node)",
         "Traefik ingress",
         "namespaces: mcp / bff / vos / monitoring",
       ],
-      flowText:
-        "Cloudflare DNS + TLS + Access + Tunnel  →  VPS :80 → Traefik  →  services",
+      flowText: "Cloudflare DNS + TLS + Access + Tunnel  →  VPS :80 → Traefik  →  services",
     },
     education: {
       eyebrow: "// education",
@@ -179,7 +175,8 @@ export const translations = {
     errorPage: {
       eyebrow: "Erro",
       title: "Algo deu errado",
-      description: "Ocorreu um erro inesperado ao renderizar a página. Tente recarregar — se persistir, por favor me avise pelas opções de contato.",
+      description:
+        "Ocorreu um erro inesperado ao renderizar a página. Tente recarregar — se persistir, por favor me avise pelas opções de contato.",
       errorId: "ID do erro",
       tryAgain: "Tentar novamente",
     },
@@ -271,18 +268,13 @@ export const translations = {
       architectureLabel: "arquitetura / dois ambientes, uma fonte da verdade",
       local: "Local",
       vps: "VPS",
-      localNodes: [
-        "Windows 11 + WSL2",
-        "Docker Compose",
-        "k3d (validação k8s)",
-      ],
+      localNodes: ["Windows 11 + WSL2", "Docker Compose", "k3d (validação k8s)"],
       vpsNodes: [
         "Ubuntu + k3s (single-node)",
         "Traefik ingress",
         "namespaces: mcp / bff / vos / monitoring",
       ],
-      flowText:
-        "Cloudflare DNS + TLS + Access + Tunnel  →  VPS :80 → Traefik  →  serviços",
+      flowText: "Cloudflare DNS + TLS + Access + Tunnel  →  VPS :80 → Traefik  →  serviços",
     },
     education: {
       eyebrow: "// formação",

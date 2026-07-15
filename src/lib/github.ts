@@ -31,10 +31,16 @@ const REVALIDATE_SECONDS = 60 * 60 * 24;
 const QUERY = /* GraphQL */ `
   query UserProfile($login: String!) {
     user(login: $login) {
-      repositories(first: 50, privacy: PUBLIC, ownerAffiliations: [OWNER], isFork: false, orderBy: {field: STARGAZERS, direction: DESC}) {
+      repositories(
+        first: 50
+        privacy: PUBLIC
+        ownerAffiliations: [OWNER]
+        isFork: false
+        orderBy: { field: STARGAZERS, direction: DESC }
+      ) {
         totalCount
         nodes {
-          languages(first: 8, orderBy: {field: SIZE, direction: DESC}) {
+          languages(first: 8, orderBy: { field: SIZE, direction: DESC }) {
             edges {
               size
               node {
@@ -111,11 +117,12 @@ export const getGitHubStats = cache(async (): Promise<GitHubStats> => {
 
     const calendar = user.contributionsCollection?.contributionCalendar;
     const weeks: ContributionDay[][] =
-      calendar?.weeks?.map((w: { contributionDays?: { date: string; contributionCount: number }[] }) =>
-        (w.contributionDays ?? []).map((d) => ({
-          date: d.date,
-          count: d.contributionCount,
-        }))
+      calendar?.weeks?.map(
+        (w: { contributionDays?: { date: string; contributionCount: number }[] }) =>
+          (w.contributionDays ?? []).map((d) => ({
+            date: d.date,
+            count: d.contributionCount,
+          })),
       ) ?? [];
 
     const languages = aggregateLanguages(user.repositories?.nodes ?? []);
