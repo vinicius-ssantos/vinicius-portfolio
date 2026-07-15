@@ -69,34 +69,39 @@ function ContributionHeatmap({
 
 export async function StatsBar({ t, lang }: { t: Translation; lang: Lang }) {
   const gh = await getGitHubStats();
-  const isLive = process.env.GITHUB_TOKEN !== undefined;
 
-  // Each stat carries its label + a numeric value for the animated counter.
-  // The label value stays as a fallback string (used when JS is disabled).
-  const stats: { label: LocalizedText; numeric: number; fallback: string }[] = [
+  // Each stat carries its label + a numeric value for the animated counter,
+  // plus its own `live` flag — only the repo count is ever GitHub-sourced,
+  // and only when the API call actually succeeded (gh.isLive), never just
+  // because GITHUB_TOKEN is set. The years-based stats are always derived
+  // from the Experience timeline, so they're never marked live.
+  const stats: { label: LocalizedText; numeric: number; fallback: string; live: boolean }[] = [
     {
       label: profile.stats[0].label,
       numeric: parseInt(profile.stats[0].value, 10) || 0,
       fallback: profile.stats[0].value,
+      live: false,
     },
     {
       label: profile.stats[1].label,
-      numeric: gh.publicRepos,
-      fallback: formatStat(gh.publicRepos),
+      numeric: parseInt(profile.stats[1].value, 10) || 0,
+      fallback: profile.stats[1].value,
+      live: false,
     },
     {
       label: profile.stats[2].label,
-      numeric: gh.contributions,
-      fallback: formatStat(gh.contributions),
+      numeric: gh.isLive ? gh.publicRepos : parseInt(profile.stats[2].value, 10) || 0,
+      fallback: gh.isLive ? formatStat(gh.publicRepos) : profile.stats[2].value,
+      live: gh.isLive,
     },
   ];
 
   return (
     <section className="border-y border-border/60 bg-secondary/20">
       <div className="mx-auto grid max-w-5xl grid-cols-3 divide-x divide-border/60 px-4 sm:px-6">
-        {stats.map((s, i) => (
+        {stats.map((s) => (
           <div key={tp(s.label, lang)} className="relative px-3 py-6 text-center sm:px-6">
-            {isLive && i > 0 && (
+            {s.live && (
               <span
                 className="absolute right-2 top-2 inline-flex h-1.5 w-1.5 rounded-full bg-primary sm:right-4 sm:top-4"
                 title="Live data"
@@ -110,7 +115,7 @@ export async function StatsBar({ t, lang }: { t: Translation; lang: Lang }) {
           </div>
         ))}
       </div>
-      {isLive && <ContributionHeatmap weeks={gh.weeks} total={gh.contributions} t={t} />}
+      {gh.isLive && <ContributionHeatmap weeks={gh.weeks} total={gh.contributions} t={t} />}
     </section>
   );
 }

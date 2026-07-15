@@ -4,14 +4,24 @@ import { yearsSince, type LocalizedText, type StatItem } from "./types";
 // Used to compute years of experience dynamically (see `yearsSince`).
 const CAREER_START = "2021-09-01";
 
-// Fixed-length tuple: StatsBar reads indices 0-2 by design (years, repos, contributions).
+// Must match the Autbank "Analista Desenvolvedor de Sistemas" startDate in
+// experience.ts — the point the day-to-day work shifted from QA to development.
+const BACKEND_START = "2023-01-01";
+
+// Fixed-length tuple: StatsBar reads indices 0-2 by design. These are all
+// self-verifiable from the Experience timeline (no GitHub-sourced numbers
+// here) — repo count at index 2 is overridden with a live value when
+// GITHUB_TOKEN is configured and the API call succeeds (see getGitHubStats).
 const profileStats: [StatItem, StatItem, StatItem] = [
   {
-    label: { pt: "Anos em backend & QA", en: "Years in backend & QA" },
+    label: { pt: "Anos em software & QA", en: "Years in software & QA" },
     value: yearsSince(CAREER_START),
   },
+  {
+    label: { pt: "Anos em backend", en: "Years in backend" },
+    value: yearsSince(BACKEND_START),
+  },
   { label: { pt: "Repositórios públicos", en: "Public repositories" }, value: "53" },
-  { label: { pt: "Contribuições / ano", en: "GitHub contributions / yr" }, value: "3733" },
 ];
 
 export const profile = {
