@@ -1,10 +1,11 @@
-import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getVisibleProjects, t as tp, type Lang, type Project } from "@/content";
 import { RevealOnScroll } from "@/components/animations/reveal-on-scroll";
+import { TrackedLink } from "@/components/tracked-nav-link";
+import { TrackedExternalLink } from "@/components/tracked-link";
 import type { Translation } from "@/lib/translations";
 import { SectionHeading } from "./section-heading";
 import { ProjectStackBadges } from "./project-stack-badges";
@@ -47,8 +48,10 @@ function ProjectCard({
       }`}
     >
       {project.image && (
-        <Link
+        <TrackedLink
           href={detailHref}
+          event="project_dossier_open"
+          properties={{ slug: project.slug }}
           className="relative block aspect-[16/10] overflow-hidden border-b border-border/60 bg-secondary/30"
           aria-label={`${t.projects.viewDetails}: ${project.name}`}
         >
@@ -66,7 +69,7 @@ function ProjectCard({
               {t.projects.viewDetails}
             </div>
           </div>
-        </Link>
+        </TrackedLink>
       )}
 
       <CardHeader className="pb-3">
@@ -89,9 +92,14 @@ function ProjectCard({
           </div>
         </div>
         <CardTitle className="mt-2 font-mono text-lg leading-tight text-primary">
-          <Link href={detailHref} className="hover:underline">
+          <TrackedLink
+            href={detailHref}
+            event="project_dossier_open"
+            properties={{ slug: project.slug }}
+            className="hover:underline"
+          >
             {project.name}
-          </Link>
+          </TrackedLink>
         </CardTitle>
         <CardDescription className="text-sm leading-relaxed text-muted-foreground">
           {tp(project.tagline, lang)}
@@ -106,22 +114,24 @@ function ProjectCard({
             <ProjectStackBadges stack={project.stack} limit={5} size="xs" />
           </div>
           <div className="flex items-center gap-3">
-            <Link
+            <TrackedLink
               href={detailHref}
+              event="project_dossier_open"
+              properties={{ slug: project.slug }}
               className="btn-arrow inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
             >
               {t.projects.viewDetails}
               <ArrowUpRight className="arrow-nudge h-3.5 w-3.5" />
-            </Link>
-            <a
+            </TrackedLink>
+            <TrackedExternalLink
               href={project.repoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              event="project_repo_open"
+              properties={{ slug: project.slug }}
               className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
             >
               GitHub
               <ArrowUpRight className="h-3 w-3" />
-            </a>
+            </TrackedExternalLink>
           </div>
         </div>
       </CardContent>

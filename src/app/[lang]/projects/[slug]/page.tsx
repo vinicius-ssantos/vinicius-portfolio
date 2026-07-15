@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { SiteChrome } from "@/components/site-chrome";
 import { ProjectHighlights } from "@/components/sections/project-highlights";
 import { ProjectStackBadges } from "@/components/sections/project-stack-badges";
+import { TrackedExternalLink } from "@/components/tracked-link";
 import { projects, t as tp, getProjectBySlug, type Lang } from "@/content";
 import { translations } from "@/lib/translations";
 import { isLocale } from "@/lib/i18n";
@@ -89,16 +90,16 @@ export default async function ProjectPage({ params }: { params: Params }) {
             <Badge variant="outline" className="font-mono text-[10px] uppercase">
               {tp(project.role, lang)}
             </Badge>
-            <a
+            <TrackedExternalLink
               href={project.repoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              event="project_repo_open"
+              properties={{ slug: project.slug }}
               className="ml-auto inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80"
             >
               <Github className="h-4 w-4" />
               {t.projectDetail.openRepo}
               <ArrowUpRight className="h-3.5 w-3.5" />
-            </a>
+            </TrackedExternalLink>
           </div>
 
           {project.links && (
@@ -260,11 +261,15 @@ export default async function ProjectPage({ params }: { params: Params }) {
 
         <div className="mt-10 border-t border-border/60 pt-6">
           <Button asChild>
-            <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+            <TrackedExternalLink
+              href={project.repoUrl}
+              event="project_repo_open"
+              properties={{ slug: project.slug }}
+            >
               <Github className="mr-2 h-4 w-4" />
               {t.projectDetail.openRepo}
               <ArrowUpRight className="ml-2 h-4 w-4" />
-            </a>
+            </TrackedExternalLink>
           </Button>
         </div>
       </article>

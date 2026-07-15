@@ -1,9 +1,10 @@
-import Link from "next/link";
 import { ArrowRight, ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getFeaturedProject, t as tp, type Lang, type Project } from "@/content";
 import { RevealOnScroll } from "@/components/animations/reveal-on-scroll";
+import { TrackedLink } from "@/components/tracked-nav-link";
+import { TrackedExternalLink } from "@/components/tracked-link";
 import type { Translation } from "@/lib/translations";
 import { SectionHeading } from "./section-heading";
 import { ProjectHighlights } from "./project-highlights";
@@ -33,15 +34,15 @@ export function CaseStudy({ t, lang }: { t: Translation; lang: Lang }) {
                 <Badge variant="outline" className="font-mono text-[10px] uppercase">
                   {t.caseStudy.updated} {cs.updatedAt}
                 </Badge>
-                <a
+                <TrackedExternalLink
                   href={cs.repoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  event="project_repo_open"
+                  properties={{ slug: cs.slug }}
                   className="ml-auto inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80"
                 >
                   {t.caseStudy.openRepo}
                   <ArrowUpRight className="h-3.5 w-3.5" />
-                </a>
+                </TrackedExternalLink>
               </div>
             </CardHeader>
             <CardContent className="space-y-8">
@@ -104,13 +105,15 @@ export function CaseStudy({ t, lang }: { t: Translation; lang: Lang }) {
         )}
 
         <div className="mt-8">
-          <Link
+          <TrackedLink
             href={`/${lang}/projects/${cs.slug}`}
+            event="project_dossier_open"
+            properties={{ slug: cs.slug }}
             className="btn-arrow inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
           >
             {t.projects.viewDetails}
             <ArrowUpRight className="arrow-nudge h-3.5 w-3.5" />
-          </Link>
+          </TrackedLink>
         </div>
       </div>
     </section>

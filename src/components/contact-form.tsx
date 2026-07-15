@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Send, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { trackEvent } from "@/lib/analytics";
 import type { translations } from "@/lib/translations";
 
 type T = typeof translations.en;
@@ -39,6 +40,9 @@ export function ContactForm({ t }: { t: T }) {
 
       if (res.ok) {
         setSent(true);
+        // No name/email/message here — a confirmation that a send
+        // succeeded, nothing about who sent it or what it said.
+        trackEvent("contact_form_success");
         toast({ title: t.contactModal.formSuccess });
       } else {
         toast({ title: t.contactModal.formError, variant: "destructive" });
