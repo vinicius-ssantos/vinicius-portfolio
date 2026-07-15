@@ -1,25 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { translations, type Lang } from "@/lib/translations";
+import { translations } from "@/lib/translations";
+import { detectLocaleFromPathname } from "@/lib/i18n";
 
 // Locale-scoped 404 — rendered when a /[lang]/... route misses.
 //
 // `not-found.tsx` is a special Next.js boundary file that does NOT receive
-// `params`, so we read the locale from <html lang="..."> (set by layout.tsx)
-// or from the locale cookie as a fallback.
-function pickLocaleFromDocument(): Lang {
-  if (typeof document === "undefined") return "pt";
-  const fromHtml = document.documentElement.lang;
-  if (fromHtml === "en" || fromHtml === "pt") return fromHtml;
-  const fromCookie = document.cookie.match(/(?:^|;\s*)portfolio-lang=(pt|en)/);
-  return fromCookie ? (fromCookie[1] as Lang) : "pt";
-}
-
+// `params`, but it can still read the locale from the URL via `usePathname`.
 export default function NotFound() {
-  const lang = pickLocaleFromDocument();
+  const pathname = usePathname();
+  const lang = detectLocaleFromPathname(pathname);
   const t = translations[lang].notFound;
 
   return (

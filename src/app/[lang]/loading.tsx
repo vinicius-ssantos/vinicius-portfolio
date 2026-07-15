@@ -1,11 +1,22 @@
+"use client";
+
 /**
  * Loading UI shown by Next.js App Router when the /[lang] segment is
  * suspending (e.g. on first navigation, during streaming). Provides a
  * subtle fade-in so route changes don't feel jarring.
  *
- * This file is rendered by the framework — it must be a server component.
+ * `loading.tsx` doesn't receive route `params`, so locale is read from the
+ * URL via `usePathname` — same strategy as error.tsx/not-found.tsx.
  */
+import { usePathname } from "next/navigation";
+import { translations } from "@/lib/translations";
+import { detectLocaleFromPathname } from "@/lib/i18n";
+
 export default function Loading() {
+  const pathname = usePathname();
+  const lang = detectLocaleFromPathname(pathname);
+  const t = translations[lang];
+
   return (
     <div
       className="page-transition flex min-h-[60vh] items-center justify-center"
@@ -18,8 +29,7 @@ export default function Loading() {
           <div className="absolute inset-0 animate-spin rounded-full border-2 border-primary border-t-transparent" />
         </div>
         <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-          {/* Server component — no access to translations. Neutral label. */}
-          Carregando…
+          {t.a11y.loading}
         </span>
       </div>
     </div>

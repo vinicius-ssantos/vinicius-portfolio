@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vinicius-portfolio-source.vercel.app";
+import { SITE_URL, absoluteUrl } from "@/lib/site-config";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -10,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    sitemap: absoluteUrl("/sitemap.xml"),
     host: SITE_URL,
   };
 }

@@ -1,7 +1,18 @@
+"use client";
+
 /**
- * Loading UI for project detail pages. Same fade+spinner as /[lang]/loading.tsx.
+ * Loading UI for project detail pages. Same fade+spinner and locale
+ * detection as /[lang]/loading.tsx.
  */
+import { usePathname } from "next/navigation";
+import { translations } from "@/lib/translations";
+import { detectLocaleFromPathname } from "@/lib/i18n";
+
 export default function Loading() {
+  const pathname = usePathname();
+  const lang = detectLocaleFromPathname(pathname);
+  const t = translations[lang];
+
   return (
     <div
       className="page-transition flex min-h-[60vh] items-center justify-center"
@@ -14,7 +25,7 @@ export default function Loading() {
           <div className="absolute inset-0 animate-spin rounded-full border-2 border-primary border-t-transparent" />
         </div>
         <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-          Carregando…
+          {t.a11y.loading}
         </span>
       </div>
     </div>
