@@ -44,7 +44,7 @@ const en = {
     badge: "Backend Engineer @ UOL · São Paulo, BR",
     getInTouch: "Get in touch",
     downloadCV: "Download CV",
-    seeExperience: "See experience",
+    seeProjects: "View projects",
   },
   contactModal: {
     title: "Let's talk",
@@ -197,7 +197,7 @@ const pt: Translation = {
     badge: "Engenheiro Backend @ UOL · São Paulo, BR",
     getInTouch: "Entrar em contato",
     downloadCV: "Baixar CV",
-    seeExperience: "Ver experiência",
+    seeProjects: "Ver projetos",
   },
   contactModal: {
     title: "Vamos conversar",

@@ -29,8 +29,8 @@ export const profile = {
   // September 2021 = first day at Autbank as QA Analyst.
   careerStart: CAREER_START,
   pitch: {
-    pt: "Engenheiro de Software Backend na UOL, trabalhando em fluxos de autenticação, autorização e proteção de conta. Foco em confiabilidade, qualidade de entrega e estabilidade em produção — o tipo de trabalho onde pequenos erros têm consequências grandes.",
-    en: "Backend Software Engineer at UOL, working on authentication, authorization and account-protection flows. I focus on reliability, delivery quality and production stability — the kind of work where small mistakes have outsized consequences.",
+    pt: "Engenheiro de Software Backend na UOL, especializado em Java, Spring e serviços críticos de autenticação e proteção de contas. Construo APIs e integrações com foco em segurança, confiabilidade, testes e estabilidade em produção.",
+    en: "Backend Software Engineer at UOL, specialized in Java, Spring, and critical authentication and account-protection services. I build APIs and integrations with a focus on security, reliability, testing, and production stability.",
   } as LocalizedText,
   longPitch: {
     pt: "Engenheiro de Software Backend com experiência em APIs, integrações e serviços críticos de segurança. Atuo com foco em confiabilidade, qualidade de entrega e estabilidade em produção — construindo e evoluindo o tipo de sistema onde pequenos erros têm consequências grandes. Meu dia a dia na UOL envolve endurecer fluxos de autenticação e proteção de conta, padronizar contratos entre serviços e sustentar pipelines de CI/CD em Kubernetes para que releases fiquem entediantes.",
