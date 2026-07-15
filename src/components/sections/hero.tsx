@@ -52,20 +52,26 @@ export function Hero({
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Button type="button" size="default" onClick={onContactOpen} className="btn-press">
+            <Button asChild size="default" className="btn-arrow btn-press">
+              <a href={`/${lang}#projects`}>
+                {t.hero.seeProjects}
+                <ArrowRight className="arrow-nudge ml-2 h-4 w-4" />
+              </a>
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="default"
+              onClick={onContactOpen}
+              className="btn-press"
+            >
               <Mail className="mr-2 h-4 w-4" />
               {t.hero.getInTouch}
             </Button>
-            <Button asChild variant="outline" size="default" className="btn-press">
+            <Button asChild variant="ghost" size="default" className="btn-press">
               <a href={profile.links.cv} download target="_blank" rel="noopener noreferrer">
                 <Download className="mr-2 h-4 w-4" />
                 {t.hero.downloadCV}
-              </a>
-            </Button>
-            <Button asChild variant="ghost" size="default" className="btn-arrow btn-press">
-              <a href={`/${lang}#experience`}>
-                {t.hero.seeExperience}
-                <ArrowRight className="arrow-nudge ml-2 h-4 w-4" />
               </a>
             </Button>
           </div>
