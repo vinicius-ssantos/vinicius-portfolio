@@ -11,6 +11,10 @@ type T = typeof translations.en;
 export function ContactForm({ t }: { t: T }) {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  // Captured once, at the render where the form first becomes interactive —
+  // the server rejects submissions that arrive faster than a human could
+  // plausibly fill the form.
+  const [renderedAt] = useState(() => Date.now());
   const { toast } = useToast();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -22,6 +26,8 @@ export function ContactForm({ t }: { t: T }) {
       name: formData.get("name"),
       email: formData.get("email"),
       message: formData.get("message"),
+      website: formData.get("website"), // honeypot — must stay empty
+      renderedAt,
     };
 
     try {
@@ -55,6 +61,13 @@ export function ContactForm({ t }: { t: T }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
+      {/* Honeypot — invisible and out of the accessibility tree, so real
+          visitors (including screen reader users) never see or fill it.
+          Bots that blindly fill every field trip the server-side check. */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "-9999px" }}>
+        <label htmlFor="cf-website">Website</label>
+        <input id="cf-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+      </div>
       <div>
         <label htmlFor="cf-name" className="sr-only">
           {t.contactModal.formName}

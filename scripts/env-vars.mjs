@@ -21,4 +21,9 @@ export const ENV_VARS = [
     required: false,
     note: "the contact form will return 503 and direct users to email directly",
   },
+  {
+    name: "RESEND_FROM_EMAIL",
+    required: false,
+    note: "defaults to the onboarding@resend.dev sandbox sender — set to a verified domain address in production",
+  },
 ];

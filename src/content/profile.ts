@@ -33,6 +33,11 @@ export const profile = {
   location: { pt: "São Paulo, SP — Brasil", en: "São Paulo, SP — Brazil" } as LocalizedText,
   locationShort: "São Paulo, BR",
   email: "viniciusoli2020@gmail.com",
+  // Deliberately shipped in the client bundle, same as the rest of this
+  // file — it's already public on the downloadable CV PDF, so hiding it
+  // behind a server round-trip would add complexity without actually
+  // protecting anything. The reveal-phone.tsx click-to-show UI is a casual
+  // deterrent against dumb scrapers, not a real access control.
   phone: "+55 (11) 91676-2083",
   languages: ["PT (nativo)", "EN (intermediário)"],
   // Career start date — used to compute years of experience dynamically.
