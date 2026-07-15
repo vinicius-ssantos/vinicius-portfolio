@@ -5,11 +5,11 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { translations } from "@/lib/translations";
-import type { Lang } from "@/lib/translations";
+import { detectLocaleFromPathname } from "@/lib/i18n";
 
 export default function NotFound() {
   const pathname = usePathname();
-  const lang: Lang = pathname.startsWith("/en") ? "en" : "pt";
+  const lang = detectLocaleFromPathname(pathname);
   const t = translations[lang];
 
   return (

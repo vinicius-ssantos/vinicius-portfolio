@@ -7,11 +7,11 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SiteChrome } from "@/components/site-chrome";
-import { projects, profile, t as tp, getProjectBySlug } from "@/content";
-import { translations, type Lang } from "@/lib/translations";
+import { projects, t as tp, getProjectBySlug, type Lang } from "@/content";
+import { translations } from "@/lib/translations";
 import { isLocale } from "@/lib/i18n";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vinicius-portfolio-source.vercel.app";
+import { absoluteUrl } from "@/lib/site-config";
+import { buildProjectMetadata, buildProjectJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
 
 type Params = Promise<{ lang: string; slug: string }>;
 
@@ -32,36 +32,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const project = getProjectBySlug(slug);
   if (!project) return {};
 
-  const title = `${project.name} — ${profile.shortName}`;
-  const description = tp(project.tagline, lang);
-  const path = `/${lang}/projects/${slug}`;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      type: "article",
-      locale: lang === "pt" ? "pt_BR" : "en_US",
-      url: `${SITE_URL}${path}`,
-      title,
-      description,
-      siteName: `${profile.shortName} — Portfolio`,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: project.image ? [project.image] : undefined,
-    },
-    alternates: {
-      canonical: `${SITE_URL}${path}`,
-      languages: {
-        "pt-BR": `${SITE_URL}/pt/projects/${slug}`,
-        "en-US": `${SITE_URL}/en/projects/${slug}`,
-        "x-default": `${SITE_URL}/pt/projects/${slug}`,
-      },
-    },
-  };
+  return buildProjectMetadata(project, lang);
 }
 
 export default async function ProjectPage({ params }: { params: Params }) {
@@ -72,41 +43,11 @@ export default async function ProjectPage({ params }: { params: Params }) {
   const project = getProjectBySlug(slug);
   if (!project) notFound();
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CreativeWork",
-    name: project.name,
-    description: tp(project.description, lang),
-    url: `${SITE_URL}/${lang}/projects/${project.slug}`,
-    codeRepository: project.repoUrl,
-    author: {
-      "@type": "Person",
-      name: profile.name,
-      url: `${SITE_URL}/${lang}`,
-    },
-    keywords: project.stack.join(", "),
-    dateModified: project.updatedAt,
-    inLanguage: lang === "pt" ? "pt-BR" : "en-US",
-  };
-
-  const breadcrumb = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: lang === "pt" ? "Início" : "Home",
-        item: `${SITE_URL}/${lang}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: project.name,
-        item: `${SITE_URL}/${lang}/projects/${project.slug}`,
-      },
-    ],
-  };
+  const jsonLd = buildProjectJsonLd(project, lang);
+  const breadcrumb = buildBreadcrumbJsonLd([
+    { name: t.nav.home, url: absoluteUrl(`/${lang}`) },
+    { name: project.name, url: absoluteUrl(`/${lang}/projects/${project.slug}`) },
+  ]);
 
   return (
     <SiteChrome t={t} lang={lang}>

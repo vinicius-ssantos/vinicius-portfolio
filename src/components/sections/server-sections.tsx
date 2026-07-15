@@ -32,6 +32,7 @@ import {
   type LocalizedText,
 } from "@/content";
 import { getGitHubStats, formatStat, type ContributionDay, type LanguageStat } from "@/lib/github";
+import { formatMonthYear } from "@/lib/i18n";
 import { RevealPhone } from "@/components/reveal-phone";
 import { RevealOnScroll } from "@/components/animations/reveal-on-scroll";
 import { StatCounter } from "@/components/animations/stat-counter";
@@ -204,7 +205,7 @@ export function Experience({ t, lang }: { t: T; lang: Lang }) {
       <RevealOnScroll stagger className="mt-10 space-y-4">
         {experience.map((exp, idx) => (
           <div
-            key={`${exp.company}-${exp.period}`}
+            key={`${exp.company}-${exp.startDate}`}
             style={{ "--stagger-index": idx } as React.CSSProperties}
           >
             <ExperienceCard exp={exp} t={t} lang={lang} />
@@ -234,7 +235,15 @@ function ExperienceCard({ exp, t, lang }: { exp: (typeof experience)[number]; t:
               </Badge>
             )}
           </div>
-          <span className="font-mono text-xs text-muted-foreground">{exp.period}</span>
+          <span className="font-mono text-xs text-muted-foreground">
+            <time dateTime={exp.startDate}>{formatMonthYear(exp.startDate, lang)}</time>
+            {" — "}
+            {exp.current || !exp.endDate ? (
+              t.experience.present
+            ) : (
+              <time dateTime={exp.endDate}>{formatMonthYear(exp.endDate, lang)}</time>
+            )}
+          </span>
         </div>
         <CardDescription className="text-sm font-medium text-foreground/70">
           {exp.company}
@@ -539,7 +548,7 @@ export function CaseStudy({ t, lang }: { t: T; lang: Lang }) {
             <CardHeader>
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="outline" className="font-mono text-[10px] uppercase">
-                  {t.caseStudy.role}
+                  {tp(cs.role, lang)}
                 </Badge>
                 <Badge variant="outline" className="font-mono text-[10px] uppercase">
                   {t.caseStudy.updated} {cs.updatedAt}
@@ -682,7 +691,7 @@ function ArchitectureDiagram({
       </div>
       <div className="border-t border-border/60 bg-secondary/30 px-4 py-3">
         <div className="mb-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-          {lang === "pt" ? "fluxo de tráfego" : "traffic flow"}
+          {t.caseStudy.trafficFlow}
         </div>
         <div className="flex flex-wrap items-center gap-1.5 font-mono text-xs text-foreground/90">
           {tp(data.flowText, lang)

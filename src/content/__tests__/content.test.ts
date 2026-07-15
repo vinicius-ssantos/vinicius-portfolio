@@ -81,13 +81,24 @@ describe("content", () => {
     it("each experience has all localized fields", () => {
       experience.forEach((exp) => {
         expect(exp.company).toBeTruthy();
-        expect(exp.period).toBeTruthy();
+        expect(exp.startDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+        if (!exp.current) {
+          expect(exp.endDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+        }
         expect(exp.role.pt).toBeTruthy();
         expect(exp.role.en).toBeTruthy();
         expect(exp.summary.pt).toBeTruthy();
         expect(exp.summary.en).toBeTruthy();
         expect(exp.bullets.length).toBeGreaterThan(0);
         expect(exp.stack.length).toBeGreaterThan(0);
+      });
+    });
+
+    it("experience date ranges are internally consistent", () => {
+      experience.forEach((exp) => {
+        if (exp.endDate) {
+          expect(new Date(exp.startDate).getTime()).toBeLessThan(new Date(exp.endDate).getTime());
+        }
       });
     });
 

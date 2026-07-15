@@ -35,7 +35,10 @@ export type Project = {
 };
 
 export type Experience = {
-  period: string;
+  /** ISO date ("YYYY-MM-DD") — format for display with `formatMonthYear` from `@/lib/i18n`. */
+  startDate: string;
+  /** ISO date; omit when `current` is true. */
+  endDate?: string;
   company: string;
   role: LocalizedText;
   summary: LocalizedText;

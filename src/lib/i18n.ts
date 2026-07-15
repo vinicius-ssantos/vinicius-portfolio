@@ -1,5 +1,6 @@
-import type { Lang } from "./translations";
-
+// Single source of truth for the "locale"/"lang" concept used across
+// routing (this file), content (`src/content`), and UI translations
+// (`src/lib/translations.ts`, which re-exports this as `Lang`).
 export const locales = ["pt", "en"] as const;
 export type Locale = (typeof locales)[number];
 
@@ -15,12 +16,32 @@ export function parseLocale(value: string | undefined | null): Locale {
   return isLocale(value) ? value : defaultLocale;
 }
 
-export function getLocalePath(path: string, lang: Lang): string {
+export function getLocalePath(path: string, lang: Locale): string {
   const trimmed = path.startsWith("/") ? path.slice(1) : path;
   return `/${lang}${trimmed ? `/${trimmed}` : ""}`;
 }
 
-export function swapLocaleInPath(pathname: string, nextLang: Lang): string {
+/**
+ * Reads the locale out of a pathname's first segment (e.g. "/en/projects" -> "en").
+ * Used by client boundary files (error/not-found/loading) that don't receive
+ * route `params`, so every one of them detects locale the same way.
+ */
+export function detectLocaleFromPathname(pathname: string | null | undefined): Locale {
+  const segment = pathname?.split("/").filter(Boolean)[0];
+  return parseLocale(segment);
+}
+
+const monthYearFormatters: Record<Locale, Intl.DateTimeFormat> = {
+  pt: new Intl.DateTimeFormat("pt-BR", { year: "numeric", month: "short" }),
+  en: new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short" }),
+};
+
+/** Formats an ISO date ("2024-08-01") as a short month + year for `locale`. */
+export function formatMonthYear(iso: string, locale: Locale): string {
+  return monthYearFormatters[locale].format(new Date(`${iso}T00:00:00`));
+}
+
+export function swapLocaleInPath(pathname: string, nextLang: Locale): string {
   const segments = pathname.split("/").filter(Boolean);
   if (segments.length > 0 && isLocale(segments[0])) {
     segments[0] = nextLang;

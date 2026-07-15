@@ -2,7 +2,7 @@ import type { Experience } from "./types";
 
 export const experience: Experience[] = [
   {
-    period: "08/2024 — Presente",
+    startDate: "2024-08-01",
     company: "UOL",
     role: {
       pt: "Engenheiro de Software (Backend)",
@@ -45,7 +45,8 @@ export const experience: Experience[] = [
     current: true,
   },
   {
-    period: "01/2023 — 01/2024",
+    startDate: "2023-01-01",
+    endDate: "2024-01-01",
     company: "Autbank — Projetos e Consultoria",
     role: {
       pt: "Analista Desenvolvedor de Sistemas",
@@ -72,7 +73,8 @@ export const experience: Experience[] = [
     stack: ["Java", "JSF", "Tomcat", "MVC", "Maven", "HTML", "CSS", "SQL Server"],
   },
   {
-    period: "09/2021 — 01/2023",
+    startDate: "2021-09-01",
+    endDate: "2023-01-01",
     company: "Autbank — Projetos e Consultoria",
     role: {
       pt: "Analista de Testes",
