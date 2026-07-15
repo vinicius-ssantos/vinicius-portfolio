@@ -28,15 +28,21 @@ export function Hero({
           </div>
 
           <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-            {profile.name.split(" ").map((word, i) => (
-              <span
-                key={`${word}-${i}`}
-                className="hero-word"
-                style={{ "--word-index": i } as React.CSSProperties}
-              >
-                {word}{" "}
-              </span>
-            ))}
+            <span className="sr-only">{profile.name}</span>
+            <span aria-hidden="true" className="flex flex-wrap gap-x-[0.24em]">
+              {profile.name
+                .trim()
+                .split(/\s+/)
+                .map((word, i) => (
+                  <span
+                    key={`${word}-${i}`}
+                    className="hero-word"
+                    style={{ "--word-index": i } as React.CSSProperties}
+                  >
+                    {word}
+                  </span>
+                ))}
+            </span>
           </h1>
 
           <p className="mt-3 font-mono text-base text-primary sm:text-lg">
