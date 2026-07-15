@@ -85,6 +85,14 @@ The easiest way to deploy this Next.js app is via [Vercel](https://vercel.com/ne
 
 Optional env var: `NEXT_PUBLIC_SITE_URL` (defaults to the Vercel preview URL; set it to your production domain so canonical URLs / sitemap / JSON-LD point to the right place).
 
+### Moving to a custom domain
+
+All SEO-facing URLs (canonical, hreflang alternates, sitemap, robots.txt, JSON-LD, Open Graph) are derived from a single source — `SITE_URL` in `src/lib/site-config.ts`, which reads `NEXT_PUBLIC_SITE_URL`. To point the site at a custom domain instead of the `*.vercel.app` URL:
+
+1. Add the domain in the Vercel project's **Settings → Domains**.
+2. Set `NEXT_PUBLIC_SITE_URL` to `https://your-domain.tld` in **Settings → Environment Variables** (Production).
+3. Redeploy — every canonical/hreflang/sitemap/OG URL updates automatically, no code changes needed.
+
 ## Project structure
 
 ```

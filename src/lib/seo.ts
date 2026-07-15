@@ -124,11 +124,14 @@ export function buildProjectMetadata(project: Project, lang: Locale) {
       description,
       siteName: `${profile.shortName} — Portfolio`,
     },
+    // No explicit `images` here — Next.js's opengraph-image.tsx file
+    // convention auto-populates both og:image and twitter:image, so
+    // Twitter/X and every OG consumer (LinkedIn, Slack, Discord, ...)
+    // share the exact same generated image instead of diverging.
     twitter: {
       card: "summary_large_image" as const,
       title,
       description,
-      images: project.image ? [project.image] : undefined,
     },
     alternates: {
       canonical: absoluteUrl(`/${lang}${path}`),

@@ -5,11 +5,12 @@ import { buildLocaleAlternates } from "@/lib/seo";
 import { locales } from "@/lib/i18n";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-
+  // No `lastModified` on entries below — there's no tracked "last changed"
+  // date for the home page or the static CV file, and stamping `new Date()`
+  // on every sitemap generation would falsely claim they change constantly.
+  // Project entries use their real, manually-maintained `updatedAt`.
   const homeEntries: MetadataRoute.Sitemap = locales.map((lang) => ({
     url: absoluteUrl(`/${lang}`),
-    lastModified: now,
     changeFrequency: "monthly",
     priority: 1.0,
     alternates: { languages: buildLocaleAlternates("") },
@@ -31,7 +32,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...projectEntries,
     {
       url: absoluteUrl("/cv-vinicius-santos.pdf"),
-      lastModified: now,
       changeFrequency: "yearly",
       priority: 0.3,
     },
