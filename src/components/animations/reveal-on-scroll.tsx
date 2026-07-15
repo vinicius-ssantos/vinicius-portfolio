@@ -2,27 +2,31 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
+export type MotionPattern = "content" | "heading" | "list" | "data" | "diagram";
+
 /**
- * Wraps children and fades + slides them up when they enter the viewport.
- * Uses IntersectionObserver — fires once per element, then disconnects.
+ * Reveals content once it enters the viewport.
  *
- * Two modes:
- *  - default:     the wrapper itself fades in
- *  - stagger:     children fade in one by one (set --stagger-index on each child)
+ * `motion` describes why the element moves instead of exposing arbitrary
+ * durations or distances at call sites. CSS maps each pattern to shared
+ * tokens. Staggered collections default to `list`; other content defaults
+ * to `content`.
  *
- * Respects prefers-reduced-motion via CSS (the .reveal classes disable
- * themselves in that media query).
+ * prefers-reduced-motion is handled by CSS, which renders every pattern in
+ * its final state without spatial or continuous movement.
  */
 export function RevealOnScroll({
   children,
   stagger = false,
   delay = 0,
+  motion,
   className = "",
   as: Tag = "div",
 }: {
   children: ReactNode;
   stagger?: boolean;
   delay?: number;
+  motion?: MotionPattern;
   className?: string;
   as?: React.ElementType;
 }) {
@@ -61,9 +65,14 @@ export function RevealOnScroll({
 
   const baseClass = stagger ? "reveal-stagger" : "reveal";
   const visibleClass = visible ? "is-visible" : "";
+  const motionPattern = motion ?? (stagger ? "list" : "content");
 
   return (
-    <Tag ref={ref as never} className={`${baseClass} ${visibleClass} ${className}`.trim()}>
+    <Tag
+      ref={ref as never}
+      data-motion={motionPattern}
+      className={`${baseClass} ${visibleClass} ${className}`.trim()}
+    >
       {children}
     </Tag>
   );
