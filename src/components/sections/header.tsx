@@ -6,6 +6,7 @@ import { profile, type Lang } from "@/content";
 import type { Translation } from "@/lib/translations";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageToggle } from "@/components/language-toggle";
+import { MobileMenu } from "./mobile-menu";
 
 export function SiteHeader({ t, lang }: { t: Translation; lang: Lang }) {
   return (
@@ -75,6 +76,8 @@ export function SiteHeader({ t, lang }: { t: Translation; lang: Lang }) {
           >
             <Linkedin className="h-4 w-4" />
           </a>
+
+          <MobileMenu t={t} lang={lang} />
         </nav>
       </div>
     </header>

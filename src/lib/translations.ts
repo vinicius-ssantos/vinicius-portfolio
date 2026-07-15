@@ -13,6 +13,9 @@ const en = {
   a11y: {
     skipToContent: "Skip to content",
     loading: "Loading…",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
+    menuTitle: "Navigation menu",
   },
   notFound: {
     eyebrow: "404 — error",
@@ -162,6 +165,9 @@ const pt: Translation = {
   a11y: {
     skipToContent: "Pular para o conteúdo",
     loading: "Carregando…",
+    openMenu: "Abrir menu",
+    closeMenu: "Fechar menu",
+    menuTitle: "Menu de navegação",
   },
   notFound: {
     eyebrow: "404 — erro",
