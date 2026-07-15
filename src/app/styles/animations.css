@@ -19,14 +19,12 @@
 
 .reveal[data-motion="data"] {
   --motion-enter-duration: var(--motion-duration-data);
-  --motion-enter-transform: translateY(var(--motion-distance-xs))
-    scale(var(--motion-scale-enter));
+  --motion-enter-transform: translateY(var(--motion-distance-xs)) scale(var(--motion-scale-enter));
 }
 
 .reveal[data-motion="diagram"] {
   --motion-enter-duration: var(--motion-duration-expressive);
-  --motion-enter-transform: translateY(var(--motion-distance-sm))
-    scale(var(--motion-scale-enter));
+  --motion-enter-transform: translateY(var(--motion-distance-sm)) scale(var(--motion-scale-enter));
 }
 
 .reveal.is-visible {

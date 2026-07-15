@@ -32,8 +32,7 @@ export function StatCounter({
 
     const runCount = () => {
       const reduced =
-        typeof window !== "undefined" &&
-        window.matchMedia(REDUCED_MOTION_QUERY).matches;
+        typeof window !== "undefined" && window.matchMedia(REDUCED_MOTION_QUERY).matches;
 
       if (reduced) {
         requestAnimationFrame(() => setDisplay(value));
