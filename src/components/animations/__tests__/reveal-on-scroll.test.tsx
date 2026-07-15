@@ -55,6 +55,12 @@ class MockIntersectionObserver {
   }
 }
 
+function currentObserver(): MockIntersectionObserver {
+  const observer = MockIntersectionObserver.instances[0];
+  if (!observer) throw new Error("Expected a shared IntersectionObserver instance");
+  return observer;
+}
+
 function stubMotionPreference(matches = false) {
   vi.stubGlobal(
     "matchMedia",
@@ -96,7 +102,7 @@ describe("RevealOnScroll", () => {
     );
 
     expect(MockIntersectionObserver.instances).toHaveLength(1);
-    const observer = MockIntersectionObserver.instances[0];
+    const observer = currentObserver();
     const first = screen.getByText("first");
     const second = screen.getByText("second");
 
@@ -115,7 +121,7 @@ describe("RevealOnScroll", () => {
 
   it("cancels delayed entrance work and observation on unmount", () => {
     const { unmount } = render(<RevealOnScroll delay={250}>delayed</RevealOnScroll>);
-    const observer = MockIntersectionObserver.instances[0];
+    const observer = currentObserver();
     const target = screen.getByText("delayed");
 
     act(() => observer.trigger(target, true));
