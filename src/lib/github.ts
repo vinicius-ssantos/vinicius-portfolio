@@ -17,13 +17,21 @@ export type GitHubStats = {
   contributions: number;
   weeks: ContributionDay[][];
   languages: LanguageStat[];
+  /**
+   * True only when this data actually came from the GitHub API this
+   * request. False for every fallback path (missing token, non-OK
+   * response, malformed payload, network error) — callers must not
+   * label fallback numbers as "live".
+   */
+  isLive: boolean;
 };
 
 const FALLBACK: GitHubStats = {
-  publicRepos: Number(profile.stats[1].value) || 53,
-  contributions: Number(profile.stats[2].value) || 3733,
+  publicRepos: Number(profile.stats[2]?.value) || 53,
+  contributions: 3733,
   weeks: [],
   languages: [],
+  isLive: false,
 };
 
 const REVALIDATE_SECONDS = 60 * 60 * 24;
@@ -132,6 +140,7 @@ export const getGitHubStats = cache(async (): Promise<GitHubStats> => {
       contributions: calendar?.totalContributions ?? FALLBACK.contributions,
       weeks,
       languages,
+      isLive: true,
     };
   } catch {
     return FALLBACK;

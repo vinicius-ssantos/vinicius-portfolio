@@ -68,9 +68,6 @@ const en = {
     formError: "Something went wrong. Please try emailing me directly.",
   },
   stats: {
-    yearsLabel: "Years in backend & QA",
-    reposLabel: "Public repositories",
-    contribsLabel: "GitHub contributions / yr",
     heatmapLess: "Less",
     heatmapMore: "More",
     heatmapTitle: "contributions in the last year",
@@ -221,9 +218,6 @@ const pt: Translation = {
     formError: "Algo deu errado. Tente me enviar um email diretamente.",
   },
   stats: {
-    yearsLabel: "Anos em backend & QA",
-    reposLabel: "Repositórios públicos",
-    contribsLabel: "Contribuições / ano no GitHub",
     heatmapLess: "Menos",
     heatmapMore: "Mais",
     heatmapTitle: "contribuições no último ano",
