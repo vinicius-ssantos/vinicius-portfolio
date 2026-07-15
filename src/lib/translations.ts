@@ -1,6 +1,6 @@
 /**
  * UI translations for PT and EN.
- * Content translations (jobs, projects, etc.) live in portfolio-data.ts
+ * Content translations (jobs, projects, etc.) live in src/content/
  * with { pt, en } pairs on each text field.
  */
 

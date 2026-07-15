@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { profile } from "./portfolio-data";
+import { profile } from "@/content";
 
 export type ContributionDay = {
   date: string;

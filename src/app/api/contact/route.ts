@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { profile } from "@/lib/portfolio-data";
+import { profile } from "@/content";
 
 export async function POST(request: Request) {
   const apiKey = process.env.RESEND_API_KEY;

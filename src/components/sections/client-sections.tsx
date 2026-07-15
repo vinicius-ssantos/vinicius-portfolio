@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Github, Linkedin, Mail, ArrowRight, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { profile, stack, t as tp, type Lang } from "@/lib/portfolio-data";
+import { profile, stack, t as tp, type Lang } from "@/content";
 import type { translations } from "@/lib/translations";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageToggle } from "@/components/language-toggle";

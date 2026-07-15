@@ -22,14 +22,15 @@ import { Badge } from "@/components/ui/badge";
 import {
   profile,
   stack,
-  projects,
   experience,
   education,
   t as tp,
+  getFeaturedProject,
+  getVisibleProjects,
   type Lang,
   type Project,
   type LocalizedText,
-} from "@/lib/portfolio-data";
+} from "@/content";
 import { getGitHubStats, formatStat, type ContributionDay, type LanguageStat } from "@/lib/github";
 import { RevealPhone } from "@/components/reveal-phone";
 import { RevealOnScroll } from "@/components/animations/reveal-on-scroll";
@@ -399,7 +400,7 @@ export function FeaturedProjects({ t, lang }: { t: T; lang: Lang }) {
         description={t.projects.description}
       />
       <RevealOnScroll stagger className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
-        {projects.map((p, idx) => (
+        {getVisibleProjects().map((p, idx) => (
           <div key={p.slug} style={{ "--stagger-index": idx } as React.CSSProperties}>
             <ProjectCard project={p} priority={idx === 0} t={t} lang={lang} />
           </div>
@@ -415,7 +416,7 @@ function ProjectCard({
   t,
   lang,
 }: {
-  project: (typeof projects)[number];
+  project: Project;
   priority?: boolean;
   t: T;
   lang: Lang;
@@ -520,10 +521,7 @@ function ProjectCard({
 /* ------------------------------------------------------------------ */
 
 export function CaseStudy({ t, lang }: { t: T; lang: Lang }) {
-  const cs = projects.find((p) => p.featured) ?? projects[0];
-  if (!cs) {
-    throw new Error("CaseStudy requires at least one project in `projects`.");
-  }
+  const cs = getFeaturedProject();
   const csData = cs.caseStudy;
 
   // If the featured project has no deep-dive content, render only the
