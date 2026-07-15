@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, CheckCircle2, FileCode2, Github } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, CheckCircle2, Github } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SiteChrome } from "@/components/site-chrome";
+import { ProjectHighlights } from "@/components/sections/project-highlights";
+import { ProjectStackBadges } from "@/components/sections/project-stack-badges";
 import { projects, t as tp, getProjectBySlug, type Lang } from "@/content";
 import { translations } from "@/lib/translations";
 import { isLocale } from "@/lib/i18n";
@@ -129,27 +131,11 @@ export default async function ProjectPage({ params }: { params: Params }) {
           </Section>
 
           <Section label={t.projectDetail.outcomesLabel}>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {project.highlights.map((h) => (
-                <div
-                  key={tp(h, lang)}
-                  className="flex gap-3 rounded-md border border-border/60 bg-secondary/30 p-3"
-                >
-                  <FileCode2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                  <span className="text-sm leading-relaxed text-foreground/90">{tp(h, lang)}</span>
-                </div>
-              ))}
-            </div>
+            <ProjectHighlights highlights={project.highlights} lang={lang} />
           </Section>
 
           <Section label={t.projectDetail.stackLabel}>
-            <div className="flex flex-wrap gap-1.5">
-              {project.stack.map((s) => (
-                <Badge key={s} variant="secondary" className="font-mono text-xs font-normal">
-                  {s}
-                </Badge>
-              ))}
-            </div>
+            <ProjectStackBadges stack={project.stack} />
           </Section>
         </div>
 

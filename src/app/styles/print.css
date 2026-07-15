@@ -1,0 +1,47 @@
+/* Print stylesheet — for recruiters who print the page as PDF */
+@media print {
+  /* Force light theme + black-on-white */
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* Hide non-essential UI */
+  header,
+  footer,
+  .grid-bg,
+  button[aria-label],
+  .animate-ping,
+  a[aria-label="GitHub"],
+  a[aria-label="LinkedIn"] {
+    display: none !important;
+  }
+
+  /* Reset colors to print-safe */
+  * {
+    color: #000 !important;
+    background: transparent !important;
+    border-color: #ccc !important;
+    box-shadow: none !important;
+  }
+
+  /* Ensure links show their URLs */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #666 !important;
+  }
+
+  /* Force page breaks between major sections */
+  main > section {
+    page-break-inside: avoid;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  /* Use serif font for body in print (more readable on paper) */
+  body {
+    font-family: Georgia, "Times New Roman", serif !important;
+  }
+}
