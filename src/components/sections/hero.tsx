@@ -3,6 +3,7 @@
 import { Mail, Download, ArrowRight, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { profile, stack, t as tp, type Lang } from "@/content";
+import { useViewportMotion } from "@/hooks/use-viewport-motion";
 import type { Translation } from "@/lib/translations";
 import { trackEvent } from "@/lib/analytics";
 
@@ -15,8 +16,17 @@ export function Hero({
   lang: Lang;
   onContactOpen: () => void;
 }) {
+  const { ref, inViewport } = useViewportMotion<HTMLElement>({
+    rootMargin: "0px",
+    threshold: 0,
+  });
+
   return (
-    <section className="relative overflow-hidden">
+    <section
+      ref={ref}
+      data-motion-in-viewport={inViewport ? "true" : "false"}
+      className="relative overflow-hidden"
+    >
       <div aria-hidden className="absolute inset-0 grid-bg pointer-events-none" />
       <div className="relative mx-auto max-w-5xl px-4 py-20 sm:px-6 sm:py-28">
         <div className="max-w-3xl">
