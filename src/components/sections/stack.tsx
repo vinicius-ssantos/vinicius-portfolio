@@ -36,11 +36,13 @@ function LanguagesBar({ languages, t }: { languages: LanguageStat[]; t: Translat
           <div
             key={lang.name}
             className="lang-bar-segment"
-            style={{
-              width: `${lang.percentage}%`,
-              backgroundColor: lang.color,
-              animationDelay: `${i * 80}ms`,
-            }}
+            style={
+              {
+                width: `${lang.percentage}%`,
+                backgroundColor: lang.color,
+                "--bar-index": i,
+              } as React.CSSProperties
+            }
             title={`${lang.name}: ${lang.percentage.toFixed(1)}%`}
           />
         ))}
@@ -113,9 +115,9 @@ export async function Stack({ t, lang }: { t: Translation; lang: Lang }) {
           title={t.stack.title}
           description={t.stack.description}
         />
-        <div className="mt-8">
+        <RevealOnScroll motion="data" className="motion-language-bars mt-8">
           <LanguagesBar languages={gh.languages} t={t} />
-        </div>
+        </RevealOnScroll>
 
         <h3 className="mt-10 font-mono text-xs uppercase tracking-wider text-primary">
           {t.stack.professionalTitle}
