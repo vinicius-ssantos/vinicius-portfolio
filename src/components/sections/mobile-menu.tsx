@@ -10,8 +10,17 @@ import type { Translation } from "@/lib/translations";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageToggle } from "@/components/language-toggle";
 import { trackEvent } from "@/lib/analytics";
+import type { NavSectionId } from "@/lib/nav-sections";
 
-export function MobileMenu({ t, lang }: { t: Translation; lang: Lang }) {
+export function MobileMenu({
+  t,
+  lang,
+  activeSection = null,
+}: {
+  t: Translation;
+  lang: Lang;
+  activeSection?: NavSectionId | null;
+}) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -25,12 +34,12 @@ export function MobileMenu({ t, lang }: { t: Translation; lang: Lang }) {
     setOpen(false);
   }
 
-  const links = [
-    { href: `/${lang}#experience`, label: t.nav.experience },
-    { href: `/${lang}#stack`, label: t.nav.stack },
-    { href: `/${lang}#projects`, label: t.nav.projects },
-    { href: `/${lang}#case-study`, label: t.nav.caseStudy },
-    { href: `/${lang}#about`, label: t.nav.about },
+  const links: { id: NavSectionId; href: string; label: string }[] = [
+    { id: "experience", href: `/${lang}#experience`, label: t.nav.experience },
+    { id: "stack", href: `/${lang}#stack`, label: t.nav.stack },
+    { id: "projects", href: `/${lang}#projects`, label: t.nav.projects },
+    { id: "case-study", href: `/${lang}#case-study`, label: t.nav.caseStudy },
+    { id: "about", href: `/${lang}#about`, label: t.nav.about },
   ];
 
   return (
@@ -73,7 +82,9 @@ export function MobileMenu({ t, lang }: { t: Translation; lang: Lang }) {
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-3 text-base font-medium text-foreground transition-colors hover:bg-secondary"
+                data-active={activeSection === l.id}
+                aria-current={activeSection === l.id ? "location" : undefined}
+                className="nav-link rounded-md px-3 py-3 text-base font-medium text-foreground transition-colors hover:bg-secondary"
               >
                 {l.label}
               </Link>

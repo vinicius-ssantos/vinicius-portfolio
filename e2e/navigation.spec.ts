@@ -17,6 +17,36 @@ test.describe("desktop navigation", () => {
     await expect(page).toHaveURL(/#experience$/);
     await expect(page.locator("#experience")).toBeInViewport();
   });
+
+  test("scroll-spy marks the predominant section's nav link active", async ({ page, viewport }) => {
+    test.skip((viewport?.width ?? 0) < 640, "desktop-only nav links");
+
+    await page.goto("/en");
+    const stackLink = page.getByRole("link", { name: "Stack", exact: true });
+    const aboutLink = page.getByRole("link", { name: "About", exact: true });
+
+    await page.locator("#stack").scrollIntoViewIfNeeded();
+    await expect(stackLink).toHaveAttribute("aria-current", "location");
+    await expect(stackLink).toHaveAttribute("data-active", "true");
+    await expect(aboutLink).not.toHaveAttribute("aria-current", "location");
+
+    await page.locator("#about").scrollIntoViewIfNeeded();
+    await expect(aboutLink).toHaveAttribute("aria-current", "location");
+    await expect(stackLink).not.toHaveAttribute("aria-current", "location");
+  });
+
+  test("loading a URL with a section hash marks the matching nav link active", async ({
+    page,
+    viewport,
+  }) => {
+    test.skip((viewport?.width ?? 0) < 640, "desktop-only nav links");
+
+    await page.goto("/en#case-study");
+    await expect(page.getByRole("link", { name: "Case study", exact: true })).toHaveAttribute(
+      "aria-current",
+      "location",
+    );
+  });
 });
 
 test.describe("mobile navigation", () => {
