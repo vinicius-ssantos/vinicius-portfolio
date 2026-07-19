@@ -1,79 +1,69 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useViewportMotion } from "@/hooks/use-viewport-motion";
+import { MOTION_DURATION_MS, REDUCED_MOTION_QUERY } from "@/lib/motion";
 
 /**
- * Counts from 0 to `value` when the element scrolls into view.
- * Uses requestAnimationFrame with easeOutExpo so the count decelerates
- * towards the end — feels more natural than linear.
- *
- * Respects prefers-reduced-motion: jumps straight to the final value.
+ * Counts from 0 to `value` once the element enters the viewport.
+ * The observer is shared with other motion components and every scheduled
+ * frame is cancelled when the component unmounts or its inputs change.
  */
 export function StatCounter({
   value,
-  duration = 1400,
+  duration = MOTION_DURATION_MS.count,
   format = "auto",
   className = "",
 }: {
   value: number;
   duration?: number;
-  // "auto" uses formatStat logic (k for thousands), "plain" renders raw
   format?: "auto" | "plain";
   className?: string;
 }) {
-  const ref = useRef<HTMLSpanElement | null>(null);
+  const { ref, hasEntered } = useViewportMotion<HTMLSpanElement>({
+    threshold: 0.5,
+    rootMargin: "0px",
+    trackVisibility: false,
+  });
   const [display, setDisplay] = useState(0);
-  const startedRef = useRef(false);
+  const frameRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    if (!hasEntered) return;
 
-    const runCount = () => {
-      const reduced =
-        typeof window !== "undefined" &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = window.matchMedia(REDUCED_MOTION_QUERY).matches;
+    const canAnimate =
+      !prefersReducedMotion && typeof IntersectionObserver !== "undefined" && duration > 0;
 
-      if (reduced) {
-        requestAnimationFrame(() => setDisplay(value));
-        return;
-      }
-
-      const start = performance.now();
-      const tick = (now: number) => {
-        const elapsed = now - start;
-        const t = Math.min(1, elapsed / duration);
-        const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-        setDisplay(Math.round(value * eased));
-        if (t < 1) requestAnimationFrame(tick);
+    if (!canAnimate) {
+      frameRef.current = window.requestAnimationFrame(() => setDisplay(value));
+      return () => {
+        if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current);
       };
-      requestAnimationFrame(tick);
-    };
-
-    if (typeof IntersectionObserver === "undefined") {
-      // Very old browsers: just show the final value, no animation.
-      // Using rAF avoids the lint rule about setState in effect.
-      requestAnimationFrame(() => setDisplay(value));
-      return;
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting && !startedRef.current) {
-            startedRef.current = true;
-            runCount();
-            observer.disconnect();
-            break;
-          }
-        }
-      },
-      { threshold: 0.5 },
-    );
+    const start = performance.now();
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(1, elapsed / duration);
+      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      setDisplay(Math.round(value * eased));
 
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [value, duration]);
+      if (progress < 1) {
+        frameRef.current = window.requestAnimationFrame(tick);
+      } else {
+        frameRef.current = null;
+      }
+    };
+
+    frameRef.current = window.requestAnimationFrame(tick);
+    return () => {
+      if (frameRef.current !== null) {
+        window.cancelAnimationFrame(frameRef.current);
+        frameRef.current = null;
+      }
+    };
+  }, [duration, hasEntered, value]);
 
   const formatted =
     format === "plain"
