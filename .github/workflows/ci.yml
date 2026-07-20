@@ -27,6 +27,13 @@ jobs:
           node-version: 20
           cache: npm
 
+      # package.json pins packageManager: npm@11.6.2 — without this, npm ci
+      # runs on whatever npm ships bundled with Node 20 instead, which can
+      # resolve optional platform dependencies differently and reject a
+      # lockfile a pinned-npm `npm install` produced as "out of sync".
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Install dependencies
         run: npm ci
 
@@ -61,6 +68,13 @@ jobs:
           node-version: 20
           cache: npm
 
+      # package.json pins packageManager: npm@11.6.2 — without this, npm ci
+      # runs on whatever npm ships bundled with Node 20 instead, which can
+      # resolve optional platform dependencies differently and reject a
+      # lockfile a pinned-npm `npm install` produced as "out of sync".
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Install dependencies
         run: npm ci
 
@@ -86,6 +100,13 @@ jobs:
         with:
           node-version: 20
           cache: npm
+
+      # package.json pins packageManager: npm@11.6.2 — without this, npm ci
+      # runs on whatever npm ships bundled with Node 20 instead, which can
+      # resolve optional platform dependencies differently and reject a
+      # lockfile a pinned-npm `npm install` produced as "out of sync".
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Install dependencies
         run: npm ci
