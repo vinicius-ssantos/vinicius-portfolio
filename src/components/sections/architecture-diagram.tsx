@@ -23,11 +23,22 @@ export function ArchitectureDiagram({
   architecture,
   labels,
   size = "sm",
+  activeId: controlledActiveId,
+  onActiveChange,
 }: {
   architectureLabel: string;
   architecture: Architecture;
   labels: Labels;
   size?: "sm" | "lg";
+  /**
+   * Optional controlled selection. When provided, these buttons become the
+   * accessible control surface for something else too — the #48 3D canvas
+   * mirrors this rather than shipping its own (unreachable) canvas-only
+   * controls. Omit both props and the component stays self-contained, which
+   * is how the home page uses it.
+   */
+  activeId?: string | null;
+  onActiveChange?: (id: string | null) => void;
 }) {
   const detailId = useId();
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -40,8 +51,15 @@ export function ArchitectureDiagram({
   // isn't empty before any interaction; the compact (home) variant starts
   // with the neutral hint instead, to keep the card quiet at a glance.
   const fallbackId = size === "lg" ? (chain[0]?.[0]?.id ?? null) : null;
-  const activeId = hoveredId ?? focusedId ?? fallbackId;
+  const isControlled = onActiveChange !== undefined;
+  const activeId = isControlled
+    ? (controlledActiveId ?? null)
+    : (hoveredId ?? focusedId ?? fallbackId);
   const activeNode = architecture.nodes.find((n) => n.id === activeId) ?? null;
+
+  function select(id: string | null) {
+    onActiveChange?.(id);
+  }
 
   const groupLabel: Record<ArchitectureNodeGroup, string> = {
     local: labels.local,
@@ -58,10 +76,26 @@ export function ArchitectureDiagram({
         key={node.id}
         type="button"
         aria-describedby={detailId}
-        onMouseEnter={() => setHoveredId(node.id)}
-        onMouseLeave={() => setHoveredId((current) => (current === node.id ? null : current))}
-        onFocus={() => setFocusedId(node.id)}
-        onBlur={() => setFocusedId((current) => (current === node.id ? null : current))}
+        // Controlled mode also reports selected state, since the button is
+        // then driving a view the user can see but a screen reader can't.
+        aria-pressed={isControlled ? isActive : undefined}
+        // Selecting is idempotent rather than a toggle: hover and focus
+        // already select, so a toggle would immediately undo itself on the
+        // pointerover -> focus -> click sequence a plain click produces.
+        // Clearing is the dedicated restore control's job.
+        onClick={() => isControlled && select(node.id)}
+        onMouseEnter={() => (isControlled ? select(node.id) : setHoveredId(node.id))}
+        onMouseLeave={() =>
+          isControlled
+            ? undefined
+            : setHoveredId((current) => (current === node.id ? null : current))
+        }
+        onFocus={() => (isControlled ? select(node.id) : setFocusedId(node.id))}
+        onBlur={() =>
+          isControlled
+            ? undefined
+            : setFocusedId((current) => (current === node.id ? null : current))
+        }
         className={[
           "rounded-md border px-2.5 py-1.5 text-left font-mono transition-colors",
           nodeTextSize,

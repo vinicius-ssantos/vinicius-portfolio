@@ -3,7 +3,7 @@
 Running record of the Three.js spike. Each phase appends its findings; the
 Phase D decision at the end is what determines whether any of this ships.
 
-**Status: Phase A complete. Not shipped.** The prototype is gated behind
+**Status: Phases A and B complete. Not shipped.** The prototype is gated behind
 `NEXT_PUBLIC_ENABLE_3D_TOPOLOGY`, which is unset everywhere including
 production. Enabling it is a deliberate act, not a default.
 
@@ -117,16 +117,64 @@ inicial"). An e2e test asserts this and fails if the default ever flips.
 > configurations. Worth stating plainly so nobody re-derives a decision from
 > the discarded figures.
 
+## Phase B — interaction and content
+
+### The canvas has no controls of its own, deliberately
+
+#48 requires that hover, keyboard and touch offer equivalent access, and that
+nothing is reachable only inside WebGL. The straightforward reading — make
+canvas objects selectable — fails that immediately: three.js meshes are not
+DOM nodes, so they cannot be focused, labelled or announced.
+
+So selection lives in HTML. The accessible nodes built for #47 became the
+control surface, and the canvas mirrors their state:
+
+- `ArchitectureDiagram` gained an optional controlled mode (`activeId` +
+  `onActiveChange`). Omit both and it behaves exactly as before, which is how
+  the home page still uses it.
+- `TopologyExplorer` owns the selection and hands it to both views.
+- Clicking a node *in the canvas* reports into that same state — an
+  enhancement on top of the buttons, never the only route.
+
+This also means one set of controls rather than two that could drift apart —
+the same reasoning behind deriving layout from one graph instead of authoring
+coordinates twice.
+
+Selecting is idempotent rather than a toggle. A plain click fires
+`pointerover` and `focus` first, both of which already select, so a toggle
+undid itself mid-gesture. Clearing is the dedicated restore control's job,
+which is what #48 asks for anyway.
+
+### What selection does
+
+- the chosen node brightens and scales; everything else dims, so it reads as
+  chosen rather than merely lit;
+- connections touching it highlight in accent; unrelated ones recede;
+- the camera eases its aim toward the node and dollies partway in — enough to
+  read as a move, not so far that context is lost;
+- the HTML detail panel names the node and its responsibility;
+- a "restore overview" button appears, and only exists while there is
+  something to restore.
+
+Under reduced motion the same poses are used but snapped rather than eased,
+so selection still reframes without anything gliding across the screen.
+
+### Content the panel does not yet show
+
+#48 asks the panel for "responsabilidade, tecnologias, decisões e trade-offs".
+It currently shows responsibility only, because that is the field the content
+actually has. Per-node technologies and trade-offs would have to be authored —
+inventing them from the project's overall stack list would be fabrication, and
+the repo's content rules forbid that. Adding them is a content task, not a
+code one.
+
 ### Not yet done
 
-- Node selection, camera focus transitions and the detail panel (Phase B).
-- FPS and CPU/GPU measurement on a mid-range mobile device (Phase C) — note
-  this is partly moot given mobile is excluded, but the desktop numbers still
-  need collecting.
-- Keyboard navigation into the canvas. Currently the canvas is `aria-hidden`
-  and the accessible 2.5D diagram renders alongside it, so no information
-  lives only inside WebGL — but that also means the 3D view is presently
-  decorative rather than the primary interface.
+- FPS and CPU/GPU measurement (Phase C) — partly moot for mobile given it is
+  excluded, but desktop numbers still need collecting, and INP matters most
+  because parse/compile lands on the main thread.
+- Zoom limits and moderate rotation. Only selection-driven camera moves exist
+  today; #48 permits bounded zoom/rotation, which is not built.
 
 ### Open question for Phase D
 

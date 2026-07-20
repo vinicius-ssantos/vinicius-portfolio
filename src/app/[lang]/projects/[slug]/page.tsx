@@ -12,7 +12,7 @@ import { ProjectHighlights } from "@/components/sections/project-highlights";
 import { ProjectStackBadges } from "@/components/sections/project-stack-badges";
 import { RepositorySnapshot } from "@/components/sections/repository-snapshot";
 import { ArchitectureDiagram } from "@/components/sections/architecture-diagram";
-import { TopologyShowcase } from "@/components/topology/topology-showcase";
+import { TopologyExplorer } from "@/components/topology/topology-explorer";
 import { isTopology3DEnabled } from "@/lib/feature-flags";
 import { TrackedExternalLink } from "@/components/tracked-link";
 import { getAllProjectMetas, getProjectBySlug, type Lang } from "@/content";
@@ -228,26 +228,36 @@ export default async function ProjectPage({ params }: { params: Params }) {
 
           {project.caseStudy && (
             <Section label={t("projectDetail.architectureDiagramLabel")}>
-              {/* #48 Phase A prototype — off unless explicitly enabled. It
-                  sits above the accessible diagram rather than replacing it,
-                  so the canvas never holds information on its own. */}
-              {isTopology3DEnabled() && (
-                <TopologyShowcase
+              {/* #48 spike — off unless explicitly enabled, in which case the
+                  explorer wraps the same accessible diagram with a canvas
+                  that mirrors its selection. The flag-off branch is exactly
+                  what shipped before the spike existed. */}
+              {isTopology3DEnabled() ? (
+                <TopologyExplorer
+                  architectureLabel={project.caseStudy.architectureLabel}
                   architecture={project.caseStudy.architecture}
-                  label={t("projectDetail.topology3dExperimentLabel")}
+                  experimentLabel={t("projectDetail.topology3dExperimentLabel")}
+                  restoreLabel={t("projectDetail.topologyRestoreLabel")}
+                  labels={{
+                    local: t("caseStudy.local"),
+                    edge: t("caseStudy.edge"),
+                    vps: t("caseStudy.vps"),
+                    hint: t("caseStudy.selectNodeHint"),
+                  }}
+                />
+              ) : (
+                <ArchitectureDiagram
+                  architectureLabel={project.caseStudy.architectureLabel}
+                  architecture={project.caseStudy.architecture}
+                  size="lg"
+                  labels={{
+                    local: t("caseStudy.local"),
+                    edge: t("caseStudy.edge"),
+                    vps: t("caseStudy.vps"),
+                    hint: t("caseStudy.selectNodeHint"),
+                  }}
                 />
               )}
-              <ArchitectureDiagram
-                architectureLabel={project.caseStudy.architectureLabel}
-                architecture={project.caseStudy.architecture}
-                size="lg"
-                labels={{
-                  local: t("caseStudy.local"),
-                  edge: t("caseStudy.edge"),
-                  vps: t("caseStudy.vps"),
-                  hint: t("caseStudy.selectNodeHint"),
-                }}
-              />
             </Section>
           )}
 

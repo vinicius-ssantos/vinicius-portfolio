@@ -104,19 +104,23 @@ function useWebGLSupported(): boolean | null {
 }
 
 /**
- * The #48 Phase A prototype surface.
+ * The #48 prototype canvas.
  *
- * Renders the experimental canvas above whatever the caller already shows —
- * it never replaces the accessible HTML topology, so no information lives
- * only inside WebGL. Returns nothing at all when WebGL is missing, which is
- * the same end state as the flag being off.
+ * Renders above whatever the caller already shows — it never replaces the
+ * accessible HTML topology, so no information lives only inside WebGL.
+ * Returns nothing at all when WebGL is missing or the viewport is narrow,
+ * which is the same end state as the flag being off.
  */
 export function TopologyShowcase({
   architecture,
   label,
+  activeId,
+  onSelect,
 }: {
   architecture: Architecture;
   label: string;
+  activeId: string | null;
+  onSelect: (id: string | null) => void;
 }) {
   const { ref, inViewport } = useViewportMotion<HTMLDivElement>({
     rootMargin: "0px",
@@ -146,7 +150,13 @@ export function TopologyShowcase({
       {/* `null` until the probe resolves, so the canvas never mounts on a
           device that turns out not to support it. */}
       {webglSupported ? (
-        <Topology3D scene={scene} active={inViewport && tabVisible} reducedMotion={reducedMotion} />
+        <Topology3D
+          scene={scene}
+          active={inViewport && tabVisible}
+          reducedMotion={reducedMotion}
+          activeId={activeId}
+          onSelect={onSelect}
+        />
       ) : null}
     </div>
   );

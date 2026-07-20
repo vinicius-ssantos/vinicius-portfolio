@@ -149,6 +149,7 @@
     "video": "Video walkthrough",
     "architectureDiagramLabel": "System topology",
     "topology3dExperimentLabel": "3D prototype / experimental",
+    "topologyRestoreLabel": "Restore overview",
     "architectureLabel": "Architecture & decisions",
     "metricsLabel": "Metrics",
     "testingLabel": "Testing strategy",

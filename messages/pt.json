@@ -149,6 +149,7 @@
     "video": "Vídeo demonstrativo",
     "architectureDiagramLabel": "Topologia do sistema",
     "topology3dExperimentLabel": "protótipo 3D / experimental",
+    "topologyRestoreLabel": "Restaurar visão geral",
     "architectureLabel": "Arquitetura e decisões",
     "metricsLabel": "Métricas",
     "testingLabel": "Estratégia de testes",
