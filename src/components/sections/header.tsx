@@ -7,9 +7,13 @@ import type { Translation } from "@/lib/translations";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageToggle } from "@/components/language-toggle";
 import { trackEvent } from "@/lib/analytics";
+import { useScrollSpy } from "@/hooks/use-scroll-spy";
+import { NAV_SECTION_IDS } from "@/lib/nav-sections";
 import { MobileMenu } from "./mobile-menu";
 
 export function SiteHeader({ t, lang }: { t: Translation; lang: Lang }) {
+  const activeSection = useScrollSpy(NAV_SECTION_IDS);
+
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4 sm:px-6">
@@ -25,30 +29,40 @@ export function SiteHeader({ t, lang }: { t: Translation; lang: Lang }) {
         <nav className="flex items-center gap-1 text-sm">
           <Link
             href={`/${lang}#experience`}
+            data-active={activeSection === "experience"}
+            aria-current={activeSection === "experience" ? "location" : undefined}
             className="nav-link hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
             {t.nav.experience}
           </Link>
           <Link
             href={`/${lang}#stack`}
+            data-active={activeSection === "stack"}
+            aria-current={activeSection === "stack" ? "location" : undefined}
             className="nav-link hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
             {t.nav.stack}
           </Link>
           <Link
             href={`/${lang}#projects`}
+            data-active={activeSection === "projects"}
+            aria-current={activeSection === "projects" ? "location" : undefined}
             className="nav-link hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
             {t.nav.projects}
           </Link>
           <Link
             href={`/${lang}#case-study`}
+            data-active={activeSection === "case-study"}
+            aria-current={activeSection === "case-study" ? "location" : undefined}
             className="nav-link hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground lg:inline"
           >
             {t.nav.caseStudy}
           </Link>
           <Link
             href={`/${lang}#about`}
+            data-active={activeSection === "about"}
+            aria-current={activeSection === "about" ? "location" : undefined}
             className="nav-link hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground lg:inline"
           >
             {t.nav.about}
@@ -79,7 +93,7 @@ export function SiteHeader({ t, lang }: { t: Translation; lang: Lang }) {
             <Linkedin className="h-4 w-4" />
           </a>
 
-          <MobileMenu t={t} lang={lang} />
+          <MobileMenu t={t} lang={lang} activeSection={activeSection} />
         </nav>
       </div>
     </header>
