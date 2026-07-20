@@ -10,11 +10,13 @@ import { Button } from "@/components/ui/button";
 import { SiteChrome } from "@/components/site-chrome";
 import { ProjectHighlights } from "@/components/sections/project-highlights";
 import { ProjectStackBadges } from "@/components/sections/project-stack-badges";
+import { RepositorySnapshot } from "@/components/sections/repository-snapshot";
 import { TrackedExternalLink } from "@/components/tracked-link";
 import { getAllProjectMetas, getProjectBySlug, type Lang } from "@/content";
 import { isLocale } from "@/lib/i18n";
 import { absoluteUrl } from "@/lib/site-config";
 import { buildProjectMetadata, buildProjectJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { getProjectRepositorySnapshots, parseGitHubRepoUrl, repoKey } from "@/lib/github-repos";
 
 type Params = Promise<{ lang: string; slug: string }>;
 
@@ -46,6 +48,18 @@ export default async function ProjectPage({ params }: { params: Params }) {
   const t = await getTranslations();
   const project = getProjectBySlug(slug, lang);
   if (!project) notFound();
+
+  const repoRef = parseGitHubRepoUrl(project.repoUrl);
+  const snapshots = repoRef ? await getProjectRepositorySnapshots([repoRef]) : {};
+  const snapshot = repoRef ? snapshots[repoKey(repoRef)] : undefined;
+  const showRepoSection = Boolean(
+    snapshot &&
+    (snapshot.latestRelease ||
+      snapshot.license ||
+      (snapshot.languages && snapshot.languages.length > 0) ||
+      snapshot.pushedAt ||
+      snapshot.isArchived),
+  );
 
   const jsonLd = buildProjectJsonLd(project, lang);
   const breadcrumb = buildBreadcrumbJsonLd([
@@ -191,6 +205,23 @@ export default async function ProjectPage({ params }: { params: Params }) {
           <Section label={t("projectDetail.stackLabel")}>
             <ProjectStackBadges stack={project.stack} />
           </Section>
+
+          {showRepoSection && snapshot && (
+            <Section label={t("projectDetail.repositoryLabel")}>
+              <RepositorySnapshot
+                snapshot={snapshot}
+                lang={lang}
+                labels={{
+                  latestRelease: t("projectDetail.latestReleaseLabel"),
+                  license: t("projectDetail.licenseLabel"),
+                  languages: t("projectDetail.languagesLabel"),
+                  lastActivity: t("projectDetail.lastActivityLabel"),
+                  archived: t("projectDetail.archivedBadge"),
+                  viaGitHub: t("projectDetail.viaGitHub"),
+                }}
+              />
+            </Section>
+          )}
 
           {project.architectureNotes && project.architectureNotes.length > 0 && (
             <Section label={t("projectDetail.architectureLabel")}>
