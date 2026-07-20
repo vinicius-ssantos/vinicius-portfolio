@@ -24,15 +24,19 @@ const nextConfig: NextConfig = {
           // Strict CSP. 'unsafe-inline' is required for next/font and inline styles,
           // 'unsafe-inline' for scripts is required because next/og + Next internals
           // inject scripts. Vercel Analytics is loaded from va.vercel-scripts.com.
+          // Cloudflare Turnstile (contact form challenge, #54) needs its script
+          // (script-src), its own embedded frame (frame-src), and the calls it
+          // makes internally to run the challenge (connect-src).
           {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://challenges.cloudflare.com",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https:",
               "font-src 'self' data:",
-              "connect-src 'self' https://api.github.com https://vitals.vercel-insights.com",
+              "connect-src 'self' https://api.github.com https://vitals.vercel-insights.com https://challenges.cloudflare.com",
+              "frame-src https://challenges.cloudflare.com",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",

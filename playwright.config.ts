@@ -35,6 +35,12 @@ export default defineConfig({
     timeout: 180_000,
     env: {
       NEXT_PUBLIC_SITE_URL: baseURL,
+      // Cloudflare's official always-pass Turnstile test credentials
+      // (https://developers.cloudflare.com/turnstile/troubleshooting/testing/)
+      // — deterministic in CI, unlike the real widget, and rejected by real
+      // production secret keys so they can't leak into an actual deploy.
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: "1x00000000000000000000AA",
+      TURNSTILE_SECRET_KEY: "1x0000000000000000000000000000000AA",
     },
   },
 });
