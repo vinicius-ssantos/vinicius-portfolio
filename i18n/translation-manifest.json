@@ -1,0 +1,877 @@
+{
+  "a11y.closeMenu": {
+    "sourceHash": "sha256:7ff31408d36adf67830d0de06f2a9dc82cd2b8e290e784d5298943e5b726de8e",
+    "targetHash": "sha256:6ccd5c7856042d36476ffd35a41b54518be95621cc741ac3ed55b8108ea41586",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "a11y.loading": {
+    "sourceHash": "sha256:6cc1bbba0f84d197bb42da0098be583bd0113c1a437cc797ccd6d9394a1a6e30",
+    "targetHash": "sha256:ba3bbbe10d8bef66441c88536ce7b8e724e2829b59a3da658654f4961cd61ae5",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "a11y.menuTitle": {
+    "sourceHash": "sha256:46c9396ab4a3c281bed6ca0fabf874435471c0119174e20944f794b067418ee6",
+    "targetHash": "sha256:3f9abc8733ba366a159b56d7e23f02a37c817e13b0a8a259c4cbdf994275caa3",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "a11y.openMenu": {
+    "sourceHash": "sha256:7db0b2e89b4c1bfc0753174a2aebe821082f850c7c38e7be879a36629ce044a9",
+    "targetHash": "sha256:b40b3713b43dc702682dc967ea5c2dbe20ae414c30baf100d162a8250a928065",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "a11y.skipToContent": {
+    "sourceHash": "sha256:79b81dfc024738f474ccac5d6e88d857810d1f4fbcddc4040d3271dec51e3fdc",
+    "targetHash": "sha256:ac576a66d4563e600314a2ce6e731725e9826fd88baf2399e05f60bfb177dbc0",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "about.careerPath": {
+    "sourceHash": "sha256:6423a6dff504e339db2768e00efe523c1ebd4bb02ad2899e57da3f5d1e382b22",
+    "targetHash": "sha256:65b68c7f2ba602f49f9f1503d969155a1d933ef11500d2589a6be181b0e7e043",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "about.currently": {
+    "sourceHash": "sha256:5336f763953462e7b7080b7c1e7f6faff6033dcd77e86108c16c96487a8cee93",
+    "targetHash": "sha256:7188838c37b5deaa9f16af5189c9c920ae47705dc886ce3f191428aa10187903",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "about.currentlyItems.role": {
+    "sourceHash": "sha256:5c1bfe8f10b1ddde51478198fec6016d633fc856efe627696153200c2686a150",
+    "targetHash": "sha256:cdc05af74bd614b58ecc016c6858317403835bc9a353d79b580998e76264488c",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "about.currentlyItems.runningCluster": {
+    "sourceHash": "sha256:3ecb41baf34667d6cdfacb9505959efac4a8a2d6e6f1135f71e2d2acbd8f1c73",
+    "targetHash": "sha256:37b88b3ea59ff8a4d0ad819e740f35248c0eb55d918d33eb6385d5e32e0bfa40",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "about.currentlyItems.studying": {
+    "sourceHash": "sha256:245a2c08382f46e7594e495d586932a2e62a0ecf4d87a61bf3ee922fbd80b662",
+    "targetHash": "sha256:eb860b65f548de29029c2c16a41dde629ec49f0658404ac1d35c604ae0e3d598",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "about.currentlyLearning": {
+    "sourceHash": "sha256:932980ff851d56b8058bf0e5aaecaba248f464e72ad73f43c287a50e951d5b16",
+    "targetHash": "sha256:2ee4cce3fea36cdef1d8cefda13afe16c4f55f2999f4a0af67c2e4531ab4ce76",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "about.eyebrow": {
+    "sourceHash": "sha256:607ec2d6f738b2495233d23980a6c141cf15175b572ff2029f98e9684bc46793",
+    "targetHash": "sha256:4d538acef17aacc5d594f2e65917db09736921536a98e0027516454c6415d3dd",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "about.hidePhone": {
+    "sourceHash": "sha256:ba4904d8e40d44d6097d74a8beb21ac0048c63bc3a72bd5c3f4da21d44fe3c84",
+    "targetHash": "sha256:bbc91cf39c497bcd462a462ebd6ec1987960ee3560832d17ed9ee721a3d97d40",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "about.howIThink": {
+    "sourceHash": "sha256:72a121c2b4d13e9dadc3ad072ca45423958ed36a524c3d75ddc9a93a6edaa5a9",
+    "targetHash": "sha256:2cad0e4436710c6520cbeaed0a24d88e9e567de53cc5552cf16d01afc405979f",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "about.showPhone": {
+    "sourceHash": "sha256:751c4ff4822c3e64c8449a88b1fbc73401391cf3faa35c4b330fea490d730d2f",
+    "targetHash": "sha256:c3bc12a366ee5308b89dfab3228d90a56bc3d4780d932f021ff46530e432a109",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "about.title": {
+    "sourceHash": "sha256:a5ec265cf124eca346a1995e828488d15dcf87b0c34aa82d86984d213e03fa9f",
+    "targetHash": "sha256:83f57db627250b43e6721fb4a2d3ca43184808693dcf6b56100f2ed0b5801e09",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "caseStudy.approach": {
+    "sourceHash": "sha256:10fa34883fcc4b901af8768411ca856780e2424ff6844a95f00932f97fbe5ca2",
+    "targetHash": "sha256:85aef304fe277c8c599479065fd5222e9ef7144cc6a04e56a41b4abbce75f864",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "caseStudy.deepDiveTitle": {
+    "sourceHash": "sha256:7bf00560a45c8d7492dc17cf80aa8742997e6890c9f3805a4d002e7d80a6a5a7",
+    "targetHash": "sha256:2021e2f19fcedb98b0db99f69997c49e09538481f589d2cafd8d233bf35829e3",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "caseStudy.eyebrow": {
+    "sourceHash": "sha256:af55826ec1f95eed0332fd928b4d0b1b7e1cad561f14c0eb9f73f6ead187f68b",
+    "targetHash": "sha256:af55826ec1f95eed0332fd928b4d0b1b7e1cad561f14c0eb9f73f6ead187f68b",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "caseStudy.lessonsLearned": {
+    "sourceHash": "sha256:8fe25000950f6317b07d88a49ec1ab8afb3097577535eac664fb01a6652c9ffd",
+    "targetHash": "sha256:356bd1224c9a999a0eb5fa37eb8e0c52ea289311e91d4ff3124f5c726cd383c5",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "caseStudy.local": {
+    "sourceHash": "sha256:8c31e6e7223097e2e4847773c47a4efab6aaf79deeecc92a7759891c74976dde",
+    "targetHash": "sha256:8c31e6e7223097e2e4847773c47a4efab6aaf79deeecc92a7759891c74976dde",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "caseStudy.openRepo": {
+    "sourceHash": "sha256:025dcea95954805cba28970258ef4ee2072f6627cc0dfbbf04717b3e1f68427f",
+    "targetHash": "sha256:d464fa75928370a679c33553f222f059e2066830e4f94b082e698eec11c51b9b",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "caseStudy.outcomes": {
+    "sourceHash": "sha256:31056106ce607411c6d2f655db895f5435047319a852d9b577e885caac2ceada",
+    "targetHash": "sha256:912d8e962acfe5e9c1890650b957936925de057b1d30be2e4bf926461a905d59",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "caseStudy.problem": {
+    "sourceHash": "sha256:127846c2361586e0fbf6ae121db4bef4b6a1a7db9751df9e6e314e2846de11b1",
+    "targetHash": "sha256:e01d77b4a0bd549aa3a409d4f673eef1e13041a3e0ca7f60bf765d1878690d76",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "caseStudy.stack": {
+    "sourceHash": "sha256:e551641242ce7246ae460270ed60105e4c8370fd38b7144debd8688931c703f6",
+    "targetHash": "sha256:e551641242ce7246ae460270ed60105e4c8370fd38b7144debd8688931c703f6",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "caseStudy.trafficFlow": {
+    "sourceHash": "sha256:cac519fdb4b1e378adf6c90ea990b2fbfbad0260f5f2f8d49447e8dcdfe5326a",
+    "targetHash": "sha256:b9ed77b74a2781e82736aa1813abd46d93ec6d5983eac0f82007f85b436b4b04",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "caseStudy.updated": {
+    "sourceHash": "sha256:9bad2b2f05a9c01c8adf58af7d07359580b8feae29a7d1fcf136b873c2313a11",
+    "targetHash": "sha256:3a5ecca188c0579c00ee24cf3cab21bd02c15a06f7a70cc8e0a8ff2381dcbbfd",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "caseStudy.vps": {
+    "sourceHash": "sha256:953e00f8eaa7c9d4f6941e141fbb70163a86bbb8106c416210e78662c84cce33",
+    "targetHash": "sha256:953e00f8eaa7c9d4f6941e141fbb70163a86bbb8106c416210e78662c84cce33",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.copied": {
+    "sourceHash": "sha256:a8fe0fc805d5fd508f73de4c14ce95c443ed700521634acecabe8d937076fde7",
+    "targetHash": "sha256:ea61bc15688d1e482ae5335e8dc030d8300b1afc07ecc7c2e6af5c43728b1d25",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.copy": {
+    "sourceHash": "sha256:39dcf1cbeb5adbd084a1c71d75bca9e6e0c2376d933b674b1049e631ee1fd98f",
+    "targetHash": "sha256:e21f935f11d7e966dbbae78da9daa378fe8142a14e7c0cd7434183005faa6c5c",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.emailLabel": {
+    "sourceHash": "sha256:969ccbd3cf6300ecd5c880459d81ae9027df7517563184a1b8b15282db230621",
+    "targetHash": "sha256:969ccbd3cf6300ecd5c880459d81ae9027df7517563184a1b8b15282db230621",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.formChallenge": {
+    "sourceHash": "sha256:91322022a0a37e18a78ac203de27a979c9f7eb01e4ed5a2d1682ce0096d5d183",
+    "targetHash": "sha256:38bcddc7b4b6d59b797df992b25966cf81997b3dca346f3ec42ae7d1781ae142",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.formEmail": {
+    "sourceHash": "sha256:4a9ad3a482e06196485e7a867cb24dd4e7be344a6784bee10dc284058dfbb47d",
+    "targetHash": "sha256:33fe95ce02091218c6bfb40706aa8e9901246fc3dfaa5676efcb986e29357ae2",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.formError": {
+    "sourceHash": "sha256:4b14905b3516382a185cec595dc6961a3facb6e4f4be3182c38e8699c19b4d91",
+    "targetHash": "sha256:c56c2bb565b6333b262fb5ae4d4823067dee085359a0a1ca3a61e37759308b19",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.formMessage": {
+    "sourceHash": "sha256:3220858983103f4b7701b7d10f33ea655e513ee78e9afddabb72680df92e1593",
+    "targetHash": "sha256:2f77668a9dfbf8d5848b9eeb4a7145ca94c6ed9236e4a773f6dcafa5132b2f91",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.formName": {
+    "sourceHash": "sha256:70272dd575106b04c3a7ff06edf3f2060c26be35bb529915a345e3316e185c8c",
+    "targetHash": "sha256:2c6b2e253c01fb2ed7209c15766745ccee92a35ac8209f544789bdf9500e0944",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.formRateLimited": {
+    "sourceHash": "sha256:4aa6504f3a68ccbe7e09364ded832d8586bec05270a56bd36e1c5195583e2c7a",
+    "targetHash": "sha256:c21bdfaac618ce2a339c362e76eab2749a0702f6cef4875d1a6d85b91a23e540",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.formSend": {
+    "sourceHash": "sha256:56c57edf5258d9322ab860dd6e42d20d05dbbac7e4c3173b89026a8f5de5c1ff",
+    "targetHash": "sha256:93a26b1eaff99b3a84dd80366660991d15703a96514497afd997c12c43000ed7",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.formSending": {
+    "sourceHash": "sha256:489f599870072ff9d9a7412574c0d698782e8347be56092e12931539d6de1be4",
+    "targetHash": "sha256:286a3af7348e83123a2525936b12ff839504effef55b21c921edbb179247b523",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.formSuccess": {
+    "sourceHash": "sha256:d845ba843e70a711372587b3386bf623f19df93db2ca97a77a55e9cb06d9f4f2",
+    "targetHash": "sha256:2da45f46fedb5a1719f9f5cf62d8bc9ef637f30ed8e22c12de49093346dd7e3b",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.formTitle": {
+    "sourceHash": "sha256:492702289d6ad8eb6b84ed975ab2942232cb0a3a14686694bc6c90c21f04f982",
+    "targetHash": "sha256:56e541ad86e099c0fac95d03e7a76af669764163580aa1e77c4d3860e185aebb",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.githubLabel": {
+    "sourceHash": "sha256:f911e414cf6bdfc595532ab166b5ba0f63d73c021452fcdacbda363dda6ad8fb",
+    "targetHash": "sha256:f911e414cf6bdfc595532ab166b5ba0f63d73c021452fcdacbda363dda6ad8fb",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.linkedinLabel": {
+    "sourceHash": "sha256:dd84425b72da12c6c828339ce814342daceac705b50d42e377e1acebf8f2320b",
+    "targetHash": "sha256:dd84425b72da12c6c828339ce814342daceac705b50d42e377e1acebf8f2320b",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.openEmailClient": {
+    "sourceHash": "sha256:1d7fd364a84d3503a2cf3dc57cb6875f5c4045716c3299df1bb4eb208978f084",
+    "targetHash": "sha256:73894475ecd52fbc96c1f774f14c0b0abf80cb58e6406ade289f94471950fef5",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.orText": {
+    "sourceHash": "sha256:fc74181ece96ac0d3a8d14da85058f9a336cab3ea77d797cfbb9fadcf49e86d0",
+    "targetHash": "sha256:7175517a370b5cd2e664e3fd29c4ea9db5ce17058eb9772fe090a5485e49dad6",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.phoneLabel": {
+    "sourceHash": "sha256:2f151735cce73ad3b9e35c7da9467c84e8db5d616940856dab056adf1cc237ee",
+    "targetHash": "sha256:63dceb8800b2dd4af9567a1f54f03b7c3dbdc27fac4799091ebfcc4928899ee5",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.subtitle": {
+    "sourceHash": "sha256:9ca06ddfb5a7027246598bb8dc1d35ebc4db90d3e17ef4333c92507b66727ecc",
+    "targetHash": "sha256:e95777b4a91d0cdcfa6f24994f369fa114661d772ac75e9e78635c840f37abfc",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "contactModal.title": {
+    "sourceHash": "sha256:b77429bb1fd6d3b52e6dfd4ce5e7957dfee7b763f17c8a62d881c4b5e2f9c70b",
+    "targetHash": "sha256:0f08c5de5b5103736b33506e08cf353a088a4437a8d36efc27fe03039a5b57e6",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "education.description": {
+    "sourceHash": "sha256:1be97f63ef938c3b6f7364af4750446b32324d7b9e3e0117b6461be74d1eebf3",
+    "targetHash": "sha256:0bd81cab3b9061c835fcb0e62049ff49a20705a268f4aa919a8be8a000bfb7bc",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "education.eyebrow": {
+    "sourceHash": "sha256:597f4dc61cdd26716a1bbe482532fe8376cf3a8ba7d15ef40de5d497da7d7b24",
+    "targetHash": "sha256:48291040b2bbc68cc5a1dfad702426bb2b10ae14a126e55fc986b2dc9bca041f",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "education.title": {
+    "sourceHash": "sha256:74290806ca844b2117b57205b1dcd41f203f51565cbd81a00439694fe45137e2",
+    "targetHash": "sha256:335405bde6b9f7d25797fab20e4d3dd69ffe44740ec23a716b4480238a2c48f0",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "errorPage.description": {
+    "sourceHash": "sha256:0afb5b4787b331d7cc7697dbedbf5bdeaeffc14a58be5591b32f56c5fffa3f91",
+    "targetHash": "sha256:97af242fe21fdb0b833eef40bf2a69cc0cd92b5896428e91940ee4f22b1d7e4f",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "errorPage.errorId": {
+    "sourceHash": "sha256:5b3a694344c1dc9e33c24f1c485a671195956f816c96a69408817348c12906b6",
+    "targetHash": "sha256:19deca1cf82fe2a5d3cc9b243cd41ba0039f1bb7d80f718b4f312cc310b48197",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "errorPage.eyebrow": {
+    "sourceHash": "sha256:6dba8ec2689fbc05e9b5548223639f5401b865d30dd92b95cf6286453fa22a3e",
+    "targetHash": "sha256:54a0e8c17ebb21a11f8a25b8042786ef7efe52441e6cc87e92c67e0c4c0c6e78",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "errorPage.title": {
+    "sourceHash": "sha256:8851485f672f4ea0b9b81d48be9e5ccddded919c762dd05ff221f4a16016874a",
+    "targetHash": "sha256:ab827e3fe17da220a9a652087a35d20adda002aa4df887c5d813b2b1e95228f9",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "errorPage.tryAgain": {
+    "sourceHash": "sha256:b9e10688be012d8bc2adc6ec05146367b389f70d59ac274dfe32361ba63956a5",
+    "targetHash": "sha256:d8b8392e2c542950ca64867168e4ef87d4ad606882d5898f826b51c6d553988f",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "experience.current": {
+    "sourceHash": "sha256:75ba76e376a3ec6861211bfc8a3dd974c8cc9ae88774c89528c01a72e6efef03",
+    "targetHash": "sha256:e0d1b68224bf0b31ef16b206c65b5f8f6b89d18161f4a7cdcb8d0ac8d952549a",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "experience.description": {
+    "sourceHash": "sha256:fb8291d4fc5e3c450ceb941ceb76cdc77f4a66fb57e30c654b28b9a3c28414f8",
+    "targetHash": "sha256:2ec0d4240e38ea8a4455705677180be4a0f3633b0c350761a9fa914ac8b674ec",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "experience.eyebrow": {
+    "sourceHash": "sha256:135e944651b51666f6c786568be5c8c30c03f19e187fef860d0c9330ef675b17",
+    "targetHash": "sha256:9a4391a3f80f9a562d9a345997257ad6e516ba7ad8b606b88cf43b2ba3353488",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "experience.present": {
+    "sourceHash": "sha256:a4a06c1819b7f9fbfd8716162390ae6a91d7a2aa29eb258a31952b3bc3d060c4",
+    "targetHash": "sha256:43f9b89c0b9d22d8110ead813ea3949f20592a8bfc3c777d2d49e64da3b0cc9b",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "experience.title": {
+    "sourceHash": "sha256:02264a3500283a2cdee649cb8801718dfabea9578234a963c7304d2fad91d270",
+    "targetHash": "sha256:2d1e5f7b0a67fda8a73c5db0002bb2ee6cf628917729c7960a1ae20a5bf19578",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "footer.builtWith": {
+    "sourceHash": "sha256:2635c674e4868bcfb8284e73c31eb87cfbf4f40c9e4d7da2a3381b22c26dc18f",
+    "targetHash": "sha256:afe409877d5911063455502e07050cb30acbb2c2c43b9ea0d890a29b808011a8",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "hero.badge": {
+    "sourceHash": "sha256:fcb7aa3ad4bbb59c298a12ed482779fa5829be2291e99856de6d5cf4c525a09e",
+    "targetHash": "sha256:d9ec0d83326554899675e91850955802a69154a9ab4a7b1ec66c28d7e6ec77eb",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "hero.downloadCV": {
+    "sourceHash": "sha256:30b6df9a57754493b4517622f31faed0b8d13a04c378a118e0f067f771b21199",
+    "targetHash": "sha256:1a2d45a28b06a8a4f70d9c12b593774176588211096769ce580ca723304f9a21",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "hero.getInTouch": {
+    "sourceHash": "sha256:ef62505cb34d1295c769d83d122d17d7e5f8246857c5c8a019bef2c0968e3300",
+    "targetHash": "sha256:115e410f01dc4013592a3d977a603094c0ed4e5e8ec8b31d18332b340edd3a1e",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "hero.seeProjects": {
+    "sourceHash": "sha256:02f4a479a1630f94b850b636de5f0f2e78f108ac3b36a618daa30dd57b59996c",
+    "targetHash": "sha256:d90b37c3816448e9d93470b0725b9b9580f69642bcf5b011e2656a51766129f5",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "nav.about": {
+    "sourceHash": "sha256:97a0fa0947ad8f6a4eb914e30802aaf96fac1b5aa8571f0d7d37fea7c32b8dc6",
+    "targetHash": "sha256:4efca0d10c5feb8e9b35eb1d994f2905bb71714e6a271f511d713b539ea5faa1",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "nav.caseStudy": {
+    "sourceHash": "sha256:2dcee86dc899fce037dc0f6be6269d86229ce3f78f21c1ed61a86cb7b3d11d55",
+    "targetHash": "sha256:2dcee86dc899fce037dc0f6be6269d86229ce3f78f21c1ed61a86cb7b3d11d55",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "nav.experience": {
+    "sourceHash": "sha256:e0b5fc92583d707347e16c6d789786f4f923f7e9100dd18df10fdd33872dfc97",
+    "targetHash": "sha256:8eab0f09df013b1bd69655991bb824cfa822d383b482905789153d4df8bfda78",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "nav.home": {
+    "sourceHash": "sha256:325dfc37c9ba0aaa454e4142b4bfe68797cb61d2a8e0debe5def2bf33f0ed8ef",
+    "targetHash": "sha256:3a78695388b38b5cceefaf6796b0137877514593543b91af2752d5a17e3d736c",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "nav.projects": {
+    "sourceHash": "sha256:05009c102f2690dae5c94ab07375c53c3a60a6f40b25327cf2d71e44c11e9262",
+    "targetHash": "sha256:04e2a9728af7584043c5d58ae29e7cd811883e8dab15fc6287675270669a3ada",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "nav.stack": {
+    "sourceHash": "sha256:e551641242ce7246ae460270ed60105e4c8370fd38b7144debd8688931c703f6",
+    "targetHash": "sha256:e551641242ce7246ae460270ed60105e4c8370fd38b7144debd8688931c703f6",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "notFound.back": {
+    "sourceHash": "sha256:5e8e4d77bf1fe9559fba47836e66d7202bdf4defcf1054da5b5f153e516cdf3c",
+    "targetHash": "sha256:3643e4063b2f9ffa87d0803acf4c1108e451dffa0f898a3104ef3369f9863aad",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "notFound.description": {
+    "sourceHash": "sha256:acc3e19484968d40f72439055b880e1d96ba9ce6d474da0acd8d75e0ab9b9ae6",
+    "targetHash": "sha256:f2882177bbff3759d26f505d101277b48959abe9b8f8d5c4ae9a02840519de0a",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "notFound.eyebrow": {
+    "sourceHash": "sha256:e1d5ec2a76eda6e3c270c92402f9b31c2bbc756874ca415538a90acca26cc103",
+    "targetHash": "sha256:fc7f66ba43c66e9172b3e3cff5db20edcb85430d5db013a3db4dd8849128220b",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "notFound.title": {
+    "sourceHash": "sha256:829c38bbfe6258d5350fdb6ef148ab36a48c0366dcf446e728eb911515acd308",
+    "targetHash": "sha256:a469ab4ca4e55bf547566e9ebfa1b809c933207e9d558156bc0c4252b17533fe",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.approachLabel": {
+    "sourceHash": "sha256:10fa34883fcc4b901af8768411ca856780e2424ff6844a95f00932f97fbe5ca2",
+    "targetHash": "sha256:85aef304fe277c8c599479065fd5222e9ef7144cc6a04e56a41b4abbce75f864",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.architectureLabel": {
+    "sourceHash": "sha256:274c18b1d5ddc269647dc77a0e4be8ea5fb4d24f40772947dbaaa4345f835488",
+    "targetHash": "sha256:8013016a3cfce57b5b6eceae05fc7db985f6cadd52f8d2229cfab56f852e4e85",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.archivedBadge": {
+    "sourceHash": "sha256:e676060e698583e0ac3883575fa0977a81b26fe3effa4544fab60e2db51f0982",
+    "targetHash": "sha256:bdb86505f8062d15f152cef71dd4ca89609d5bf8e98771dcd2c9f70d247403da",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.backToPortfolio": {
+    "sourceHash": "sha256:5e8e4d77bf1fe9559fba47836e66d7202bdf4defcf1054da5b5f153e516cdf3c",
+    "targetHash": "sha256:3643e4063b2f9ffa87d0803acf4c1108e451dffa0f898a3104ef3369f9863aad",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.demo": {
+    "sourceHash": "sha256:31ff5dc8695224b5c0c29c1bcd06dccb557a1146999577ad7ec218fe557bd0b7",
+    "targetHash": "sha256:733ad1ad6d2b420f9b1357c85f1fc45bf1ceddf95672f3da13202f13be3130ba",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.docs": {
+    "sourceHash": "sha256:cbee450fa904cc70c7d1435fa9335eee184afc56e6a07af2aca1e5ac76537713",
+    "targetHash": "sha256:c205924de0fe636ccdde4ed616fef66f75b78e98b03620637965c033fd161141",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.eyebrow": {
+    "sourceHash": "sha256:2fee0cbfa5941183720691a1f92440e1e550cb31a2db7214605051bdc9e47ba4",
+    "targetHash": "sha256:a39fcc3405709e5c9a63c0f7d36519b0b4a75ead851410e9c403195dabeef14a",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.languagesLabel": {
+    "sourceHash": "sha256:ee3fd22e62c4b7ddc4eed2d94cf2df9f767695fc6f906b380bc528d5fac11c5b",
+    "targetHash": "sha256:318655cea4bd2096fbfad433d7c019bac40750d1a456fc34d366df41fcc77197",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.lastActivityLabel": {
+    "sourceHash": "sha256:6602429329d72eabb2c35c513a852eb03ae1874c0a825f324b477114ae2d5938",
+    "targetHash": "sha256:06475633ed3e14cfefd643b9c86d1330966e94edebcf3a10862fecd369a3e5da",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.latestReleaseLabel": {
+    "sourceHash": "sha256:7fae470155ba6882108677d09ecc7bbdf997cb667a6a81bdbf1e3522790e13ac",
+    "targetHash": "sha256:4abf09ee18fcac5e9264609581e5f78dddf2c0e3ae131fb7dfd29cea94ee1625",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.licenseLabel": {
+    "sourceHash": "sha256:70dfbb512f6861e524497d73fce93792bc34868e405512fd6673174b7b27d1e9",
+    "targetHash": "sha256:c011d6097bfbc8e936280addcf2e3e7d06ea2223ffd596973191b800a7035c32",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.limitationsLabel": {
+    "sourceHash": "sha256:e4c939a98ee6d4578881dd27056fd2c9ea04b9dd06c71ae7c0814ade8afd2bcf",
+    "targetHash": "sha256:a3c71b90162be56cb2578c884cbf600323f2365223de1601e0d4273f06f57251",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.metricsLabel": {
+    "sourceHash": "sha256:2b4141b03043e262144c3e5431857bae64bd31624d5cb455e0c1af67507e7171",
+    "targetHash": "sha256:a58da793c7250f1b3b8f8710efd7c7ee7e1a2dac4208f355dad42458a421e4ec",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.nextStepsLabel": {
+    "sourceHash": "sha256:73de256c4f60722accf404a860868ba0686248f022434923f014397ad5ba5d05",
+    "targetHash": "sha256:dd00d3d3e9f73d277737cfacfb788bc46a717458297644788de995b658ceb915",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.notFound": {
+    "sourceHash": "sha256:0d5e13d7ed8674aea7f85fe09e2ab039076286bb27d1b53397fa8e4105c796d2",
+    "targetHash": "sha256:758e8416eb8a358828b06586a30dc93255de1b48cf9ed43ff94c99361608a668",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.notFoundDescription": {
+    "sourceHash": "sha256:078f3a27bc42e57bf2e5d287c79dd6710de4f68d0c44c4a620a6c51aa6929439",
+    "targetHash": "sha256:f5b2bc0eddc2f68f001b756723eba1c92e2ad8c0595c122c43c02db3ad4c9b08",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.observabilityLabel": {
+    "sourceHash": "sha256:fbaed611927f725f6ab2d7d1808f0978cb5cc649adf8d5da34f8c0dedf0ab46c",
+    "targetHash": "sha256:a37c93100e7c535c881a2a05767331145e0bcd4830543f6c1d84a0e10219b6bb",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.openApi": {
+    "sourceHash": "sha256:4c42b4d30fee1f29cf2bc58532d97506130bfc14d465564862f38328e2719fac",
+    "targetHash": "sha256:484ee9bb6e51e328b73f0db584c797bccfccf6c93a3b1157ec160f5d5950ff0d",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.openRepo": {
+    "sourceHash": "sha256:e2c87055416cc1067dee2e44d2ba69c58b53104228713da0987e20098e863ddd",
+    "targetHash": "sha256:2284f8226e27cef247cf852c54ddc03ab7dae1c9cd010f54b64c109d1367f45d",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.outcomesLabel": {
+    "sourceHash": "sha256:31056106ce607411c6d2f655db895f5435047319a852d9b577e885caac2ceada",
+    "targetHash": "sha256:912d8e962acfe5e9c1890650b957936925de057b1d30be2e4bf926461a905d59",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.problemLabel": {
+    "sourceHash": "sha256:127846c2361586e0fbf6ae121db4bef4b6a1a7db9751df9e6e314e2846de11b1",
+    "targetHash": "sha256:e01d77b4a0bd549aa3a409d4f673eef1e13041a3e0ca7f60bf765d1878690d76",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.repositoryLabel": {
+    "sourceHash": "sha256:0a18df929302f8651a033d23d57fe93bee12614bed96ad8c9ddac4fc0cfb53a2",
+    "targetHash": "sha256:13d6ff07b8a5d792ec87d5ec83bff2730ee77fa8f4fcd89ca5f1d688f64b4c73",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.roleLabel": {
+    "sourceHash": "sha256:e0165d8a6de1b4e2ed0eff3a2c23366ddb907a5a3420d5a51e4c9af07c65b5a8",
+    "targetHash": "sha256:14736a2eb9f4159f4b6b86f192c3c222243fd9659aadf2ecc0139e3d72bed85c",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.stackLabel": {
+    "sourceHash": "sha256:e551641242ce7246ae460270ed60105e4c8370fd38b7144debd8688931c703f6",
+    "targetHash": "sha256:e551641242ce7246ae460270ed60105e4c8370fd38b7144debd8688931c703f6",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.status.beta": {
+    "sourceHash": "sha256:703390318bd55aef50b7823d2b90a846debff99e6e3d401a24a921b733912a6d",
+    "targetHash": "sha256:703390318bd55aef50b7823d2b90a846debff99e6e3d401a24a921b733912a6d",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.status.development": {
+    "sourceHash": "sha256:90e5904556518bee415774ae6d3c77ec1de9dfbfdaafe9843c5fc6d4d63bbfac",
+    "targetHash": "sha256:5259ae65614671c45dc0a4f34a05a2cd323dc9817543340d5459b67fda87d394",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.status.stable": {
+    "sourceHash": "sha256:a26ad010d2b242549e13b4f4e2327f7e27f937746b44421b91dd228d31cf255f",
+    "targetHash": "sha256:90ee305714d7103317705bfffd734c654b78807e5a0f51fcc61bc1d81105ebd1",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.taglineLabel": {
+    "sourceHash": "sha256:3c9717bdf2260bc9ef2033566ad1f5d48e398d53fa0a6910c063a5ae9dcdedda",
+    "targetHash": "sha256:8e76a94ac8320d515375e625bef1829238b097ecbd33611b59eeefd4ffefebfb",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.testingLabel": {
+    "sourceHash": "sha256:d23f8196e30879a8e47904fa10eae9b2fb1cb6dce5228da68b0993d292788b8e",
+    "targetHash": "sha256:68fb2b187ab95c47338d0e90b73ea089280c94665b9d30dbb89cda3fb8f7d879",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.updatedLabel": {
+    "sourceHash": "sha256:9634373efef1718640ff298bc362bb63e225c17950910df56038e9fa72cc411c",
+    "targetHash": "sha256:382ac5f308f76c24b2c981e2041943bc2be2229cbd285ad362b9af1cfc386ef8",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.viaGitHub": {
+    "sourceHash": "sha256:e7c9e013442c872e8943e6318811f97d9aba7c507b32b64c308199848836b611",
+    "targetHash": "sha256:e7c9e013442c872e8943e6318811f97d9aba7c507b32b64c308199848836b611",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.video": {
+    "sourceHash": "sha256:7d8142d0f3187ebdc13691115efb6f3aca5bd480a4efd086452bc91563f6daf2",
+    "targetHash": "sha256:561d26973ca3ef4390f04b08c4e9d93b246583b1de70addd8cfe14225f25ce7d",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projects.description": {
+    "sourceHash": "sha256:9327a87bcae6e24a7aa019059b0e8accd4af6e236b23d81f750e13da101a689b",
+    "targetHash": "sha256:aaa87cf92be7542cc9d0817ae283a36b6bd60de610bb5744761d77d3dd8c5d33",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projects.eyebrow": {
+    "sourceHash": "sha256:b1a7f5abd179b706aa3979d1862a1938d45538b1184f20a95fda15a6c5722c9d",
+    "targetHash": "sha256:d4478144e1f09850d54a36f79ac5a2bd657df2139bd1199f48cb5ccc3ce680c3",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projects.mostRecent": {
+    "sourceHash": "sha256:e952c99d0e5e4eef4a9ca8eb284ff881e68034ecebe0b450464a04284a941293",
+    "targetHash": "sha256:7459b8690410d3da0417aab2c54d61c54472d9f59b353a09e11570dd5542fc2a",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projects.title": {
+    "sourceHash": "sha256:066f42b3589e9d931586bf32be942757ee04420b05bf2bf759328b0be7be5b58",
+    "targetHash": "sha256:1902d95bd20e44a65a1fad7c38137fdb9cfdf14847830412f6da46ce81fea8ac",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projects.viewDetails": {
+    "sourceHash": "sha256:b7a9d8fb16141646f505347edfdcebe69bb4294fffdf6cc4e07bad8f4d008c5a",
+    "targetHash": "sha256:a7c284780e42c4bf59ec704b3f77b1b0648aedee044c40517f2af4aa97ce7b39",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "stack.description": {
+    "sourceHash": "sha256:234ec13d3cd50aa9a9c8fe93ffa2844a0186cabc7ab37c06a1a2e5db2d1caa46",
+    "targetHash": "sha256:c2bef3518522957a3be8d75a6013f084bc7f330558e73c2308a2b17f09d67a9d",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "stack.eyebrow": {
+    "sourceHash": "sha256:1b9a08bea16337634ef2981f4c19c620cdc9cf5568bda834c0b61d7d5de93074",
+    "targetHash": "sha256:1b9a08bea16337634ef2981f4c19c620cdc9cf5568bda834c0b61d7d5de93074",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "stack.languagesLabel": {
+    "sourceHash": "sha256:44b22c9669b00a2e3bc44de9c943e3c999424e2afb810996176c144edfcdbcae",
+    "targetHash": "sha256:90ad7f26e7a9b7db02f3bacdaa89d0a2efd58fb2cb52d419fe62eca744be1251",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "stack.languagesLive": {
+    "sourceHash": "sha256:94d343eff5b69ff4b97f75824bea496426b7d21e9e9f79a575336e6f19f0ac03",
+    "targetHash": "sha256:1336725a7bc878dd575de3f93b1d6ee67ef7c16f7424c647e02213cefeada2e0",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "stack.personalTitle": {
+    "sourceHash": "sha256:b84e1bb6ee0b719a6b55a64126e2ac6588b5fc87cf0653a13d22772a99caef63",
+    "targetHash": "sha256:0c3452541c5852f9b32a421d2964c46744440487412781ff098ee489c2acdf08",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "stack.professionalTitle": {
+    "sourceHash": "sha256:12620e61220ecb3583f0534164903bf74658542363302257a6a92516a8bb0dcb",
+    "targetHash": "sha256:1d961a15c07e414675bccc117d17bb1b953e9876a2ce5e8dd052f7657a44f7a2",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "stack.title": {
+    "sourceHash": "sha256:34fd4085d061a9375943fac4ffff3997b22decad0ee4ddaeff39cd2e6b102174",
+    "targetHash": "sha256:ae615d102a216f86ce1d90ccd118c061238e7eebb53644e71f9fe5dd72676e61",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "stats.heatmapLess": {
+    "sourceHash": "sha256:444cacf0462ca9e55163079522206b98fa0a51730825217f85ba0190202fa9e7",
+    "targetHash": "sha256:ae5239ec63f28cd401ccd63e9f56e4ede8254a738a135ebcd33e844c18dd247f",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "stats.heatmapMore": {
+    "sourceHash": "sha256:962d86dfa1c5d9b119ebc139c077e4494477b25f2fd3c26deee4caec76034b64",
+    "targetHash": "sha256:d47d7cb0e4f8fd2be5ee07826694c18917d83ca77d0a01698582d05f432db996",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "stats.heatmapTitle": {
+    "sourceHash": "sha256:52deca262e969304f0fa2ea672b3f9ca53522ff8d5de12bcc194d15bc05c2ad1",
+    "targetHash": "sha256:ded14ff9e2061026ffcab94fd0186fc1d4de23de4b1072364b4e90f3b6a89e11",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "themeToggle.toDark": {
+    "sourceHash": "sha256:7384efdbb7b1dc69313856255f57312e27e869a8c57f15b192e8b4f4120d66d9",
+    "targetHash": "sha256:8abe9e0ba6b6f3834c2e48d2f858557641277e2c17463e526685fe3f95967843",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "themeToggle.toLight": {
+    "sourceHash": "sha256:167f89be0895d5dd97f239a38ba1d020278f8763632c4869c5c3cdc5b7e567a0",
+    "targetHash": "sha256:2f740f4cf6888e99dfe73f3d6208323cb350b33a37016e1ae3367a90b3e93c84",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  }
+}

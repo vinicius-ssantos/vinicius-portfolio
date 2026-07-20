@@ -1,0 +1,87 @@
+name: i18n translate (DeepL)
+
+# Manual only (#52) — DEEPL_API_KEY must never be reachable from a
+# pull_request-triggered run (which would expose it to fork PRs), so this
+# workflow has no automatic trigger at all. Least-privilege by default:
+# read-only at the top level, write scoped only to the job that opens the PR.
+on:
+  workflow_dispatch:
+    inputs:
+      force_reviewed:
+        description: "Also regenerate reviewed translations whose source has changed (stale)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: i18n-translate
+  cancel-in-progress: false
+
+jobs:
+  translate:
+    name: i18n:translate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Translate incremental content
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+          DEEPL_API_ENDPOINT: free
+        run: |
+          if [ "${{ inputs.force_reviewed }}" = "true" ]; then
+            npm run i18n:translate -- --locale=en --force-reviewed
+          else
+            npm run i18n:translate -- --locale=en
+          fi
+
+      - name: Check for changes
+        id: diff
+        run: |
+          if git diff --quiet -- messages/en.json i18n/translation-manifest.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate the result (quality gate + full test suite + build)
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          npm run i18n:check
+          npm run test
+          npm run build
+
+      - name: Open a review pull request
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          branch="i18n/translate-$(date +%Y%m%d-%H%M%S)"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add messages/en.json i18n/translation-manifest.json
+          git commit -m "chore(i18n): incremental DeepL translation"
+          git push origin "$branch"
+          gh pr create \
+            --title "chore(i18n): incremental DeepL translation" \
+            --base main \
+            --head "$branch" \
+            --body "Automated translation run (workflow_dispatch). Every new/changed key here starts as \`machine\` status — review the diff carefully before merging, then run \`npm run i18n:review -- --key=<key>\` locally for each entry once it's been checked, and commit that manifest update separately. Nothing here was auto-approved."
