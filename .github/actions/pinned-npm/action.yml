@@ -1,0 +1,43 @@
+name: Activate the pinned npm
+description: >
+  Makes `npm` resolve to the version pinned in package.json's packageManager
+  field, and fails the job if it doesn't.
+
+# Why this exists, and why it verifies instead of just enabling:
+#
+# package.json pins `packageManager: npm@<version>`, but a bare
+# `corepack enable` did not take effect on these runners — jobs kept resolving
+# setup-node's bundled npm (10.8.2 on Node 20) while local development used
+# the pinned 11.6.2. The two resolve optional platform dependencies
+# differently (@emnapi/*, @swc/helpers), so a lockfile written by one is
+# rejected by `npm ci` under the other. That mismatch silently broke every
+# Dependabot PR for a while, and the first attempt at fixing it looked correct
+# while changing nothing.
+#
+# Naming the package manager explicitly creates the npm shim, and the assert
+# at the end means a pin that stops being honoured breaks the build loudly
+# instead of going quiet again.
+runs:
+  using: composite
+  steps:
+    - name: Activate and verify
+      shell: bash
+      run: |
+        set -euo pipefail
+        pinned="$(node -p "require('./package.json').packageManager ?? ''")"
+        if [ -z "$pinned" ]; then
+          echo "::error::package.json has no packageManager field to honour"
+          exit 1
+        fi
+
+        corepack enable npm
+        corepack prepare "$pinned" --activate
+
+        expected="${pinned#npm@}"
+        actual="$(npm --version)"
+        echo "pinned=$expected active=$actual"
+
+        if [ "$expected" != "$actual" ]; then
+          echo "::error::npm $actual is active but package.json pins $expected"
+          exit 1
+        fi
