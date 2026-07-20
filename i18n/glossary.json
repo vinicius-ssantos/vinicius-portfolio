@@ -1,0 +1,232 @@
+{
+  "$schema": "./glossary.schema.json",
+  "modes": {
+    "preserve": "Never translate or alter — always output verbatim in both locales.",
+    "preferred": "A standardized translation to use — flags any other rendering of the source term.",
+    "forbidden": "A term or translation that must never appear in published content.",
+    "contextual": "Documented variation is allowed depending on context — informational only, never blocks the gate."
+  },
+  "entries": [
+    { "source": "UOL", "target": "UOL", "mode": "preserve", "caseSensitive": true },
+    { "source": "Autbank", "target": "Autbank", "mode": "preserve", "caseSensitive": true },
+    {
+      "source": "Vinicius de Oliveira Santos",
+      "target": "Vinicius de Oliveira Santos",
+      "mode": "preserve",
+      "caseSensitive": true
+    },
+    {
+      "source": "Vinicius Santos",
+      "target": "Vinicius Santos",
+      "mode": "preserve",
+      "caseSensitive": true
+    },
+    {
+      "source": "FATEC Ferraz de Vasconcelos",
+      "target": "FATEC Ferraz de Vasconcelos",
+      "mode": "preserve",
+      "caseSensitive": true
+    },
+    {
+      "source": "Faculdade Impacta",
+      "target": "Faculdade Impacta",
+      "mode": "preserve",
+      "caseSensitive": true
+    },
+
+    { "source": "Java", "target": "Java", "mode": "preserve", "caseSensitive": true },
+    { "source": "Kotlin", "target": "Kotlin", "mode": "preserve", "caseSensitive": true },
+    { "source": "Spring", "target": "Spring", "mode": "preserve", "caseSensitive": true },
+    { "source": "Spring Boot", "target": "Spring Boot", "mode": "preserve", "caseSensitive": true },
+    {
+      "source": "Spring Cloud",
+      "target": "Spring Cloud",
+      "mode": "preserve",
+      "caseSensitive": true
+    },
+    { "source": "Redis", "target": "Redis", "mode": "preserve", "caseSensitive": true },
+    { "source": "Kubernetes", "target": "Kubernetes", "mode": "preserve", "caseSensitive": true },
+    {
+      "source": "k3s",
+      "target": "k3s",
+      "mode": "preserve",
+      "caseSensitive": true,
+      "notes": "Lowercase product name — never capitalize at the start of a sentence."
+    },
+    { "source": "Traefik", "target": "Traefik", "mode": "preserve", "caseSensitive": true },
+    { "source": "Cloudflare", "target": "Cloudflare", "mode": "preserve", "caseSensitive": true },
+    {
+      "source": "SOPS",
+      "target": "SOPS",
+      "mode": "preserve",
+      "caseSensitive": true,
+      "notes": "Use the acronym as-is; don't expand to \"Secrets OPerationS\"."
+    },
+    {
+      "source": "age",
+      "target": "age",
+      "mode": "preserve",
+      "caseSensitive": true,
+      "notes": "The encryption tool, not the common word — appears as \"SOPS + age\"."
+    },
+    { "source": "KEDA", "target": "KEDA", "mode": "preserve", "caseSensitive": true },
+    { "source": "GitHub", "target": "GitHub", "mode": "preserve", "caseSensitive": true },
+    { "source": "GHCR", "target": "GHCR", "mode": "preserve", "caseSensitive": true },
+    { "source": "Docker", "target": "Docker", "mode": "preserve", "caseSensitive": true },
+    {
+      "source": "Docker Compose",
+      "target": "Docker Compose",
+      "mode": "preserve",
+      "caseSensitive": true
+    },
+    { "source": "Ansible", "target": "Ansible", "mode": "preserve", "caseSensitive": true },
+    {
+      "source": "Just",
+      "target": "Just",
+      "mode": "preserve",
+      "caseSensitive": true,
+      "notes": "The command runner (Justfile) — case-sensitive to avoid matching the common word \"just\"."
+    },
+    { "source": "Eureka", "target": "Eureka", "mode": "preserve", "caseSensitive": true },
+    { "source": "RabbitMQ", "target": "RabbitMQ", "mode": "preserve", "caseSensitive": true },
+    { "source": "Keycloak", "target": "Keycloak", "mode": "preserve", "caseSensitive": true },
+    { "source": "OAuth2", "target": "OAuth2", "mode": "preserve", "caseSensitive": true },
+    { "source": "JWT", "target": "JWT", "mode": "preserve", "caseSensitive": true },
+    { "source": "Gradle", "target": "Gradle", "mode": "preserve", "caseSensitive": true },
+    { "source": "Maven", "target": "Maven", "mode": "preserve", "caseSensitive": true },
+    { "source": "MCP", "target": "MCP", "mode": "preserve", "caseSensitive": true },
+    { "source": "MCP server", "target": "MCP server", "mode": "preserve", "caseSensitive": false },
+    { "source": "BFF", "target": "BFF", "mode": "preserve", "caseSensitive": true },
+    {
+      "source": "WSL2",
+      "target": "WSL2",
+      "mode": "preserve",
+      "caseSensitive": true
+    },
+    { "source": "VPS", "target": "VPS", "mode": "preserve", "caseSensitive": true },
+
+    {
+      "source": "API Gateway",
+      "target": "API Gateway",
+      "mode": "preserve",
+      "caseSensitive": false,
+      "notes": "Kept in English in Brazilian PT-BR technical writing; don't render as \"porta de entrada de API\"."
+    },
+    {
+      "source": "service discovery",
+      "target": "service discovery",
+      "mode": "preserve",
+      "caseSensitive": false
+    },
+    {
+      "source": "circuit breaker",
+      "target": "circuit breaker",
+      "mode": "preserve",
+      "caseSensitive": false
+    },
+    {
+      "source": "rate limiting",
+      "target": "rate limiting",
+      "mode": "preserve",
+      "caseSensitive": false
+    },
+    {
+      "source": "cache hit",
+      "target": "cache hit",
+      "mode": "preserve",
+      "caseSensitive": false
+    },
+    {
+      "source": "cache miss",
+      "target": "cache miss",
+      "mode": "preserve",
+      "caseSensitive": false
+    },
+    {
+      "source": "observability",
+      "target": "observability",
+      "mode": "preferred",
+      "caseSensitive": false,
+      "notes": "PT source may say \"observabilidade\" — translate normally to English \"observability\", not \"visibility\" or \"monitoring\"."
+    },
+
+    {
+      "source": "deploy",
+      "target": "deploy",
+      "mode": "contextual",
+      "caseSensitive": false,
+      "notes": "EN naturally varies between \"deploy\" and \"deployment\" as a noun — don't force verbatim match."
+    },
+    { "source": "release", "target": "release", "mode": "preserve", "caseSensitive": false },
+    { "source": "pipeline", "target": "pipeline", "mode": "preserve", "caseSensitive": false },
+    {
+      "source": "pull request",
+      "target": "pull request",
+      "mode": "preserve",
+      "caseSensitive": false
+    },
+    { "source": "GitOps", "target": "GitOps", "mode": "preserve", "caseSensitive": true },
+    { "source": "CI/CD", "target": "CI/CD", "mode": "preserve", "caseSensitive": true },
+
+    {
+      "source": "case study",
+      "target": "case study",
+      "mode": "preserve",
+      "caseSensitive": false,
+      "notes": "Already used as-is in the PT source (see messages/pt.json caseStudy.eyebrow) — don't render as \"estudo de caso\" in either locale."
+    },
+    {
+      "source": "repositório",
+      "target": "repository",
+      "mode": "preferred",
+      "caseSensitive": false
+    },
+    {
+      "source": "Engenheiro de Software Backend",
+      "target": "Backend Software Engineer",
+      "mode": "preferred",
+      "caseSensitive": false
+    },
+    {
+      "source": "Engenheiro Backend",
+      "target": "Backend Engineer",
+      "mode": "preferred",
+      "caseSensitive": false
+    },
+    {
+      "source": "proteção de conta",
+      "target": "account protection",
+      "mode": "preferred",
+      "caseSensitive": false
+    },
+
+    {
+      "source": "revolucionário",
+      "target": "revolutionary",
+      "mode": "forbidden",
+      "caseSensitive": false,
+      "notes": "Unsubstantiated superlative — see AGENTS.md's no-fabrication rule (#14/#11)."
+    },
+    {
+      "source": "world-class",
+      "target": "world-class",
+      "mode": "forbidden",
+      "caseSensitive": false,
+      "notes": "Generic AI/marketing filler — not a claim this CV-backed portfolio makes."
+    },
+    {
+      "source": "cutting-edge",
+      "target": "cutting-edge",
+      "mode": "forbidden",
+      "caseSensitive": false,
+      "notes": "Generic AI/marketing filler."
+    },
+    {
+      "source": "leverage",
+      "target": "leverage",
+      "mode": "forbidden",
+      "caseSensitive": false,
+      "notes": "Corporate jargon as a verb (\"leverage synergies\") — plain verbs (use, build, run) read as more direct and technical."
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "i18n glossary",
+  "type": "object",
+  "required": ["entries"],
+  "properties": {
+    "modes": { "type": "object" },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "target", "mode"],
+        "properties": {
+          "source": { "type": "string", "minLength": 1 },
+          "target": { "type": "string", "minLength": 1 },
+          "mode": { "enum": ["preserve", "preferred", "forbidden", "contextual"] },
+          "caseSensitive": { "type": "boolean" },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
