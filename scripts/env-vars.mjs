@@ -31,4 +31,9 @@ export const ENV_VARS = [
     required: false,
     note: "only needed for `npm run i18n:translate` (a local/CI-only CLI) — the app itself never reads it",
   },
+  {
+    name: "NEXT_PUBLIC_ENABLE_3D_TOPOLOGY",
+    required: false,
+    note: 'the #48 Three.js spike stays off unless set to exactly "true"',
+  },
 ];

@@ -12,6 +12,8 @@ import { ProjectHighlights } from "@/components/sections/project-highlights";
 import { ProjectStackBadges } from "@/components/sections/project-stack-badges";
 import { RepositorySnapshot } from "@/components/sections/repository-snapshot";
 import { ArchitectureDiagram } from "@/components/sections/architecture-diagram";
+import { TopologyShowcase } from "@/components/topology/topology-showcase";
+import { isTopology3DEnabled } from "@/lib/feature-flags";
 import { TrackedExternalLink } from "@/components/tracked-link";
 import { getAllProjectMetas, getProjectBySlug, type Lang } from "@/content";
 import { isLocale } from "@/lib/i18n";
@@ -226,6 +228,15 @@ export default async function ProjectPage({ params }: { params: Params }) {
 
           {project.caseStudy && (
             <Section label={t("projectDetail.architectureDiagramLabel")}>
+              {/* #48 Phase A prototype — off unless explicitly enabled. It
+                  sits above the accessible diagram rather than replacing it,
+                  so the canvas never holds information on its own. */}
+              {isTopology3DEnabled() && (
+                <TopologyShowcase
+                  architecture={project.caseStudy.architecture}
+                  label={t("projectDetail.topology3dExperimentLabel")}
+                />
+              )}
               <ArchitectureDiagram
                 architectureLabel={project.caseStudy.architectureLabel}
                 architecture={project.caseStudy.architecture}

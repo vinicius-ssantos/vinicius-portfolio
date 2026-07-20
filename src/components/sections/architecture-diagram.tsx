@@ -4,6 +4,7 @@ import { useId, useState, type CSSProperties } from "react";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import type { Architecture, ArchitectureNode, ArchitectureNodeGroup } from "@/content";
 import { useViewportMotion } from "@/hooks/use-viewport-motion";
+import { layerArchitecture } from "@/lib/topology";
 
 // Backend System Pulse's sibling for the case study (#47). Same rules:
 // SVG/CSS only, node positions are derived from data rather than hardcoded,
@@ -16,53 +17,6 @@ type Labels = {
   vps: string;
   hint: string;
 };
-
-type LayeredNode = ArchitectureNode & { layer: number };
-
-/**
- * Nodes that appear in at least one edge are layered by longest path from a
- * root (a standard DAG "layer by depth" layout) so the request path reads
- * left-to-right / top-to-bottom without any node needing stored coordinates.
- * Nodes with no edges at all render as a separate side cluster, grouped by
- * `group` — e.g. the local dev environment, which is real but disconnected
- * from the deployed request path.
- */
-export function layerArchitecture(architecture: Architecture): {
-  chain: LayeredNode[][];
-  sideCluster: ArchitectureNode[];
-} {
-  const { nodes, edges } = architecture;
-  const connectedIds = new Set<string>();
-  for (const edge of edges) {
-    connectedIds.add(edge.from);
-    connectedIds.add(edge.to);
-  }
-
-  const layerCache = new Map<string, number>();
-  const visiting = new Set<string>();
-  function layerOf(id: string): number {
-    const cached = layerCache.get(id);
-    if (cached !== undefined) return cached;
-    if (visiting.has(id)) return 0; // defensive: break a cycle in malformed content instead of recursing forever
-    visiting.add(id);
-    const incoming = edges.filter((e) => e.to === id);
-    const layer = incoming.length === 0 ? 0 : 1 + Math.max(...incoming.map((e) => layerOf(e.from)));
-    visiting.delete(id);
-    layerCache.set(id, layer);
-    return layer;
-  }
-
-  const chainNodes = nodes.filter((n) => connectedIds.has(n.id));
-  const sideCluster = nodes.filter((n) => !connectedIds.has(n.id));
-
-  const layerCount = chainNodes.reduce((max, n) => Math.max(max, layerOf(n.id)), -1) + 1;
-  const chain: LayeredNode[][] = Array.from({ length: layerCount }, () => []);
-  for (const node of chainNodes) {
-    chain[layerOf(node.id)]!.push({ ...node, layer: layerOf(node.id) });
-  }
-
-  return { chain, sideCluster };
-}
 
 export function ArchitectureDiagram({
   architectureLabel,
