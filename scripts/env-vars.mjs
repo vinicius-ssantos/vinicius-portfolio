@@ -26,4 +26,9 @@ export const ENV_VARS = [
     required: false,
     note: "defaults to the onboarding@resend.dev sandbox sender — set to a verified domain address in production",
   },
+  {
+    name: "DEEPL_API_KEY",
+    required: false,
+    note: "only needed for `npm run i18n:translate` (a local/CI-only CLI) — the app itself never reads it",
+  },
 ];

@@ -23,6 +23,8 @@ export function flattenMessages(
   obj: Record<string, unknown>,
   prefix?: string,
 ): Record<string, unknown>;
+export function getNested(obj: Record<string, unknown>, dottedKey: string): unknown;
+export function setNested(obj: Record<string, unknown>, dottedKey: string, value: unknown): void;
 export function extractPlaceholders(text: string): string[];
 export function extractProtectedSpans(text: string): ProtectedSpans;
 export function checkGlossary(text: string, glossary: Glossary): GlossaryCheckResult;

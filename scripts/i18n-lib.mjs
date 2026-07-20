@@ -23,6 +23,24 @@ export function flattenMessages(obj, prefix = "") {
   return out;
 }
 
+/** Reads a dotted key path ("a.b.c") from a nested object; undefined if any segment is missing. */
+export function getNested(obj, dottedKey) {
+  return dottedKey
+    .split(".")
+    .reduce((cur, part) => (cur === undefined || cur === null ? undefined : cur[part]), obj);
+}
+
+/** Writes a dotted key path ("a.b.c") into a nested object, creating intermediate objects as needed. */
+export function setNested(obj, dottedKey, value) {
+  const parts = dottedKey.split(".");
+  let cur = obj;
+  for (let i = 0; i < parts.length - 1; i++) {
+    cur[parts[i]] ??= {};
+    cur = cur[parts[i]];
+  }
+  cur[parts.at(-1)] = value;
+}
+
 /**
  * Extracts ICU MessageFormat placeholder names from a string, e.g.
  * "Hello {name}" -> ["name"], "{count, plural, one {# item} other {# items}}" -> ["count"].
