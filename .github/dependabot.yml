@@ -16,6 +16,15 @@ updates:
       # eslint-config-next/typescript-eslint publish TS 7 support.
       - dependency-name: "typescript"
         update-types: ["version-update:semver-major"]
+      # eslint-plugin-react (bundled transitively via eslint-config-next)
+      # calls an ESLint 9-era rule-context API removed in ESLint 10
+      # (`context.getFilename` on the rule context), which throws at lint
+      # time — confirmed by actually running `npm run lint` against a real
+      # ESLint 10 install, not just the peer-range warning. Re-evaluate by
+      # running `npm run lint` against a fresh ESLint 10 install once
+      # eslint-config-next publishes ESLint 10 support.
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
