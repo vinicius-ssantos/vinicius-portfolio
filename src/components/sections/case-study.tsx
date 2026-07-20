@@ -1,16 +1,15 @@
 import { getTranslations } from "next-intl/server";
-import { ArrowRight, ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { getFeaturedProject, type Lang, type Project } from "@/content";
+import { getFeaturedProject, type Lang } from "@/content";
 import { RevealOnScroll } from "@/components/animations/reveal-on-scroll";
 import { TrackedLink } from "@/components/tracked-nav-link";
 import { TrackedExternalLink } from "@/components/tracked-link";
 import { SectionHeading } from "./section-heading";
 import { ProjectHighlights } from "./project-highlights";
 import { ProjectStackBadges } from "./project-stack-badges";
-
-type TFunc = Awaited<ReturnType<typeof getTranslations>>;
+import { ArchitectureDiagram } from "./architecture-diagram";
 
 export async function CaseStudy({ lang }: { lang: Lang }) {
   const t = await getTranslations();
@@ -56,7 +55,18 @@ export async function CaseStudy({ lang }: { lang: Lang }) {
                 <p className="mt-2 leading-relaxed text-foreground/90">{cs.problem}</p>
               </div>
 
-              {csData && <ArchitectureDiagram t={t} data={csData} />}
+              {csData && (
+                <ArchitectureDiagram
+                  architectureLabel={csData.architectureLabel}
+                  architecture={csData.architecture}
+                  labels={{
+                    local: t("caseStudy.local"),
+                    edge: t("caseStudy.edge"),
+                    vps: t("caseStudy.vps"),
+                    hint: t("caseStudy.selectNodeHint"),
+                  }}
+                />
+              )}
 
               <div>
                 <h3 className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
@@ -118,74 +128,5 @@ export async function CaseStudy({ lang }: { lang: Lang }) {
         </div>
       </div>
     </section>
-  );
-}
-
-function ArchitectureDiagram({ t, data }: { t: TFunc; data: NonNullable<Project["caseStudy"]> }) {
-  return (
-    <div className="overflow-hidden rounded-lg border border-border/60 bg-background/50">
-      <div className="border-b border-border/60 bg-secondary/30 px-4 py-2 font-mono text-xs text-muted-foreground">
-        {data.architectureLabel}
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2">
-        <div className="border-b border-border/60 p-4 md:border-b-0 md:border-r">
-          <div className="mb-3 flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-primary">
-            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
-            {t("caseStudy.local")}
-          </div>
-          <ul className="space-y-1.5">
-            {data.localNodes.map((n, i) => (
-              <li
-                key={`${n}-${i}`}
-                className="rounded-md border border-border/60 bg-card/50 px-3 py-1.5 font-mono text-xs"
-              >
-                {n}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="p-4">
-          <div className="mb-3 flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-primary">
-            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
-            {t("caseStudy.vps")}
-          </div>
-          <ul className="space-y-1.5">
-            {data.vpsNodes.map((n, i) => (
-              <li
-                key={`${n}-${i}`}
-                className="rounded-md border border-border/60 bg-card/50 px-3 py-1.5 font-mono text-xs"
-              >
-                {n}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      <div className="border-t border-border/60 bg-secondary/30 px-4 py-3">
-        <div className="mb-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-          {t("caseStudy.trafficFlow")}
-        </div>
-        <div className="flex flex-wrap items-center gap-1.5 font-mono text-xs text-foreground/90">
-          {data.flowText
-            .split("→")
-            .map((step) => step.trim())
-            .filter(Boolean)
-            .map((step, i, arr) => (
-              <span key={step} className="flex items-center gap-1.5">
-                <span className="rounded-md border border-border/60 bg-card/50 px-2 py-1">
-                  {step}
-                </span>
-                {i < arr.length - 1 && (
-                  <ArrowRight
-                    className="h-3 w-3 text-primary animate-flow-arrow"
-                    aria-hidden
-                    style={{ "--flow-index": i } as React.CSSProperties}
-                  />
-                )}
-              </span>
-            ))}
-        </div>
-      </div>
-    </div>
   );
 }

@@ -47,13 +47,57 @@ const pt: ProjectText = {
     lessonsLearned:
       "Construir uma plataforma pessoal me forçou a fazer trade-offs que não aparecem em tutoriais. Fixar tags de imagem por digest é mais chato do que sempre usar a versão mais recente (latest), mas é a única forma de saber exatamente o que está rodando. SOPS + age adicionam fricção à rotação de segredos, mas significam que posso publicar o repositório publicamente sem vazar nada. A maior lição: documentação escrita para você mesmo daqui a seis meses é a única que realmente é lida — então os ADRs são escritos como uma conversa com esse eu futuro.",
     architectureLabel: "arquitetura / dois ambientes, uma fonte da verdade",
-    localNodes: ["Windows 11 + WSL2", "Docker Compose", "k3d (validação k8s)"],
-    vpsNodes: [
-      "Ubuntu + k3s (single-node)",
-      "Traefik ingress",
-      "namespaces: mcp / bff / vos / monitoring",
-    ],
-    flowText: "Cloudflare DNS + TLS + Access + Tunnel  →  VPS :80 → Traefik  →  serviços",
+    architecture: {
+      nodes: [
+        {
+          id: "wsl2",
+          group: "local",
+          label: "Windows 11 + WSL2",
+          detail: "Ambiente de desenvolvimento local no Windows via WSL2.",
+        },
+        {
+          id: "compose",
+          group: "local",
+          label: "Docker Compose",
+          detail: "Orquestra os serviços localmente para iteração rápida.",
+        },
+        {
+          id: "k3d",
+          group: "local",
+          label: "k3d (validação k8s)",
+          detail: "Cluster k3d local para validar manifests antes da VPS.",
+        },
+        {
+          id: "cloudflare",
+          group: "edge",
+          label: "Cloudflare",
+          detail: "DNS, TLS, Access e Tunnel na frente da VPS.",
+        },
+        {
+          id: "vps",
+          group: "vps",
+          label: "Ubuntu + k3s (single-node)",
+          detail: "Host único rodando k3s; expõe a porta 80 ao Traefik.",
+        },
+        {
+          id: "traefik",
+          group: "vps",
+          label: "Traefik ingress",
+          detail: "Roteia cada requisição ao serviço certo por hostname.",
+        },
+        {
+          id: "namespaces",
+          group: "vps",
+          label: "namespaces: mcp / bff / vos / monitoring",
+          detail: "Quatro namespaces isolam o blast radius por domínio.",
+        },
+      ],
+      edges: [
+        { from: "cloudflare", to: "vps" },
+        { from: "vps", to: "traefik" },
+        { from: "traefik", to: "namespaces" },
+      ],
+    },
   },
 };
 
@@ -82,13 +126,57 @@ const en: ProjectText = {
     lessonsLearned:
       "Building a personal platform forced me to make trade-offs that don't show up in tutorials. Pinning image tags by digest is more annoying than tracking latest, but it's the only way to know exactly what's running. SOPS + age adds friction to secret rotation, but means I can publish the repo publicly without leaking anything. The biggest lesson: documentation that you write for yourself six months from now is the only documentation that actually gets read — so the ADRs are written like a conversation with that future me.",
     architectureLabel: "architecture / two environments, one source of truth",
-    localNodes: ["Windows 11 + WSL2", "Docker Compose", "k3d (k8s validation)"],
-    vpsNodes: [
-      "Ubuntu + k3s (single-node)",
-      "Traefik ingress",
-      "namespaces: mcp / bff / vos / monitoring",
-    ],
-    flowText: "Cloudflare DNS + TLS + Access + Tunnel  →  VPS :80 → Traefik  →  services",
+    architecture: {
+      nodes: [
+        {
+          id: "wsl2",
+          group: "local",
+          label: "Windows 11 + WSL2",
+          detail: "Local development environment on Windows via WSL2.",
+        },
+        {
+          id: "compose",
+          group: "local",
+          label: "Docker Compose",
+          detail: "Orchestrates services locally for fast iteration.",
+        },
+        {
+          id: "k3d",
+          group: "local",
+          label: "k3d (k8s validation)",
+          detail: "Local k3d cluster to validate manifests before the VPS.",
+        },
+        {
+          id: "cloudflare",
+          group: "edge",
+          label: "Cloudflare",
+          detail: "DNS, TLS, Access and Tunnel in front of the VPS.",
+        },
+        {
+          id: "vps",
+          group: "vps",
+          label: "Ubuntu + k3s (single-node)",
+          detail: "Single host running k3s; exposes port 80 to Traefik.",
+        },
+        {
+          id: "traefik",
+          group: "vps",
+          label: "Traefik ingress",
+          detail: "Routes every request to the right service by hostname.",
+        },
+        {
+          id: "namespaces",
+          group: "vps",
+          label: "namespaces: mcp / bff / vos / monitoring",
+          detail: "Four namespaces keep blast radius small per domain.",
+        },
+      ],
+      edges: [
+        { from: "cloudflare", to: "vps" },
+        { from: "vps", to: "traefik" },
+        { from: "traefik", to: "namespaces" },
+      ],
+    },
   },
 };
 

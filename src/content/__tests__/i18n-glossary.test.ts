@@ -44,6 +44,10 @@ function collectStrings(lang: "pt" | "en"): Record<string, string> {
     p.highlights.forEach((h, i) => (out[`projects.${p.slug}.highlights.${i}`] = h));
     if (p.caseStudy) {
       out[`projects.${p.slug}.caseStudy.lessonsLearned`] = p.caseStudy.lessonsLearned;
+      p.caseStudy.architecture.nodes.forEach((n) => {
+        out[`projects.${p.slug}.caseStudy.architecture.${n.id}.label`] = n.label;
+        out[`projects.${p.slug}.caseStudy.architecture.${n.id}.detail`] = n.detail;
+      });
     }
   });
 

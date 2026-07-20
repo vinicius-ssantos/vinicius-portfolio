@@ -11,6 +11,7 @@ import { SiteChrome } from "@/components/site-chrome";
 import { ProjectHighlights } from "@/components/sections/project-highlights";
 import { ProjectStackBadges } from "@/components/sections/project-stack-badges";
 import { RepositorySnapshot } from "@/components/sections/repository-snapshot";
+import { ArchitectureDiagram } from "@/components/sections/architecture-diagram";
 import { TrackedExternalLink } from "@/components/tracked-link";
 import { getAllProjectMetas, getProjectBySlug, type Lang } from "@/content";
 import { isLocale } from "@/lib/i18n";
@@ -218,6 +219,22 @@ export default async function ProjectPage({ params }: { params: Params }) {
                   lastActivity: t("projectDetail.lastActivityLabel"),
                   archived: t("projectDetail.archivedBadge"),
                   viaGitHub: t("projectDetail.viaGitHub"),
+                }}
+              />
+            </Section>
+          )}
+
+          {project.caseStudy && (
+            <Section label={t("projectDetail.architectureDiagramLabel")}>
+              <ArchitectureDiagram
+                architectureLabel={project.caseStudy.architectureLabel}
+                architecture={project.caseStudy.architecture}
+                size="lg"
+                labels={{
+                  local: t("caseStudy.local"),
+                  edge: t("caseStudy.edge"),
+                  vps: t("caseStudy.vps"),
+                  hint: t("caseStudy.selectNodeHint"),
                 }}
               />
             </Section>
