@@ -33,6 +33,26 @@ For each snapshot, add:
 - known limitations such as low traffic or ad blockers;
 - conclusion: improved, regressed or inconclusive.
 
+## Snapshot — 2026-07-20
+
+- **Period**: Last 7 days (2026-07-13 to 2026-07-20), production deployment SHA `7d82296` (`main`, PR #71).
+- **Sample size**: ~25 visits on the `/[lang]` route group over the period — small. Per the rule above, this is **not** a representative baseline yet; it's an early, encouraging signal only.
+- **Device distribution**: Desktop has data; **Mobile shows "No data available"** for the same period. Confirmed this is a volume gap, not a broken integration — `@vercel/speed-insights` is installed at `2.0.0`, matching the latest published version, and the environment gate (`VERCEL_ENV=production`) is verified working since Desktop is reporting.
+- **Route/locale split**: Speed Insights groups `/pt` and `/en` together under the `/[lang]` dynamic route pattern — there is no per-locale split available in the dashboard's route view today. Noting this as a known limitation of the current view, not something to build around.
+- **Desktop, p75** (production, `/[lang]`):
+  | Metric | Value | Target | Result |
+  | --- | --- | --- | --- |
+  | Real Experience Score | 96 ("Great") | > 90 | ✅ |
+  | LCP | 1.47 s | ≤ 2.5 s | ✅ |
+  | INP | 48 ms | ≤ 200 ms | ✅ |
+  | CLS | 0 | ≤ 0.1 | ✅ |
+  | FCP (diagnostic) | 2.47 s | — | — |
+  | FID (diagnostic) | 1 ms | — | — |
+  | TTFB (diagnostic) | 0.41 s | — | — |
+- **Mobile, p75**: no data for this period — inconclusive, not approved.
+- **Known limitations**: sample size is far below what's needed for a confident comparison; mobile is entirely unmeasured so far; no per-locale breakdown available.
+- **Conclusion**: **Inconclusive as a formal baseline** — but every desktop metric that does have data clears its target with margin, and there's no current signal of a performance problem to fix before #46. Re-check this dashboard after #46/#47 ship real traffic (or after enough time passes) before drawing any before/after comparison — a mobile sample is required before that comparison can be trusted.
+
 ## Visual-change comparison
 
 Before approving #46, #47 or #48:
