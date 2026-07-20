@@ -71,36 +71,67 @@ function curveFor(edge: SceneEdge): THREE.QuadraticBezierCurve3 {
   return new THREE.QuadraticBezierCurve3(from, mid, to);
 }
 
-function Nodes({ points, palette }: { points: ScenePoint[]; palette: Palette }) {
+function Nodes({
+  points,
+  palette,
+  activeId,
+  onSelect,
+}: {
+  points: ScenePoint[];
+  palette: Palette;
+  activeId: string | null;
+  onSelect: (id: string) => void;
+}) {
   return (
     <>
-      {points.map((point) => (
-        <group key={point.id} position={point.position}>
-          <mesh>
-            <icosahedronGeometry args={[NODE_RADIUS, 2]} />
-            <meshStandardMaterial
-              color={palette.node}
-              emissive={palette.accent}
-              // Detached nodes glow less, echoing the 2.5D view's quieter
-              // treatment of things outside the request path.
-              emissiveIntensity={point.connected ? 0.45 : 0.18}
-              roughness={0.35}
-              metalness={0.1}
-              transparent
-              opacity={0.92}
-            />
-          </mesh>
-          <mesh>
-            <icosahedronGeometry args={[NODE_RADIUS * 1.35, 1]} />
-            <meshBasicMaterial
-              color={palette.accent}
-              wireframe
-              transparent
-              opacity={point.connected ? 0.22 : 0.1}
-            />
-          </mesh>
-        </group>
-      ))}
+      {points.map((point) => {
+        const isActive = point.id === activeId;
+        // Anything not selected recedes once a selection exists, so the
+        // chosen node reads as chosen rather than merely brighter.
+        const dimmed = activeId !== null && !isActive;
+        return (
+          <group key={point.id} position={point.position}>
+            <mesh
+              scale={isActive ? 1.3 : 1}
+              // Pointer support is an enhancement layered on top of the HTML
+              // buttons, never the only way in — see TopologyExplorer.
+              onClick={(event) => {
+                event.stopPropagation();
+                onSelect(point.id);
+              }}
+              onPointerOver={(event) => {
+                event.stopPropagation();
+                document.body.style.cursor = "pointer";
+              }}
+              onPointerOut={() => {
+                document.body.style.cursor = "";
+              }}
+            >
+              <icosahedronGeometry args={[NODE_RADIUS, 2]} />
+              <meshStandardMaterial
+                color={palette.node}
+                emissive={palette.accent}
+                // Detached nodes glow less, echoing the 2.5D view's quieter
+                // treatment of things outside the request path.
+                emissiveIntensity={isActive ? 1.1 : point.connected ? 0.45 : 0.18}
+                roughness={0.35}
+                metalness={0.1}
+                transparent
+                opacity={dimmed ? 0.45 : 0.92}
+              />
+            </mesh>
+            <mesh scale={isActive ? 1.3 : 1}>
+              <icosahedronGeometry args={[NODE_RADIUS * 1.35, 1]} />
+              <meshBasicMaterial
+                color={palette.accent}
+                wireframe
+                transparent
+                opacity={isActive ? 0.5 : dimmed ? 0.08 : point.connected ? 0.22 : 0.1}
+              />
+            </mesh>
+          </group>
+        );
+      })}
     </>
   );
 }
@@ -132,9 +163,11 @@ function labelOffsetFor(point: ScenePoint): number {
 function LabelProjector({
   points,
   elements,
+  activeId,
 }: {
   points: ScenePoint[];
   elements: React.RefObject<(HTMLElement | null)[]>;
+  activeId: string | null;
 }) {
   useFrame((state) => {
     points.forEach((point, i) => {
@@ -150,7 +183,9 @@ function LabelProjector({
       element.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
       // z > 1 means the point is behind the camera; hide rather than
       // rendering a caption mirrored onto the wrong side of the screen.
-      element.style.opacity = projectionScratch.z > 1 ? "0" : point.connected ? "1" : "0.65";
+      const behindCamera = projectionScratch.z > 1;
+      const dimmed = activeId !== null && point.id !== activeId;
+      element.style.opacity = behindCamera ? "0" : dimmed ? "0.3" : point.connected ? "1" : "0.65";
     });
   });
 
@@ -175,7 +210,15 @@ function Grid({ palette }: { palette: Palette }) {
   );
 }
 
-function Connections({ edges, palette }: { edges: SceneEdge[]; palette: Palette }) {
+function Connections({
+  edges,
+  palette,
+  activeId,
+}: {
+  edges: SceneEdge[];
+  palette: Palette;
+  activeId: string | null;
+}) {
   const tubes = useMemo(
     () => edges.map((edge) => new THREE.TubeGeometry(curveFor(edge), 40, 0.022, 8, false)),
     [edges],
@@ -183,11 +226,22 @@ function Connections({ edges, palette }: { edges: SceneEdge[]; palette: Palette 
 
   return (
     <>
-      {tubes.map((geometry, i) => (
-        <mesh key={i} geometry={geometry}>
-          <meshBasicMaterial color={palette.edge} transparent opacity={0.55} />
-        </mesh>
-      ))}
+      {tubes.map((geometry, i) => {
+        const edge = edges[i]!;
+        // "As conexões relacionadas são destacadas" — an edge counts as
+        // related when the selected node is either end of it.
+        const related = activeId !== null && (edge.from === activeId || edge.to === activeId);
+        const dimmed = activeId !== null && !related;
+        return (
+          <mesh key={i} geometry={geometry}>
+            <meshBasicMaterial
+              color={related ? palette.accent : palette.edge}
+              transparent
+              opacity={related ? 0.95 : dimmed ? 0.18 : 0.55}
+            />
+          </mesh>
+        );
+      })}
     </>
   );
 }
@@ -250,18 +304,45 @@ function Pulses({
  * values destructured during render — mutating those would be a render-scope
  * escape the React compiler (rightly) rejects.
  */
-function CameraDrift({ enabled }: { enabled: boolean }) {
+const lookTarget = new THREE.Vector3(...CAMERA_TARGET);
+const desiredLook = new THREE.Vector3();
+const desiredPosition = new THREE.Vector3();
+
+/**
+ * Guided camera. Selecting a node eases the aim toward it and dollies in a
+ * little; clearing the selection returns to the overview framing. Both are
+ * short, bounded moves — #48 explicitly rules out free-orbit navigation.
+ *
+ * Under reduced motion the same poses are used but snapped rather than eased,
+ * so selection still reframes without anything gliding across the screen.
+ */
+function CameraRig({
+  enabled,
+  reducedMotion,
+  focus,
+}: {
+  enabled: boolean;
+  reducedMotion: boolean;
+  focus: [number, number, number] | null;
+}) {
   useFrame((state) => {
-    if (enabled) {
-      const targetX = CAMERA_ORIGIN[0] + state.pointer.x * PARALLAX_RANGE;
-      const targetY = CAMERA_ORIGIN[1] + state.pointer.y * PARALLAX_RANGE * 0.6;
-      state.camera.position.x += (targetX - state.camera.position.x) * 0.04;
-      state.camera.position.y += (targetY - state.camera.position.y) * 0.04;
+    desiredLook.set(...(focus ?? CAMERA_TARGET));
+
+    desiredPosition.set(...CAMERA_ORIGIN);
+    if (focus) {
+      // Pull partway toward the node instead of flying to it: enough to read
+      // as "we moved to this", not so much that context is lost.
+      desiredPosition.lerp(new THREE.Vector3(focus[0], focus[1] + 2.4, focus[2] + 6.2), 0.55);
     }
-    // Aimed every frame, including the single on-demand frame drawn under
-    // reduced motion — otherwise that pose would keep three's default
-    // origin-facing camera and sit mis-framed.
-    state.camera.lookAt(...CAMERA_TARGET);
+    if (enabled) {
+      desiredPosition.x += state.pointer.x * PARALLAX_RANGE;
+      desiredPosition.y += state.pointer.y * PARALLAX_RANGE * 0.6;
+    }
+
+    const ease = reducedMotion ? 1 : 0.06;
+    state.camera.position.lerp(desiredPosition, ease);
+    lookTarget.lerp(desiredLook, ease);
+    state.camera.lookAt(lookTarget);
   });
 
   return null;
@@ -271,11 +352,16 @@ export default function Topology3D({
   scene,
   active,
   reducedMotion,
+  activeId,
+  onSelect,
 }: {
   scene: Scene;
   /** False when offscreen or the tab is hidden — stops the render loop. */
   active: boolean;
   reducedMotion: boolean;
+  /** Owned by the HTML controls; the canvas only mirrors and reports it. */
+  activeId: string | null;
+  onSelect: (id: string | null) => void;
 }) {
   const [isDark, setIsDark] = useState(true);
 
@@ -294,6 +380,7 @@ export default function Topology3D({
   const palette = isDark ? PALETTE.dark : PALETTE.light;
   const animate = active && !reducedMotion;
   const labelElements = useRef<(HTMLElement | null)[]>([]);
+  const focus = scene.points.find((p) => p.id === activeId)?.position ?? null;
 
   return (
     <div className="relative h-full w-full">
@@ -311,11 +398,11 @@ export default function Topology3D({
         <ambientLight intensity={isDark ? 0.5 : 0.85} />
         <directionalLight position={[4, 6, 5]} intensity={isDark ? 1.1 : 0.9} />
         <Grid palette={palette} />
-        <Connections edges={scene.edges} palette={palette} />
+        <Connections edges={scene.edges} palette={palette} activeId={activeId} />
         <Pulses edges={scene.edges} palette={palette} animate={animate} />
-        <Nodes points={scene.points} palette={palette} />
-        <CameraDrift enabled={animate} />
-        <LabelProjector points={scene.points} elements={labelElements} />
+        <Nodes points={scene.points} palette={palette} activeId={activeId} onSelect={onSelect} />
+        <CameraRig enabled={animate} reducedMotion={reducedMotion} focus={focus} />
+        <LabelProjector points={scene.points} elements={labelElements} activeId={activeId} />
       </Canvas>
 
       {/* Captions live outside the canvas so they stay real text: legible at
