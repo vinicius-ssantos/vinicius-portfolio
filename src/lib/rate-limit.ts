@@ -1,38 +1,91 @@
-/**
- * Best-effort in-memory rate limiter.
- *
- * This only protects a single warm serverless instance — it resets on cold
- * start and isn't shared across concurrent instances, so it's not a hard
- * guarantee. It's a supplementary layer behind the honeypot and
- * minimum-fill-time checks, which don't depend on cross-invocation state
- * at all. A distributed store (Upstash/Vercel KV) would close the gap if
- * abuse volume ever justifies the added infra.
- */
-const hits = new Map<string, number[]>();
+import { createHmac } from "node:crypto";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
-const WINDOW_MS = 60_000;
+const WINDOW = "60 s";
 const MAX_REQUESTS_PER_WINDOW = 5;
 
-export function isRateLimited(key: string): boolean {
-  const now = Date.now();
-  const windowStart = now - WINDOW_MS;
-  const timestamps = (hits.get(key) ?? []).filter((t) => t > windowStart);
+export type RateLimitResult =
+  | { status: "ok" }
+  | { status: "limited"; retryAfterSeconds: number }
+  // The datastore itself is unreachable/misconfigured — distinct from a
+  // legitimate "limited" so callers can apply an explicit, observable
+  // fail-open policy instead of silently treating an outage as "ok".
+  | { status: "datastore-error" };
 
-  if (timestamps.length >= MAX_REQUESTS_PER_WINDOW) {
-    hits.set(key, timestamps);
-    return true;
+let ratelimit: Ratelimit | null | undefined;
+
+/**
+ * Lazily builds the shared Ratelimit instance. `undefined` means "not
+ * checked yet", `null` means "checked, not configured" — distinguishes a
+ * genuinely missing config from a fresh module load.
+ */
+function getRatelimit(): Ratelimit | null {
+  if (ratelimit !== undefined) return ratelimit;
+
+  const url = process.env.KV_REST_API_URL;
+  const token = process.env.KV_REST_API_TOKEN;
+  if (!url || !token) {
+    ratelimit = null;
+    return ratelimit;
   }
 
-  timestamps.push(now);
-  hits.set(key, timestamps);
-  return false;
+  ratelimit = new Ratelimit({
+    redis: new Redis({ url, token }),
+    limiter: Ratelimit.slidingWindow(MAX_REQUESTS_PER_WINDOW, WINDOW),
+    // Prefix separates environments (and any other feature that reuses the
+    // same Redis instance) so keys never collide across deploy targets.
+    prefix: `ratelimit:${process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? "development"}:contact`,
+  });
+  return ratelimit;
+}
+
+/**
+ * HMACs the client identifier so raw IPs are never stored in Redis. Keyed
+ * (not a bare hash) so the IPv4/IPv6 address space can't be brute-forced
+ * back from the stored key.
+ */
+function hashIdentifier(identifier: string): string {
+  const secret = process.env.RATE_LIMIT_HASH_SECRET;
+  if (!secret) {
+    // No pepper configured — still hash (never store the raw value) but
+    // callers in production are expected to have RATE_LIMIT_HASH_SECRET set;
+    // this path only serves local dev without full env setup.
+    return createHmac("sha256", "dev-only-unkeyed").update(identifier).digest("hex");
+  }
+  return createHmac("sha256", secret).update(identifier).digest("hex");
+}
+
+export async function checkRateLimit(identifier: string): Promise<RateLimitResult> {
+  const limiter = getRatelimit();
+  if (!limiter) return { status: "datastore-error" };
+
+  const key = hashIdentifier(identifier);
+
+  try {
+    const { success, reset } = await limiter.limit(key);
+    if (success) return { status: "ok" };
+    return {
+      status: "limited",
+      retryAfterSeconds: Math.max(1, Math.ceil((reset - Date.now()) / 1000)),
+    };
+  } catch {
+    // Upstash unreachable/erroring — fail open (Turnstile + honeypot + min
+    // fill time remain in effect) rather than take the contact form fully
+    // offline over a rate-limit-store blip. Distinct return value so the
+    // caller can log/observe it instead of conflating it with "ok".
+    return { status: "datastore-error" };
+  }
 }
 
 /**
  * Vercel sets x-forwarded-for to a comma-separated chain (client, then any
- * intermediate proxies) — the first entry is the original client. Falls
- * back to x-real-ip, then a constant so requests without either header
- * still share one bucket instead of bypassing the limit entirely.
+ * intermediate proxies) — the first entry is the original client, and this
+ * header is trustworthy specifically because Vercel's edge network is what
+ * sets/overwrites it before the request reaches the function; it isn't
+ * passed through unmodified from the client. Falls back to x-real-ip, then
+ * a constant so requests without either header still share one bucket
+ * instead of bypassing the limit entirely.
  */
 export function getClientIp(headers: Headers): string {
   const forwardedFor = headers.get("x-forwarded-for");
@@ -40,4 +93,8 @@ export function getClientIp(headers: Headers): string {
     return forwardedFor.split(",")[0]?.trim() || "unknown";
   }
   return headers.get("x-real-ip") ?? "unknown";
+}
+
+export function resetRatelimitForTests(): void {
+  ratelimit = undefined;
 }

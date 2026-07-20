@@ -69,6 +69,8 @@ const en = {
     formSending: "Sending...",
     formSuccess: "Message sent! I'll get back to you soon.",
     formError: "Something went wrong. Please try emailing me directly.",
+    formRateLimited: "Too many attempts. Please wait a moment and try again.",
+    formChallenge: "Verification challenge",
   },
   stats: {
     heatmapLess: "Less",
@@ -236,6 +238,8 @@ const pt: Translation = {
     formSending: "Enviando...",
     formSuccess: "Mensagem enviada! Responderei em breve.",
     formError: "Algo deu errado. Tente me enviar um email diretamente.",
+    formRateLimited: "Muitas tentativas. Aguarde um momento e tente novamente.",
+    formChallenge: "Desafio de verificação",
   },
   stats: {
     heatmapLess: "Menos",

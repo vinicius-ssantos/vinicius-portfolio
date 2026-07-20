@@ -1,13 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { useTheme } from "next-themes";
 import { Send, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useTurnstile } from "@/hooks/use-turnstile";
 import { trackEvent } from "@/lib/analytics";
 import type { translations } from "@/lib/translations";
 
 type T = typeof translations.en;
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
 export function ContactForm({ t }: { t: T }) {
   const [sending, setSending] = useState(false);
@@ -17,9 +21,16 @@ export function ContactForm({ t }: { t: T }) {
   // plausibly fill the form.
   const [renderedAt] = useState(() => Date.now());
   const { toast } = useToast();
+  const { resolvedTheme } = useTheme();
+  const {
+    containerRef: turnstileRef,
+    token: turnstileToken,
+    reset: resetTurnstile,
+  } = useTurnstile(TURNSTILE_SITE_KEY, resolvedTheme === "dark" ? "dark" : "light");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!turnstileToken) return;
     setSending(true);
 
     const formData = new FormData(e.currentTarget);
@@ -29,6 +40,7 @@ export function ContactForm({ t }: { t: T }) {
       message: formData.get("message"),
       website: formData.get("website"), // honeypot — must stay empty
       renderedAt,
+      turnstileToken,
     };
 
     try {
@@ -45,9 +57,17 @@ export function ContactForm({ t }: { t: T }) {
         trackEvent("contact_form_success");
         toast({ title: t.contactModal.formSuccess });
       } else {
-        toast({ title: t.contactModal.formError, variant: "destructive" });
+        // Turnstile tokens are single-use — get a fresh one for the retry,
+        // regardless of which check actually rejected the submission.
+        resetTurnstile();
+        if (res.status === 429) {
+          toast({ title: t.contactModal.formRateLimited, variant: "destructive" });
+        } else {
+          toast({ title: t.contactModal.formError, variant: "destructive" });
+        }
       }
     } catch {
+      resetTurnstile();
       toast({ title: t.contactModal.formError, variant: "destructive" });
     } finally {
       setSending(false);
@@ -114,7 +134,14 @@ export function ContactForm({ t }: { t: T }) {
           className="w-full resize-none rounded-md border border-border/60 bg-secondary/30 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary/40 focus:outline-none focus:ring-1 focus:ring-primary/30"
         />
       </div>
-      <Button type="submit" disabled={sending} className="w-full">
+      {TURNSTILE_SITE_KEY && (
+        <div role="group" aria-label={t.contactModal.formChallenge} ref={turnstileRef} />
+      )}
+      <Button
+        type="submit"
+        disabled={sending || (Boolean(TURNSTILE_SITE_KEY) && !turnstileToken)}
+        className="w-full"
+      >
         {sending ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

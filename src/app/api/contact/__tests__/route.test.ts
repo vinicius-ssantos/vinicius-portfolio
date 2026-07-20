@@ -1,6 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 const sendMock = vi.fn().mockResolvedValue({ data: { id: "test" }, error: null });
+const verifyTurnstileTokenMock = vi.fn();
+const checkRateLimitMock = vi.fn();
 
 vi.mock("resend", () => ({
   Resend: class {
@@ -8,8 +10,18 @@ vi.mock("resend", () => ({
   },
 }));
 
-// Each test uses a distinct x-forwarded-for IP so the shared in-memory
-// rate limiter (module-level state) doesn't leak between test cases.
+vi.mock("@/lib/turnstile", () => ({
+  verifyTurnstileToken: verifyTurnstileTokenMock,
+}));
+
+vi.mock("@/lib/rate-limit", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/rate-limit")>();
+  return { ...actual, checkRateLimit: checkRateLimitMock };
+});
+
+// Each test uses a distinct x-forwarded-for IP purely for request-shape
+// realism — checkRateLimit itself is mocked per test, so no shared state
+// leaks between cases.
 let ipCounter = 0;
 function nextIp() {
   ipCounter += 1;
@@ -44,6 +56,7 @@ function validPayload(overrides: Record<string, unknown> = {}) {
     message: "Hello there, this is a real message.",
     website: "",
     renderedAt: Date.now() - 5_000,
+    turnstileToken: "a-valid-token",
     ...overrides,
   };
 }
@@ -51,6 +64,8 @@ function validPayload(overrides: Record<string, unknown> = {}) {
 describe("POST /api/contact", () => {
   beforeEach(() => {
     sendMock.mockClear();
+    verifyTurnstileTokenMock.mockReset().mockResolvedValue({ ok: true });
+    checkRateLimitMock.mockReset().mockResolvedValue({ status: "ok" });
     vi.stubEnv("RESEND_API_KEY", "test-key");
   });
 
@@ -58,7 +73,7 @@ describe("POST /api/contact", () => {
     vi.unstubAllEnvs();
   });
 
-  it("returns 503 and never calls Resend when RESEND_API_KEY is missing", async () => {
+  it("returns 503 and never calls Resend, Turnstile, or the rate limiter when RESEND_API_KEY is missing", async () => {
     vi.unstubAllEnvs();
     const { POST } = await import("../route");
 
@@ -66,6 +81,8 @@ describe("POST /api/contact", () => {
 
     expect(res.status).toBe(503);
     expect(sendMock).not.toHaveBeenCalled();
+    expect(verifyTurnstileTokenMock).not.toHaveBeenCalled();
+    expect(checkRateLimitMock).not.toHaveBeenCalled();
   });
 
   it("returns 415 for a non-JSON content type", async () => {
@@ -86,25 +103,89 @@ describe("POST /api/contact", () => {
     expect(sendMock).not.toHaveBeenCalled();
   });
 
-  it("rejects a filled honeypot without calling Resend", async () => {
+  it("rejects a filled honeypot without calling the rate limiter, Turnstile, or Resend", async () => {
     const { POST } = await import("../route");
 
     const res = await POST(makeRequest(validPayload({ website: "http://spam.example" })));
 
     expect(res.status).toBe(400);
+    expect(checkRateLimitMock).not.toHaveBeenCalled();
+    expect(verifyTurnstileTokenMock).not.toHaveBeenCalled();
     expect(sendMock).not.toHaveBeenCalled();
   });
 
-  it("rejects a submission that arrives faster than a human could fill the form", async () => {
+  it("rejects a submission that arrives faster than a human could fill the form, without calling the rate limiter, Turnstile, or Resend", async () => {
     const { POST } = await import("../route");
 
     const res = await POST(makeRequest(validPayload({ renderedAt: Date.now() })));
 
     expect(res.status).toBe(400);
+    expect(checkRateLimitMock).not.toHaveBeenCalled();
+    expect(verifyTurnstileTokenMock).not.toHaveBeenCalled();
     expect(sendMock).not.toHaveBeenCalled();
   });
 
-  it("rejects missing required fields", async () => {
+  it("returns 429 with Retry-After when the distributed rate limit is exceeded, without calling Turnstile or Resend", async () => {
+    checkRateLimitMock.mockResolvedValue({ status: "limited", retryAfterSeconds: 42 });
+    const { POST } = await import("../route");
+
+    const res = await POST(makeRequest(validPayload()));
+
+    expect(res.status).toBe(429);
+    expect(res.headers.get("Retry-After")).toBe("42");
+    expect(verifyTurnstileTokenMock).not.toHaveBeenCalled();
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it("fails open (still processes the request) when the rate-limit datastore itself errors", async () => {
+    checkRateLimitMock.mockResolvedValue({ status: "datastore-error" });
+    const { POST } = await import("../route");
+
+    const res = await POST(makeRequest(validPayload()));
+
+    expect(res.status).toBe(200);
+    expect(sendMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("rejects a missing, invalid, expired, or reused Turnstile token without calling Resend", async () => {
+    verifyTurnstileTokenMock.mockResolvedValue({ ok: false, reason: "invalid-token" });
+    const { POST } = await import("../route");
+
+    const res = await POST(makeRequest(validPayload()));
+
+    expect(res.status).toBe(400);
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it("rejects a hostname mismatch from Turnstile without calling Resend", async () => {
+    verifyTurnstileTokenMock.mockResolvedValue({ ok: false, reason: "hostname-mismatch" });
+    const { POST } = await import("../route");
+
+    const res = await POST(makeRequest(validPayload()));
+
+    expect(res.status).toBe(400);
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it("rejects when Turnstile siteverify is unreachable, without calling Resend", async () => {
+    verifyTurnstileTokenMock.mockResolvedValue({ ok: false, reason: "siteverify-unreachable" });
+    const { POST } = await import("../route");
+
+    const res = await POST(makeRequest(validPayload()));
+
+    expect(res.status).toBe(400);
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it("passes the client IP through to Turnstile verification", async () => {
+    const { POST } = await import("../route");
+
+    await POST(makeRequest(validPayload(), { ip: "198.51.100.7" }));
+
+    expect(verifyTurnstileTokenMock).toHaveBeenCalledWith("a-valid-token", "198.51.100.7");
+  });
+
+  it("rejects missing required fields after Turnstile passes", async () => {
     const { POST } = await import("../route");
 
     const res = await POST(makeRequest(validPayload({ message: "" })));
@@ -122,7 +203,7 @@ describe("POST /api/contact", () => {
     expect(sendMock).not.toHaveBeenCalled();
   });
 
-  it("sends the email and returns ok for a valid submission", async () => {
+  it("sends the email and returns ok for a valid submission (rate limit ok, Turnstile valid)", async () => {
     const { POST } = await import("../route");
 
     const res = await POST(makeRequest(validPayload()));
@@ -133,15 +214,13 @@ describe("POST /api/contact", () => {
     expect(sendMock).toHaveBeenCalledTimes(1);
   });
 
-  it("returns 429 after exceeding the rate limit from the same IP", async () => {
+  it("returns a generic error and never calls Resend a second time when Resend itself fails", async () => {
+    sendMock.mockResolvedValueOnce({ data: null, error: { message: "boom" } });
     const { POST } = await import("../route");
-    const ip = nextIp();
 
-    let lastRes;
-    for (let i = 0; i < 6; i++) {
-      lastRes = await POST(makeRequest(validPayload(), { ip }));
-    }
+    const res = await POST(makeRequest(validPayload()));
 
-    expect(lastRes?.status).toBe(429);
+    expect(res.status).toBe(500);
+    expect(sendMock).toHaveBeenCalledTimes(1);
   });
 });
