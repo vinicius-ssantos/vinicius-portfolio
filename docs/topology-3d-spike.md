@@ -54,10 +54,27 @@ Seven nodes from the real `personal-platform-infra` content, matching #48's
   matter how the camera is angled, because nothing establishes a ground plane;
 - curved tube connections, with emerald pulses travelling them, staggered so
   the path reads as traffic rather than a synchronized blink;
-- HTML labels (via drei's `Html`) with alternating heights — several captions
-  run long (`namespaces: mcp / bff / vos / monitoring`) and collide at a
-  uniform offset;
+- HTML labels at alternating heights — several captions run long
+  (`namespaces: mcp / bff / vos / monitoring`) and collide at a uniform
+  offset. Real DOM text projected from the camera each frame, not textures;
 - guided camera: a small cursor-driven drift, eased, never a free orbit.
+
+### drei was removed, for an engine conflict rather than for size
+
+The first pass used `@react-three/drei` for its `<Html>` label helper. CI then
+failed with `EBADENGINE`: drei depends on `camera-controls`, which requires
+**Node >= 22**, while this project's baseline is Node 20 (`.nvmrc`, the CI
+workflow, and `engines`). Every other dependency in the tree accepts Node 20;
+`camera-controls` was the sole exception.
+
+Labels were the only thing drei provided, so `LabelProjector` now projects
+world positions to screen space directly and writes `style.transform` on
+plain DOM spans — about 20 lines, no dependency, and the captions stay real
+selectable text.
+
+Worth recording honestly: removing drei was **not** a meaningful bundle win
+(~7 KiB decoded). three.js itself is essentially all of the cost. The reason
+to drop it was the Node baseline conflict.
 
 ### Runtime behaviour
 
@@ -75,26 +92,30 @@ already routes mobile to the 2.5D topology.
 
 ### Bundle cost — the headline number
 
-Measured as real bytes transferred over the network on
-`/en/projects/personal-platform-infra`, production build, same page both times:
+Measured on `/en/projects/personal-platform-infra`, production build, via
+resource timing so both the compressed download and the parse cost are
+visible. Same page, same method, both builds:
 
-| Build | JS transferred | Delta |
+| Build | Wire (compressed) | Decoded (parsed) |
 | --- | --- | --- |
-| Flag off | 937.0 KiB | — |
-| Flag on | 1810.2 KiB | **+873.2 KiB** |
+| Flag off | 299.8 KiB | 936.7 KiB |
+| Flag on | 529.3 KiB | 1803.3 KiB |
+| **Delta** | **+229.5 KiB** | **+866.6 KiB** |
 
-The entire delta is one lazily-loaded chunk (three + @react-three/fiber +
-drei). With the flag off that chunk is emitted to disk but never fetched,
-which is the behaviour #48 requires ("o bundle 3D não deve entrar no
-carregamento inicial"). An e2e test asserts this and fails if the default
-ever flips.
+Both columns matter and they say different things: ~230 KiB is what a visitor
+actually downloads, while ~867 KiB is what the main thread has to parse and
+compile. It is one lazily-loaded chunk, essentially all of it three.js.
 
-**This roughly doubles the page's JavaScript.** That is the single most
-important input to the Phase D decision, and it is a large number for a
-decorative enhancement on a portfolio whose current desktop LCP is 1.47 s.
-Phase C should attempt to cut it (drei is imported only for `Html`, and a
-hand-rolled label overlay would remove that dependency entirely) before the
-number is treated as final.
+With the flag off that chunk is emitted to disk but never fetched, which is
+the behaviour #48 requires ("o bundle 3D não deve entrar no carregamento
+inicial"). An e2e test asserts this and fails if the default ever flips.
+
+> **Measurement note.** Two earlier readings of these numbers were wrong
+> because the page was sampled before all chunks had settled, which produced
+> both an inflated flag-on figure and an implausibly low flag-off one. The
+> table above is from runs with a 4 s settle and was cross-checked between
+> configurations. Worth stating plainly so nobody re-derives a decision from
+> the discarded figures.
 
 ### Not yet done
 
@@ -109,8 +130,17 @@ number is treated as final.
 
 ### Open question for Phase D
 
-The visual result is legible and on-brand, but the honest read after Phase A
-is that ~873 KiB buys a nicer rendering of information the 2.5D diagram
-already conveys accessibly, on desktop only. The bar #56 sets — "não aprovar
-Three.js apenas porque o desktop permanece rápido" — should be applied
-strictly here.
+The visual result is legible and on-brand. The honest read after Phase A is
+that ~230 KiB downloaded and ~867 KiB parsed buys a nicer rendering of
+information the 2.5D diagram already conveys accessibly, on desktop only,
+below a section most visitors never scroll to.
+
+That is not obviously disqualifying — the chunk is lazy, gated, and off the
+critical path — but it is real, and the bar #56 sets ("não aprovar Three.js
+apenas porque o desktop permanece rápido") should be applied strictly. The
+deciding evidence is still missing: a representative RUM sample, INP in
+particular, since parse/compile of ~867 KiB lands on the main thread.
+
+The narrower option worth weighing in Phase D: keep the 3D confined to the
+project dossier (as built here) rather than also adopting it in the Hero,
+which would move the cost onto the highest-traffic page.

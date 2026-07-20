@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 // The #48 spike ships behind NEXT_PUBLIC_ENABLE_3D_TOPOLOGY, which CI leaves
 // unset. These assertions are the guard that an unreviewed WebGL prototype —
-// and its ~870 KiB of JavaScript — can never reach the public site by
+// and its ~230 KiB download / ~867 KiB parse — can never reach the site by
 // accident: if someone flips the default, this suite fails.
 test.describe("3D topology spike (flag off)", () => {
   test("does not render the experimental canvas on the project dossier", async ({ page }) => {

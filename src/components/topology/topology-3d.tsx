@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Html } from "@react-three/drei";
 import * as THREE from "three";
 import type { Scene, SceneEdge, ScenePoint } from "@/lib/topology";
 
@@ -100,28 +99,62 @@ function Nodes({ points, palette }: { points: ScenePoint[]; palette: Palette }) 
               opacity={point.connected ? 0.22 : 0.1}
             />
           </mesh>
-          {/* Labels stay HTML rather than baked into textures: legible at any
-              DPR, themeable with the same tokens as the rest of the page, and
-              a step toward the Phase B detail panel. */}
-          <Html
-            center
-            // Alternating heights: several of these captions are long
-            // ("namespaces: mcp / bff / vos / monitoring") and collide with
-            // their neighbours when every label sits at the same offset.
-            position={[0, NODE_RADIUS + (point.depth % 2 === 0 ? 0.46 : 1.06), 0]}
-            zIndexRange={[10, 0]}
-          >
-            <span
-              className="select-none whitespace-nowrap font-mono text-[10px]"
-              style={{ color: palette.label, opacity: point.connected ? 1 : 0.65 }}
-            >
-              {point.label}
-            </span>
-          </Html>
         </group>
       ))}
     </>
   );
+}
+
+/** Reused across every projection so the per-frame loop allocates nothing. */
+const projectionScratch = new THREE.Vector3();
+
+/** Height of a node's caption above its centre, alternating by reading order. */
+function labelOffsetFor(point: ScenePoint): number {
+  // Several captions run long ("namespaces: mcp / bff / vos / monitoring")
+  // and collide with their neighbours when every label sits at one height.
+  return NODE_RADIUS + (point.depth % 2 === 0 ? 0.46 : 1.06);
+}
+
+/**
+ * Projects world positions to screen space and drives the HTML captions that
+ * live outside the canvas.
+ *
+ * Hand-rolled rather than using drei's `<Html>`: drei pulls in
+ * `camera-controls`, which requires Node >= 22, and this project's baseline
+ * is Node 20 (.nvmrc, CI, and `engines`). Labels were the only thing drei was
+ * providing, so projecting them directly keeps the dependency out entirely —
+ * see docs/topology-3d-spike.md.
+ *
+ * Writes straight to `style` instead of through React state: this runs per
+ * frame, and re-rendering the tree 60 times a second to move some text would
+ * be the single most expensive thing in the scene.
+ */
+function LabelProjector({
+  points,
+  elements,
+}: {
+  points: ScenePoint[];
+  elements: React.RefObject<(HTMLElement | null)[]>;
+}) {
+  useFrame((state) => {
+    points.forEach((point, i) => {
+      const element = elements.current[i];
+      if (!element) return;
+
+      projectionScratch.set(point.position[0], point.position[1], point.position[2]);
+      projectionScratch.y += labelOffsetFor(point);
+      projectionScratch.project(state.camera);
+
+      const x = (projectionScratch.x * 0.5 + 0.5) * state.size.width;
+      const y = (-projectionScratch.y * 0.5 + 0.5) * state.size.height;
+      element.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+      // z > 1 means the point is behind the camera; hide rather than
+      // rendering a caption mirrored onto the wrong side of the screen.
+      element.style.opacity = projectionScratch.z > 1 ? "0" : point.connected ? "1" : "0.65";
+    });
+  });
+
+  return null;
 }
 
 /**
@@ -260,26 +293,48 @@ export default function Topology3D({
 
   const palette = isDark ? PALETTE.dark : PALETTE.light;
   const animate = active && !reducedMotion;
+  const labelElements = useRef<(HTMLElement | null)[]>([]);
 
   return (
-    <Canvas
-      // Anything continuous must stop when the section scrolls away or the
-      // tab is backgrounded. "demand" drops the rAF loop and only redraws when
-      // props change, which also gives reduced motion a correct static frame.
-      frameloop={animate ? "always" : "demand"}
-      dpr={[1, 1.5]}
-      camera={{ position: CAMERA_ORIGIN, fov: 42 }}
-      gl={{ antialias: true, alpha: true }}
-      style={{ width: "100%", height: "100%" }}
-    >
-      <fog attach="fog" args={[palette.fog, 12, 26]} />
-      <ambientLight intensity={isDark ? 0.5 : 0.85} />
-      <directionalLight position={[4, 6, 5]} intensity={isDark ? 1.1 : 0.9} />
-      <Grid palette={palette} />
-      <Connections edges={scene.edges} palette={palette} />
-      <Pulses edges={scene.edges} palette={palette} animate={animate} />
-      <Nodes points={scene.points} palette={palette} />
-      <CameraDrift enabled={animate} />
-    </Canvas>
+    <div className="relative h-full w-full">
+      <Canvas
+        // Anything continuous must stop when the section scrolls away or the
+        // tab is backgrounded. "demand" drops the rAF loop and only redraws when
+        // props change, which also gives reduced motion a correct static frame.
+        frameloop={animate ? "always" : "demand"}
+        dpr={[1, 1.5]}
+        camera={{ position: CAMERA_ORIGIN, fov: 42 }}
+        gl={{ antialias: true, alpha: true }}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <fog attach="fog" args={[palette.fog, 12, 26]} />
+        <ambientLight intensity={isDark ? 0.5 : 0.85} />
+        <directionalLight position={[4, 6, 5]} intensity={isDark ? 1.1 : 0.9} />
+        <Grid palette={palette} />
+        <Connections edges={scene.edges} palette={palette} />
+        <Pulses edges={scene.edges} palette={palette} animate={animate} />
+        <Nodes points={scene.points} palette={palette} />
+        <CameraDrift enabled={animate} />
+        <LabelProjector points={scene.points} elements={labelElements} />
+      </Canvas>
+
+      {/* Captions live outside the canvas so they stay real text: legible at
+          any DPR and styled with the same tokens as the rest of the page.
+          LabelProjector positions them from the camera every frame. */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        {scene.points.map((point, i) => (
+          <span
+            key={point.id}
+            ref={(element) => {
+              labelElements.current[i] = element;
+            }}
+            className="absolute left-0 top-0 select-none whitespace-nowrap font-mono text-[10px]"
+            style={{ color: palette.label, opacity: 0 }}
+          >
+            {point.label}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
