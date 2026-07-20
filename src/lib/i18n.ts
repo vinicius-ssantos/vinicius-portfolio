@@ -1,8 +1,9 @@
 // Single source of truth for the "locale"/"lang" concept used across
-// routing (this file), content (`src/content`), and UI translations
-// (`src/lib/translations.ts`, which re-exports this as `Lang`).
+// routing (this file), content (`src/content`), and next-intl (`src/i18n/`).
 export const locales = ["pt", "en"] as const;
 export type Locale = (typeof locales)[number];
+/** Alias kept for readability at call sites that talk about "lang" (content, components). */
+export type Lang = Locale;
 
 export const defaultLocale: Locale = "pt";
 

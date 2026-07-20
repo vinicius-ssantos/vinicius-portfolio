@@ -4,13 +4,13 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { translations } from "@/lib/translations";
+import { messages } from "@/lib/messages";
 import { detectLocaleFromPathname } from "@/lib/i18n";
 
 export default function NotFound() {
   const pathname = usePathname();
   const lang = detectLocaleFromPathname(pathname);
-  const t = translations[lang];
+  const t = messages[lang];
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background px-4 text-center">

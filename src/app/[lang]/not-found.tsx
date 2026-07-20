@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { translations } from "@/lib/translations";
+import { messages } from "@/lib/messages";
 import { detectLocaleFromPathname } from "@/lib/i18n";
 
 // Locale-scoped 404 — rendered when a /[lang]/... route misses.
@@ -14,7 +14,7 @@ import { detectLocaleFromPathname } from "@/lib/i18n";
 export default function NotFound() {
   const pathname = usePathname();
   const lang = detectLocaleFromPathname(pathname);
-  const t = translations[lang].notFound;
+  const t = messages[lang].notFound;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background px-4 text-center">

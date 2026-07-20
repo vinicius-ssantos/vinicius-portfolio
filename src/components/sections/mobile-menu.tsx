@@ -1,26 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Github, Linkedin } from "lucide-react";
 import { profile, type Lang } from "@/content";
-import type { Translation } from "@/lib/translations";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageToggle } from "@/components/language-toggle";
 import { trackEvent } from "@/lib/analytics";
 import type { NavSectionId } from "@/lib/nav-sections";
 
 export function MobileMenu({
-  t,
   lang,
   activeSection = null,
 }: {
-  t: Translation;
   lang: Lang;
   activeSection?: NavSectionId | null;
 }) {
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -35,11 +34,11 @@ export function MobileMenu({
   }
 
   const links: { id: NavSectionId; href: string; label: string }[] = [
-    { id: "experience", href: `/${lang}#experience`, label: t.nav.experience },
-    { id: "stack", href: `/${lang}#stack`, label: t.nav.stack },
-    { id: "projects", href: `/${lang}#projects`, label: t.nav.projects },
-    { id: "case-study", href: `/${lang}#case-study`, label: t.nav.caseStudy },
-    { id: "about", href: `/${lang}#about`, label: t.nav.about },
+    { id: "experience", href: `/${lang}#experience`, label: t("nav.experience") },
+    { id: "stack", href: `/${lang}#stack`, label: t("nav.stack") },
+    { id: "projects", href: `/${lang}#projects`, label: t("nav.projects") },
+    { id: "case-study", href: `/${lang}#case-study`, label: t("nav.caseStudy") },
+    { id: "about", href: `/${lang}#about`, label: t("nav.about") },
   ];
 
   return (
@@ -47,7 +46,7 @@ export function MobileMenu({
       <DialogPrimitive.Trigger asChild>
         <button
           type="button"
-          aria-label={t.a11y.openMenu}
+          aria-label={t("a11y.openMenu")}
           className="inline-flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground sm:hidden"
         >
           <Menu className="h-5 w-5" aria-hidden />
@@ -62,13 +61,13 @@ export function MobileMenu({
           data-slot="mobile-menu-content"
           className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background p-4 shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top sm:hidden"
         >
-          <DialogPrimitive.Title className="sr-only">{t.a11y.menuTitle}</DialogPrimitive.Title>
+          <DialogPrimitive.Title className="sr-only">{t("a11y.menuTitle")}</DialogPrimitive.Title>
           <div className="flex items-center justify-between">
             <span className="font-mono text-sm font-semibold">{profile.handle}</span>
             <DialogPrimitive.Close asChild>
               <button
                 type="button"
-                aria-label={t.a11y.closeMenu}
+                aria-label={t("a11y.closeMenu")}
                 className="inline-flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
               >
                 <X className="h-5 w-5" aria-hidden />
@@ -94,7 +93,7 @@ export function MobileMenu({
           <div className="mt-4 flex items-center justify-between border-t border-border/60 pt-4">
             <div className="flex items-center gap-1">
               <LanguageToggle />
-              <ThemeToggle lang={lang} />
+              <ThemeToggle />
             </div>
             <div className="flex items-center gap-1">
               <a

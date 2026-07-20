@@ -54,7 +54,7 @@ describe("seo", () => {
     });
 
     it("buildProjectJsonLd carries the project's repo and dates", () => {
-      const project = getFeaturedProject();
+      const project = getFeaturedProject("en");
       const jsonLd = buildProjectJsonLd(project, "en");
       expect(jsonLd.codeRepository).toBe(project.repoUrl);
       expect(jsonLd.dateModified).toBe(project.updatedAt);
@@ -72,7 +72,7 @@ describe("seo", () => {
 
   describe("buildProjectMetadata", () => {
     it("builds consistent canonical/alternates/openGraph for a project", () => {
-      const project = getFeaturedProject();
+      const project = getFeaturedProject("pt");
       const metadata = buildProjectMetadata(project, "pt");
       expect(metadata.alternates.canonical).toBe(metadata.openGraph.url);
       expect(metadata.title).toContain(project.name);

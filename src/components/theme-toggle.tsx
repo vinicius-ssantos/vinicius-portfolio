@@ -2,26 +2,24 @@
 
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { translations, type Lang } from "@/lib/translations";
+import { useTranslations } from "next-intl";
 
 /**
  * Theme toggle that respects next-themes' recommended hydration pattern.
  * Uses suppressHydrationWarning on the button to avoid mismatches.
- * Labels are localized because the toggle is part of the chrome that
- * always sits inside a /[lang] route.
  */
-export function ThemeToggle({ lang }: { lang: Lang }) {
+export function ThemeToggle() {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const current = theme === "system" ? resolvedTheme : theme;
   const isDark = current === "dark";
-  const t = translations[lang].themeToggle;
+  const t = useTranslations("themeToggle");
 
   return (
     <button
       type="button"
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      aria-label={isDark ? t.toLight : t.toDark}
-      title={isDark ? t.toLight : t.toDark}
+      aria-label={isDark ? t("toLight") : t("toDark")}
+      title={isDark ? t("toLight") : t("toDark")}
       suppressHydrationWarning
       className="group inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
     >

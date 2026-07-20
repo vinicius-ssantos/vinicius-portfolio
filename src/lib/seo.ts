@@ -1,6 +1,6 @@
 import type { Locale } from "./i18n";
 import type { Project } from "@/content/types";
-import { profile, stack, t } from "@/content";
+import { profile, getProfile, stack } from "@/content";
 import { absoluteUrl } from "./site-config";
 
 export function ogLocale(lang: Locale): "pt_BR" | "en_US" {
@@ -24,6 +24,7 @@ export function buildLocaleAlternates(path: string): Record<string, string> {
 }
 
 export function buildPersonJsonLd(lang: Locale) {
+  const profile = getProfile(lang);
   const stackKeywords = [
     ...Object.values(stack.professional).flat(),
     ...Object.values(stack.personal).flat(),
@@ -33,7 +34,7 @@ export function buildPersonJsonLd(lang: Locale) {
     "@context": "https://schema.org",
     "@type": "Person",
     name: profile.name,
-    jobTitle: t(profile.role, lang),
+    jobTitle: profile.role,
     worksFor: { "@type": "Organization", name: "UOL" },
     address: {
       "@type": "PostalAddress",
@@ -80,7 +81,7 @@ export function buildProjectJsonLd(project: Project, lang: Locale) {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
     name: project.name,
-    description: t(project.description, lang),
+    description: project.description,
     url: absoluteUrl(`/${lang}/projects/${project.slug}`),
     codeRepository: project.repoUrl,
     author: {
@@ -110,7 +111,7 @@ export function buildBreadcrumbJsonLd(items: { name: string; url: string }[]) {
 /** Shared metadata builder for a project detail page (`/[lang]/projects/[slug]`). */
 export function buildProjectMetadata(project: Project, lang: Locale) {
   const title = `${project.name} — ${profile.shortName}`;
-  const description = t(project.tagline, lang);
+  const description = project.tagline;
   const path = `/projects/${project.slug}`;
 
   return {

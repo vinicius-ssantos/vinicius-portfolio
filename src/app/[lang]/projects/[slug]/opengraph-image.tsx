@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
-import { profile, t as tp, getProjectBySlug } from "@/content";
-import { translations, type Lang } from "@/lib/translations";
+import { profile, getProjectBySlug, type Lang } from "@/content";
+import { messages } from "@/lib/messages";
 import { isLocale } from "@/lib/i18n";
 
 export const size = { width: 1200, height: 630 };
@@ -11,11 +11,11 @@ type Params = Promise<{ lang: string; slug: string }>;
 export default async function OGImage({ params }: { params: Params }) {
   const { lang: rawLang, slug } = await params;
   const lang = isLocale(rawLang) ? (rawLang as Lang) : "pt";
-  const t = translations[lang];
-  const project = getProjectBySlug(slug);
+  const t = messages[lang];
+  const project = getProjectBySlug(slug, lang);
 
   const name = project?.name ?? "Project";
-  const tagline = project ? tp(project.tagline, lang) : "";
+  const tagline = project?.tagline ?? "";
   const stack = project?.stack.slice(0, 6) ?? [];
 
   return new ImageResponse(

@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
-import { profile } from "@/content";
-import { translations } from "@/lib/translations";
+import { getProfile } from "@/content";
+import { messages } from "@/lib/messages";
 import { isLocale } from "@/lib/i18n";
 
 export const size = { width: 1200, height: 630 };
@@ -11,9 +11,9 @@ type Params = Promise<{ lang: string }>;
 export default async function OGImage({ params }: { params: Params }) {
   const { lang: rawLang } = await params;
   const lang = isLocale(rawLang) ? rawLang : "pt";
-  const t = translations[lang];
-  const role = profile.role[lang];
-  const location = profile.location[lang];
+  const t = messages[lang];
+  const profile = getProfile(lang);
+  const { role, location } = profile;
 
   return new ImageResponse(
     <div

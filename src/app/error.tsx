@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { translations } from "@/lib/translations";
+import { messages } from "@/lib/messages";
 import { detectLocaleFromPathname } from "@/lib/i18n";
 
 export default function Error({
@@ -16,7 +16,7 @@ export default function Error({
 }) {
   const pathname = usePathname();
   const lang = detectLocaleFromPathname(pathname);
-  const t = translations[lang];
+  const t = messages[lang];
 
   useEffect(() => {
     console.error("Portfolio error:", error);

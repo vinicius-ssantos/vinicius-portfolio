@@ -1,11 +1,13 @@
+import { getTranslations } from "next-intl/server";
 import { Terminal, Boxes, Shield, Database, GitCommitVertical, Server } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { stack, t as tp, type Lang } from "@/content";
+import { stack } from "@/content";
 import { getGitHubStats, type LanguageStat } from "@/lib/github";
 import { RevealOnScroll } from "@/components/animations/reveal-on-scroll";
-import type { Translation } from "@/lib/translations";
 import { SectionHeading } from "./section-heading";
+
+type TFunc = Awaited<ReturnType<typeof getTranslations<"stack">>>;
 
 const stackIcons: Record<string, typeof Server> = {
   Backend: Server,
@@ -17,18 +19,18 @@ const stackIcons: Record<string, typeof Server> = {
   Languages: Terminal,
 };
 
-function LanguagesBar({ languages, t }: { languages: LanguageStat[]; t: Translation }) {
+function LanguagesBar({ languages, t }: { languages: LanguageStat[]; t: TFunc }) {
   if (languages.length === 0) return null;
 
   return (
     <div className="mb-8">
       <div className="mb-3 flex items-center gap-2">
         <h3 className="font-mono text-xs uppercase tracking-wider text-primary">
-          {t.stack.languagesLabel}
+          {t("languagesLabel")}
         </h3>
         <span className="inline-flex items-center gap-1.5 font-mono text-[10px] text-muted-foreground">
           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          {t.stack.languagesLive}
+          {t("languagesLive")}
         </span>
       </div>
       <div className="flex h-2.5 w-full overflow-hidden rounded-full border border-border/60">
@@ -61,7 +63,7 @@ function LanguagesBar({ languages, t }: { languages: LanguageStat[]; t: Translat
   );
 }
 
-function StackGrid({ entries, lang }: { entries: [string, string[]][]; lang: Lang }) {
+function StackGrid({ entries }: { entries: [string, string[]][] }) {
   return (
     <RevealOnScroll stagger className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {entries.map(([category, items], idx) => {
@@ -81,18 +83,15 @@ function StackGrid({ entries, lang }: { entries: [string, string[]][]; lang: Lan
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-1.5">
-                  {items.map((item) => {
-                    const label = typeof item === "string" ? item : tp(item, lang);
-                    return (
-                      <Badge
-                        key={label}
-                        variant="secondary"
-                        className="font-mono text-xs font-normal"
-                      >
-                        {label}
-                      </Badge>
-                    );
-                  })}
+                  {items.map((label) => (
+                    <Badge
+                      key={label}
+                      variant="secondary"
+                      className="font-mono text-xs font-normal"
+                    >
+                      {label}
+                    </Badge>
+                  ))}
                 </div>
               </CardContent>
             </Card>
@@ -103,31 +102,28 @@ function StackGrid({ entries, lang }: { entries: [string, string[]][]; lang: Lan
   );
 }
 
-export async function Stack({ t, lang }: { t: Translation; lang: Lang }) {
+export async function Stack() {
+  const t = await getTranslations("stack");
   const gh = await getGitHubStats();
   const professionalEntries = Object.entries(stack.professional);
   const personalEntries = Object.entries(stack.personal);
   return (
     <section id="stack" className="border-y border-border/60 bg-secondary/20">
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
-        <SectionHeading
-          eyebrow={t.stack.eyebrow}
-          title={t.stack.title}
-          description={t.stack.description}
-        />
+        <SectionHeading eyebrow={t("eyebrow")} title={t("title")} description={t("description")} />
         <RevealOnScroll motion="data" className="motion-language-bars mt-8">
           <LanguagesBar languages={gh.languages} t={t} />
         </RevealOnScroll>
 
         <h3 className="mt-10 font-mono text-xs uppercase tracking-wider text-primary">
-          {t.stack.professionalTitle}
+          {t("professionalTitle")}
         </h3>
-        <StackGrid entries={professionalEntries} lang={lang} />
+        <StackGrid entries={professionalEntries} />
 
         <h3 className="mt-10 font-mono text-xs uppercase tracking-wider text-primary">
-          {t.stack.personalTitle}
+          {t("personalTitle")}
         </h3>
-        <StackGrid entries={personalEntries} lang={lang} />
+        <StackGrid entries={personalEntries} />
       </div>
     </section>
   );
