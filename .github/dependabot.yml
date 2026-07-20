@@ -8,6 +8,14 @@ updates:
     groups:
       dev-dependencies:
         dependency-type: "development"
+    ignore:
+      # typescript-eslint (bundled transitively via eslint-config-next) only
+      # supports typescript <6.1.0 today — a major-version bump past that
+      # breaks `npm ci` outright (ERESOLVE) until the toolchain catches up.
+      # Re-evaluate by checking `npm ls typescript` peer constraints once
+      # eslint-config-next/typescript-eslint publish TS 7 support.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
