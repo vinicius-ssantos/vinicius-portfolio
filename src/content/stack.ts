@@ -1,3 +1,5 @@
+import type { Lang } from "@/lib/i18n";
+
 // Stack categories stay the same in both languages (tech terms are universal).
 // Split into "professional" (used on the job, per CV) and "personal" (side
 // projects / experimentation) so the "few tools, deeply" pitch in the Stack
@@ -15,8 +17,11 @@ export const stack = {
     Data: ["PostgreSQL", "SQLite", "MongoDB", "Firebase / Firestore"],
     Infrastructure: ["Docker", "Traefik", "Cloudflare", "Ansible", "Just", "GHCR", "SOPS + age"],
   },
-  Languages: [
-    { pt: "Português (nativo)", en: "Portuguese (native)" },
-    { pt: "Inglês (intermediário)", en: "English (intermediate)" },
-  ],
 };
+
+const spokenLanguagesPt = ["Português (nativo)", "Inglês (intermediário)"];
+const spokenLanguagesEn = ["Portuguese (native)", "English (intermediate)"];
+
+export function getSpokenLanguages(lang: Lang): string[] {
+  return lang === "pt" ? spokenLanguagesPt : spokenLanguagesEn;
+}

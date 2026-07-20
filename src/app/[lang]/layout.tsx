@@ -5,8 +5,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "next-themes";
-import { profile, t as tp } from "@/content";
-import { translations } from "@/lib/translations";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
+import { getProfile } from "@/content";
 import { isLocale } from "@/lib/i18n";
 import { SITE_URL, absoluteUrl } from "@/lib/site-config";
 import { shouldEnableSpeedInsights } from "@/lib/speed-insights";
@@ -37,12 +38,13 @@ type Params = Promise<{ lang: string }>;
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { lang: rawLang } = await params;
   const lang = isLocale(rawLang) ? rawLang : "pt";
+  const profile = getProfile(lang);
 
   const title = {
     pt: `${profile.shortName} — Engenheiro de Software Backend @ UOL`,
     en: `${profile.shortName} — Backend Software Engineer @ UOL`,
   }[lang];
-  const description = tp(profile.pitch, lang);
+  const description = profile.pitch;
   const keywords = [
     "Backend Engineer",
     "Engenheiro de Software Backend",
@@ -129,7 +131,9 @@ export default async function RootLayout({
 }) {
   const { lang: rawLang } = await params;
   const lang = isLocale(rawLang) ? rawLang : "pt";
-  const t = translations[lang];
+  setRequestLocale(lang);
+  const t = await getTranslations("a11y");
+  const messages = await getMessages();
 
   const jsonLd = [buildPersonJsonLd(lang), buildWebsiteJsonLd(lang), buildProfilePageJsonLd(lang)];
 
@@ -142,18 +146,20 @@ export default async function RootLayout({
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:ring-2 focus:ring-primary"
         >
-          {t.a11y.skipToContent}
+          {t("skipToContent")}
         </a>
 
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <Toaster />
-        </ThemeProvider>
+        <NextIntlClientProvider messages={messages}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </NextIntlClientProvider>
 
         <script
           type="application/ld+json"

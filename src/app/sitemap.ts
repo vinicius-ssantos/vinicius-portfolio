@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { projects } from "@/content";
+import { getAllProjectMetas } from "@/content";
 import { absoluteUrl } from "@/lib/site-config";
 import { buildLocaleAlternates } from "@/lib/seo";
 import { locales } from "@/lib/i18n";
@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: { languages: buildLocaleAlternates("") },
   }));
 
-  const projectEntries: MetadataRoute.Sitemap = projects.flatMap((project) =>
+  const projectEntries: MetadataRoute.Sitemap = getAllProjectMetas().flatMap((project) =>
     locales.map((lang) => ({
       url: absoluteUrl(`/${lang}/projects/${project.slug}`),
       lastModified: new Date(project.updatedAt),

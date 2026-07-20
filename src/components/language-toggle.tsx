@@ -3,7 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { Languages } from "lucide-react";
 import { useSyncExternalStore } from "react";
-import type { Lang } from "@/lib/translations";
+import type { Lang } from "@/lib/i18n";
 import { swapLocaleInPath, isLocale } from "@/lib/i18n";
 
 function getCookieLang(): Lang {

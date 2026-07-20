@@ -1,25 +1,30 @@
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { getVisibleProjects, t as tp, type Lang, type Project } from "@/content";
+import { getVisibleProjects, type Lang, type Project } from "@/content";
 import { RevealOnScroll } from "@/components/animations/reveal-on-scroll";
 import { TrackedLink } from "@/components/tracked-nav-link";
 import { TrackedExternalLink } from "@/components/tracked-link";
-import type { Translation } from "@/lib/translations";
 import { SectionHeading } from "./section-heading";
 import { ProjectStackBadges } from "./project-stack-badges";
 
-export function FeaturedProjects({ t, lang }: { t: Translation; lang: Lang }) {
+type TFunc = Awaited<ReturnType<typeof getTranslations>>;
+
+export async function FeaturedProjects({ lang }: { lang: Lang }) {
+  const t = await getTranslations();
+  const projects = getVisibleProjects(lang);
+
   return (
     <section id="projects" className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
       <SectionHeading
-        eyebrow={t.projects.eyebrow}
-        title={t.projects.title}
-        description={t.projects.description}
+        eyebrow={t("projects.eyebrow")}
+        title={t("projects.title")}
+        description={t("projects.description")}
       />
       <RevealOnScroll stagger className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
-        {getVisibleProjects().map((p, idx) => (
+        {projects.map((p, idx) => (
           <div key={p.slug} style={{ "--stagger-index": idx } as React.CSSProperties}>
             <ProjectCard project={p} priority={idx === 0} t={t} lang={lang} />
           </div>
@@ -37,7 +42,7 @@ function ProjectCard({
 }: {
   project: Project;
   priority?: boolean;
-  t: Translation;
+  t: TFunc;
   lang: Lang;
 }) {
   const detailHref = `/${lang}/projects/${project.slug}`;
@@ -53,7 +58,7 @@ function ProjectCard({
           event="project_dossier_open"
           properties={{ slug: project.slug }}
           className="relative block aspect-[16/10] overflow-hidden border-b border-border/60 bg-secondary/30"
-          aria-label={`${t.projects.viewDetails}: ${project.name}`}
+          aria-label={`${t("projects.viewDetails")}: ${project.name}`}
         >
           <Image
             src={project.image}
@@ -66,7 +71,7 @@ function ProjectCard({
           <div className="absolute inset-0 flex items-center justify-center bg-background/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <div className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground">
               <ArrowUpRight className="h-3.5 w-3.5" />
-              {t.projects.viewDetails}
+              {t("projects.viewDetails")}
             </div>
           </div>
         </TrackedLink>
@@ -78,7 +83,7 @@ function ProjectCard({
           <div className="flex items-center gap-1.5">
             {project.status && project.status !== "stable" && (
               <Badge className="font-mono text-[10px] uppercase">
-                {t.projectDetail.status[project.status]}
+                {t(`projectDetail.status.${project.status}`)}
               </Badge>
             )}
             {priority && (
@@ -86,7 +91,7 @@ function ProjectCard({
                 variant="outline"
                 className="border-primary/40 text-primary font-mono text-[10px] uppercase"
               >
-                {t.projects.mostRecent}
+                {t("projects.mostRecent")}
               </Badge>
             )}
           </div>
@@ -102,13 +107,11 @@ function ProjectCard({
           </TrackedLink>
         </CardTitle>
         <CardDescription className="text-sm leading-relaxed text-muted-foreground">
-          {tp(project.tagline, lang)}
+          {project.tagline}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-1 flex-col gap-4">
-        <p className="text-sm leading-relaxed text-muted-foreground">
-          {tp(project.description, lang)}
-        </p>
+        <p className="text-sm leading-relaxed text-muted-foreground">{project.description}</p>
         <div className="mt-auto">
           <div className="mb-2">
             <ProjectStackBadges stack={project.stack} limit={5} size="xs" />
@@ -120,7 +123,7 @@ function ProjectCard({
               properties={{ slug: project.slug }}
               className="btn-arrow inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
             >
-              {t.projects.viewDetails}
+              {t("projects.viewDetails")}
               <ArrowUpRight className="arrow-nudge h-3.5 w-3.5" />
             </TrackedLink>
             <TrackedExternalLink

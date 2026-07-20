@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Mail, Phone, Linkedin, Github, Copy, Check, ExternalLink } from "lucide-react";
 import {
   Dialog,
@@ -11,18 +12,15 @@ import {
 } from "@/components/ui/dialog";
 import { ContactForm } from "@/components/contact-form";
 import { profile } from "@/content";
-import type { translations } from "@/lib/translations";
 import { trackEvent } from "@/lib/analytics";
-
-type T = typeof translations.en;
 
 type ContactModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  t: T;
 };
 
-export function ContactModal({ open, onOpenChange, t }: ContactModalProps) {
+export function ContactModal({ open, onOpenChange }: ContactModalProps) {
+  const t = useTranslations("contactModal");
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
   const handleCopy = async (value: string, field: string) => {
@@ -39,41 +37,37 @@ export function ContactModal({ open, onOpenChange, t }: ContactModalProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-mono text-lg text-primary">
-            {t.contactModal.title}
-          </DialogTitle>
-          <DialogDescription className="leading-relaxed">
-            {t.contactModal.subtitle}
-          </DialogDescription>
+          <DialogTitle className="font-mono text-lg text-primary">{t("title")}</DialogTitle>
+          <DialogDescription className="leading-relaxed">{t("subtitle")}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-2">
           {/* Email */}
           <ContactRow
             icon={<Mail className="h-4 w-4" />}
-            label={t.contactModal.emailLabel}
+            label={t("emailLabel")}
             value={profile.email}
             onCopy={() => handleCopy(profile.email, "email")}
             copied={copiedField === "email"}
-            copiedLabel={t.contactModal.copied}
-            copyLabel={t.contactModal.copy}
+            copiedLabel={t("copied")}
+            copyLabel={t("copy")}
           />
 
           {/* Phone */}
           <ContactRow
             icon={<Phone className="h-4 w-4" />}
-            label={t.contactModal.phoneLabel}
+            label={t("phoneLabel")}
             value={profile.phone}
             onCopy={() => handleCopy(profile.phone, "phone")}
             copied={copiedField === "phone"}
-            copiedLabel={t.contactModal.copied}
-            copyLabel={t.contactModal.copy}
+            copiedLabel={t("copied")}
+            copyLabel={t("copy")}
           />
 
           {/* LinkedIn */}
           <ContactRow
             icon={<Linkedin className="h-4 w-4" />}
-            label={t.contactModal.linkedinLabel}
+            label={t("linkedinLabel")}
             value="linkedin.com/in/vinicius-oliveira-7ba1bb204"
             href={profile.links.linkedin}
             onLinkClick={() => trackEvent("linkedin_click")}
@@ -83,7 +77,7 @@ export function ContactModal({ open, onOpenChange, t }: ContactModalProps) {
           {/* GitHub */}
           <ContactRow
             icon={<Github className="h-4 w-4" />}
-            label={t.contactModal.githubLabel}
+            label={t("githubLabel")}
             value="github.com/vinicius-ssantos"
             href={profile.links.github}
             external
@@ -92,9 +86,9 @@ export function ContactModal({ open, onOpenChange, t }: ContactModalProps) {
 
         <div className="mt-4 border-t border-border/60 pt-4">
           <p className="mb-3 text-center font-mono text-xs uppercase tracking-wider text-muted-foreground">
-            {t.contactModal.formTitle}
+            {t("formTitle")}
           </p>
-          <ContactForm t={t} />
+          <ContactForm />
         </div>
       </DialogContent>
     </Dialog>

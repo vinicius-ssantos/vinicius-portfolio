@@ -2,18 +2,17 @@
 
 import { useState } from "react";
 import { useTheme } from "next-themes";
+import { useTranslations } from "next-intl";
 import { Send, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useTurnstile } from "@/hooks/use-turnstile";
 import { trackEvent } from "@/lib/analytics";
-import type { translations } from "@/lib/translations";
-
-type T = typeof translations.en;
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
-export function ContactForm({ t }: { t: T }) {
+export function ContactForm() {
+  const t = useTranslations("contactModal");
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   // Captured once, at the render where the form first becomes interactive —
@@ -55,20 +54,20 @@ export function ContactForm({ t }: { t: T }) {
         // No name/email/message here — a confirmation that a send
         // succeeded, nothing about who sent it or what it said.
         trackEvent("contact_form_success");
-        toast({ title: t.contactModal.formSuccess });
+        toast({ title: t("formSuccess") });
       } else {
         // Turnstile tokens are single-use — get a fresh one for the retry,
         // regardless of which check actually rejected the submission.
         resetTurnstile();
         if (res.status === 429) {
-          toast({ title: t.contactModal.formRateLimited, variant: "destructive" });
+          toast({ title: t("formRateLimited"), variant: "destructive" });
         } else {
-          toast({ title: t.contactModal.formError, variant: "destructive" });
+          toast({ title: t("formError"), variant: "destructive" });
         }
       }
     } catch {
       resetTurnstile();
-      toast({ title: t.contactModal.formError, variant: "destructive" });
+      toast({ title: t("formError"), variant: "destructive" });
     } finally {
       setSending(false);
     }
@@ -78,7 +77,7 @@ export function ContactForm({ t }: { t: T }) {
     return (
       <div className="flex flex-col items-center gap-3 rounded-lg border border-primary/30 bg-primary/5 p-6 text-center">
         <CheckCircle2 className="h-8 w-8 text-primary" />
-        <p className="text-sm text-foreground">{t.contactModal.formSuccess}</p>
+        <p className="text-sm text-foreground">{t("formSuccess")}</p>
       </div>
     );
   }
@@ -94,7 +93,7 @@ export function ContactForm({ t }: { t: T }) {
       </div>
       <div>
         <label htmlFor="cf-name" className="sr-only">
-          {t.contactModal.formName}
+          {t("formName")}
         </label>
         <input
           id="cf-name"
@@ -102,13 +101,13 @@ export function ContactForm({ t }: { t: T }) {
           type="text"
           required
           maxLength={100}
-          placeholder={t.contactModal.formName}
+          placeholder={t("formName")}
           className="w-full rounded-md border border-border/60 bg-secondary/30 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary/40 focus:outline-none focus:ring-1 focus:ring-primary/30"
         />
       </div>
       <div>
         <label htmlFor="cf-email" className="sr-only">
-          {t.contactModal.formEmail}
+          {t("formEmail")}
         </label>
         <input
           id="cf-email"
@@ -116,13 +115,13 @@ export function ContactForm({ t }: { t: T }) {
           type="email"
           required
           maxLength={200}
-          placeholder={t.contactModal.formEmail}
+          placeholder={t("formEmail")}
           className="w-full rounded-md border border-border/60 bg-secondary/30 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary/40 focus:outline-none focus:ring-1 focus:ring-primary/30"
         />
       </div>
       <div>
         <label htmlFor="cf-message" className="sr-only">
-          {t.contactModal.formMessage}
+          {t("formMessage")}
         </label>
         <textarea
           id="cf-message"
@@ -130,12 +129,12 @@ export function ContactForm({ t }: { t: T }) {
           required
           maxLength={5000}
           rows={4}
-          placeholder={t.contactModal.formMessage}
+          placeholder={t("formMessage")}
           className="w-full resize-none rounded-md border border-border/60 bg-secondary/30 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary/40 focus:outline-none focus:ring-1 focus:ring-primary/30"
         />
       </div>
       {TURNSTILE_SITE_KEY && (
-        <div role="group" aria-label={t.contactModal.formChallenge} ref={turnstileRef} />
+        <div role="group" aria-label={t("formChallenge")} ref={turnstileRef} />
       )}
       <Button
         type="submit"
@@ -145,12 +144,12 @@ export function ContactForm({ t }: { t: T }) {
         {sending ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            {t.contactModal.formSending}
+            {t("formSending")}
           </>
         ) : (
           <>
             <Send className="mr-2 h-4 w-4" />
-            {t.contactModal.formSend}
+            {t("formSend")}
           </>
         )}
       </Button>

@@ -1,28 +1,56 @@
+import type { Lang } from "@/lib/i18n";
 import type { Project } from "../types";
-import { personalPlatformInfra } from "./personal-platform-infra";
-import { springcloud } from "./springcloud";
-import { apiRestAplicativoCars } from "./api-rest-aplicativo-cars";
+import { personalPlatformInfraMeta, getPersonalPlatformInfra } from "./personal-platform-infra";
+import { springcloudMeta, getSpringcloud } from "./springcloud";
+import { apiRestAplicativoCarsMeta, getApiRestAplicativoCars } from "./api-rest-aplicativo-cars";
 
 // Reverse chronological order (most recently updated first).
-export const projects: Project[] = [personalPlatformInfra, springcloud, apiRestAplicativoCars];
+const projectMetas = [personalPlatformInfraMeta, springcloudMeta, apiRestAplicativoCarsMeta];
 
-export function getProjectBySlug(slug: string): Project | undefined {
-  return projects.find((p) => p.slug === slug);
+const projectGetters: Record<string, (lang: Lang) => Project> = {
+  "personal-platform-infra": getPersonalPlatformInfra,
+  springcloud: getSpringcloud,
+  "api-rest-aplicativo-cars": getApiRestAplicativoCars,
+};
+
+export function getProjects(lang: Lang): Project[] {
+  return projectMetas.map((meta) => projectGetters[meta.slug]!(lang));
 }
 
-export function getFeaturedProject(): Project {
-  const featured = projects.find((p) => p.featured) ?? projects[0];
-  if (!featured) {
+export function getProjectBySlug(slug: string, lang: Lang): Project | undefined {
+  const getter = projectGetters[slug];
+  return getter ? getter(lang) : undefined;
+}
+
+export function getFeaturedProject(lang: Lang): Project {
+  const featuredMeta = projectMetas.find((p) => p.featured) ?? projectMetas[0];
+  if (!featuredMeta) {
     throw new Error("No projects defined in src/content/projects");
   }
-  return featured;
+  return projectGetters[featuredMeta.slug]!(lang);
 }
 
-/** Pure so it's testable without depending on the real `projects` array. */
-export function isProjectVisible(project: Project): boolean {
+/** Pure so it's testable without depending on the real project list. */
+export function isProjectVisible(
+  project: { visible?: boolean } & Record<string, unknown>,
+): boolean {
   return project.visible !== false;
 }
 
-export function getVisibleProjects(): Project[] {
-  return projects.filter(isProjectVisible);
+export function getVisibleProjects(lang: Lang): Project[] {
+  return getProjects(lang).filter(isProjectVisible);
+}
+
+export function getVisibleProjectSlugs(): string[] {
+  return projectMetas.filter(isProjectVisible).map((p) => p.slug);
+}
+
+/** Neutral project metadata for every visible project — no locale needed. */
+export function getVisibleProjectMetas() {
+  return projectMetas.filter(isProjectVisible);
+}
+
+/** Neutral metadata for every project, visible or not — no locale needed. */
+export function getAllProjectMetas() {
+  return projectMetas;
 }

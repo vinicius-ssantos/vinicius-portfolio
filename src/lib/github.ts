@@ -27,7 +27,7 @@ export type GitHubStats = {
 };
 
 const FALLBACK: GitHubStats = {
-  publicRepos: Number(profile.stats[2]?.value) || 53,
+  publicRepos: Number(profile.statValues[2]) || 53,
   contributions: 3733,
   weeks: [],
   languages: [],

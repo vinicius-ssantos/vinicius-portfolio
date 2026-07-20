@@ -1,21 +1,16 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Mail, Download, ArrowRight, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { profile, stack, t as tp, type Lang } from "@/content";
+import { getProfile, getSpokenLanguages, type Lang } from "@/content";
 import { useViewportMotion } from "@/hooks/use-viewport-motion";
-import type { Translation } from "@/lib/translations";
 import { trackEvent } from "@/lib/analytics";
 
-export function Hero({
-  t,
-  lang,
-  onContactOpen,
-}: {
-  t: Translation;
-  lang: Lang;
-  onContactOpen: () => void;
-}) {
+export function Hero({ lang, onContactOpen }: { lang: Lang; onContactOpen: () => void }) {
+  const t = useTranslations("hero");
+  const profile = getProfile(lang);
+  const spokenLanguages = getSpokenLanguages(lang);
   const { ref, inViewport } = useViewportMotion<HTMLElement>({
     rootMargin: "0px",
     threshold: 0,
@@ -34,7 +29,7 @@ export function Hero({
             <span className="relative flex h-1.5 w-1.5">
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
             </span>
-            {t.hero.badge}
+            {t("badge")}
           </div>
 
           <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
@@ -56,16 +51,16 @@ export function Hero({
           </h1>
 
           <p className="mt-3 font-mono text-base text-primary sm:text-lg">
-            {tp(profile.role, lang)} · {tp(profile.location, lang)}
+            {profile.role} · {profile.location}
           </p>
 
           <p className="mt-2 inline-flex items-center gap-2 font-mono text-xs text-muted-foreground">
             <Globe className="h-3.5 w-3.5" />
-            {stack.Languages.map((l) => (typeof l === "string" ? l : l[lang])).join("  ·  ")}
+            {spokenLanguages.join("  ·  ")}
           </p>
 
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            {tp(profile.pitch, lang)}
+            {profile.pitch}
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -74,7 +69,7 @@ export function Hero({
                 href={`/${lang}#projects`}
                 onClick={() => trackEvent("view_projects_click", { lang })}
               >
-                {t.hero.seeProjects}
+                {t("seeProjects")}
                 <ArrowRight className="arrow-nudge ml-2 h-4 w-4" />
               </a>
             </Button>
@@ -86,7 +81,7 @@ export function Hero({
               className="btn-press"
             >
               <Mail className="mr-2 h-4 w-4" />
-              {t.hero.getInTouch}
+              {t("getInTouch")}
             </Button>
             <Button asChild variant="ghost" size="default" className="btn-press">
               <a
@@ -97,7 +92,7 @@ export function Hero({
                 onClick={() => trackEvent("cv_download", { lang })}
               >
                 <Download className="mr-2 h-4 w-4" />
-                {t.hero.downloadCV}
+                {t("downloadCV")}
               </a>
             </Button>
           </div>

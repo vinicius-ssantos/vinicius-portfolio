@@ -1,65 +1,30 @@
 /**
- * Tests for portfolio data integrity and translation helper.
+ * Tests for portfolio content data integrity across both locales.
  */
 import { describe, it, expect } from "vitest";
 import {
   profile,
-  projects,
-  experience,
-  education,
+  getProfile,
+  getExperience,
+  getEducation,
   stack,
-  t as tp,
-  type Lang,
+  getSpokenLanguages,
   type Project,
+  getProjects,
   getFeaturedProject,
   getProjectBySlug,
   getVisibleProjects,
   isProjectVisible,
 } from "@/content";
 
+const LANGS = ["pt", "en"] as const;
+
 describe("content", () => {
   describe("profile", () => {
-    it("has name, role, location in both PT and EN", () => {
+    it("has contact info (neutral, locale-independent)", () => {
       expect(profile.name).toBeTruthy();
-      expect(profile.role.pt).toBeTruthy();
-      expect(profile.role.en).toBeTruthy();
-      expect(profile.location.pt).toBeTruthy();
-      expect(profile.location.en).toBeTruthy();
-    });
-
-    it("has contact info", () => {
       expect(profile.email).toMatch(/^[^@]+@[^@]+\.[^@]+$/);
       expect(profile.phone).toMatch(/^\+/);
-    });
-
-    it("has 3 stats", () => {
-      expect(profile.stats).toHaveLength(3);
-      profile.stats.forEach((s) => {
-        expect(s.value).toBeTruthy();
-        expect(s.label.pt).toBeTruthy();
-        expect(s.label.en).toBeTruthy();
-      });
-    });
-
-    it("has pitch and longPitch in both languages", () => {
-      expect(profile.pitch.pt).toBeTruthy();
-      expect(profile.pitch.en).toBeTruthy();
-      expect(profile.longPitch.pt).toBeTruthy();
-      expect(profile.longPitch.en).toBeTruthy();
-      expect(profile.careerPath.pt).toBeTruthy();
-      expect(profile.careerPath.en).toBeTruthy();
-      expect(profile.philosophy.pt).toBeTruthy();
-      expect(profile.philosophy.en).toBeTruthy();
-    });
-
-    it("has at least 1 currently learning item", () => {
-      expect(profile.currentlyLearning.length).toBeGreaterThanOrEqual(1);
-      profile.currentlyLearning.forEach((item) => {
-        expect(item.topic.pt).toBeTruthy();
-        expect(item.topic.en).toBeTruthy();
-        expect(item.detail.pt).toBeTruthy();
-        expect(item.detail.en).toBeTruthy();
-      });
     });
 
     it("has working links", () => {
@@ -67,37 +32,67 @@ describe("content", () => {
       expect(profile.links.linkedin).toMatch(/^https:\/\/www\.linkedin\.com\//);
       expect(profile.links.cv).toMatch(/^\//);
     });
+
+    for (const lang of LANGS) {
+      it(`[${lang}] has role, location, pitch, longPitch, careerPath, philosophy`, () => {
+        const p = getProfile(lang);
+        expect(p.role).toBeTruthy();
+        expect(p.location).toBeTruthy();
+        expect(p.pitch).toBeTruthy();
+        expect(p.longPitch).toBeTruthy();
+        expect(p.careerPath).toBeTruthy();
+        expect(p.philosophy).toBeTruthy();
+      });
+
+      it(`[${lang}] has 3 stats with label and value`, () => {
+        const p = getProfile(lang);
+        expect(p.stats).toHaveLength(3);
+        p.stats.forEach((s) => {
+          expect(s.value).toBeTruthy();
+          expect(s.label).toBeTruthy();
+        });
+      });
+
+      it(`[${lang}] has at least 1 currently-learning item`, () => {
+        const p = getProfile(lang);
+        expect(p.currentlyLearning.length).toBeGreaterThanOrEqual(1);
+        p.currentlyLearning.forEach((item) => {
+          expect(item.topic).toBeTruthy();
+          expect(item.detail).toBeTruthy();
+        });
+      });
+    }
   });
 
   describe("experience", () => {
     it("has 3 experiences", () => {
-      expect(experience).toHaveLength(3);
+      expect(getExperience("en")).toHaveLength(3);
     });
 
     it("has exactly 1 current job (UOL)", () => {
-      const current = experience.filter((e) => e.current);
+      const current = getExperience("en").filter((e) => e.current);
       expect(current).toHaveLength(1);
       expect(current[0]?.company).toBe("UOL");
     });
 
-    it("each experience has all localized fields", () => {
-      experience.forEach((exp) => {
-        expect(exp.company).toBeTruthy();
-        expect(exp.startDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-        if (!exp.current) {
-          expect(exp.endDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-        }
-        expect(exp.role.pt).toBeTruthy();
-        expect(exp.role.en).toBeTruthy();
-        expect(exp.summary.pt).toBeTruthy();
-        expect(exp.summary.en).toBeTruthy();
-        expect(exp.bullets.length).toBeGreaterThan(0);
-        expect(exp.stack.length).toBeGreaterThan(0);
+    for (const lang of LANGS) {
+      it(`[${lang}] each experience has role, summary, bullets, stack`, () => {
+        getExperience(lang).forEach((exp) => {
+          expect(exp.company).toBeTruthy();
+          expect(exp.startDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+          if (!exp.current) {
+            expect(exp.endDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+          }
+          expect(exp.role).toBeTruthy();
+          expect(exp.summary).toBeTruthy();
+          expect(exp.bullets.length).toBeGreaterThan(0);
+          expect(exp.stack.length).toBeGreaterThan(0);
+        });
       });
-    });
+    }
 
     it("experience date ranges are internally consistent", () => {
-      experience.forEach((exp) => {
+      getExperience("en").forEach((exp) => {
         if (exp.endDate) {
           expect(new Date(exp.startDate).getTime()).toBeLessThan(new Date(exp.endDate).getTime());
         }
@@ -105,12 +100,14 @@ describe("content", () => {
     });
 
     it("UOL is the first experience (most recent)", () => {
+      const experience = getExperience("en");
       expect(experience[0]?.company).toBe("UOL");
       expect(experience[0]?.current).toBe(true);
     });
 
     it("experiences are in reverse chronological order", () => {
       // UOL (current) > Autbank dev (2023-2024) > Autbank QA (2021-2023)
+      const experience = getExperience("en");
       expect(experience[1]?.company).toContain("Autbank");
       expect(experience[2]?.company).toContain("Autbank");
     });
@@ -118,69 +115,60 @@ describe("content", () => {
 
   describe("education", () => {
     it("has 2 education entries", () => {
-      expect(education).toHaveLength(2);
+      expect(getEducation("en")).toHaveLength(2);
     });
 
     it("includes FATEC and Impacta", () => {
-      const institutions = education.map((e) => e.institution);
+      const institutions = getEducation("en").map((e) => e.institution);
       expect(institutions).toContain("FATEC Ferraz de Vasconcelos");
       expect(institutions).toContain("Faculdade Impacta");
     });
+
+    for (const lang of LANGS) {
+      it(`[${lang}] each entry has period and degree`, () => {
+        getEducation(lang).forEach((e) => {
+          expect(e.period).toBeTruthy();
+          expect(e.degree).toBeTruthy();
+        });
+      });
+    }
   });
 
   describe("projects", () => {
     it("has 3 projects", () => {
-      expect(projects).toHaveLength(3);
+      expect(getProjects("en")).toHaveLength(3);
     });
 
     it("first project is the featured one (most recent)", () => {
+      const projects = getProjects("en");
       expect(projects[0]?.featured).toBe(true);
       expect(projects[0]?.name).toBe("personal-platform-infra");
     });
 
-    it("each project has screenshot image", () => {
-      projects.forEach((p) => {
+    it("each project has a screenshot image", () => {
+      getProjects("en").forEach((p) => {
         expect(p.image).toBeTruthy();
         expect(p.image).toMatch(/^\/projects\//);
       });
     });
 
-    it("each project has all localized fields", () => {
-      projects.forEach((p) => {
-        expect(p.name).toBeTruthy();
-        expect(p.tagline.pt).toBeTruthy();
-        expect(p.tagline.en).toBeTruthy();
-        expect(p.description.pt).toBeTruthy();
-        expect(p.description.en).toBeTruthy();
-        expect(p.problem.pt).toBeTruthy();
-        expect(p.problem.en).toBeTruthy();
-        expect(p.approach.length).toBeGreaterThan(0);
-        expect(p.highlights.length).toBeGreaterThan(0);
-        expect(p.stack.length).toBeGreaterThan(0);
-        expect(p.repoUrl).toMatch(/^https:\/\/github\.com\//);
-      });
-    });
-
-    it("each approach bullet has both languages", () => {
-      projects.forEach((p) => {
-        p.approach.forEach((a) => {
-          expect(a.pt).toBeTruthy();
-          expect(a.en).toBeTruthy();
+    for (const lang of LANGS) {
+      it(`[${lang}] each project has tagline, description, problem, approach, highlights`, () => {
+        getProjects(lang).forEach((p) => {
+          expect(p.name).toBeTruthy();
+          expect(p.tagline).toBeTruthy();
+          expect(p.description).toBeTruthy();
+          expect(p.problem).toBeTruthy();
+          expect(p.approach.length).toBeGreaterThan(0);
+          expect(p.highlights.length).toBeGreaterThan(0);
+          expect(p.stack.length).toBeGreaterThan(0);
+          expect(p.repoUrl).toMatch(/^https:\/\/github\.com\//);
         });
       });
-    });
-
-    it("each highlight has both languages", () => {
-      projects.forEach((p) => {
-        p.highlights.forEach((h) => {
-          expect(h.pt).toBeTruthy();
-          expect(h.en).toBeTruthy();
-        });
-      });
-    });
+    }
 
     it("projects are in reverse chronological order (by updatedAt)", () => {
-      const dates = projects.map((p) => p.updatedAt);
+      const dates = getProjects("en").map((p) => p.updatedAt);
       for (let i = 1; i < dates.length; i++) {
         expect((dates[i - 1] ?? "") >= (dates[i] ?? "")).toBe(true);
       }
@@ -189,19 +177,19 @@ describe("content", () => {
 
   describe("selectors", () => {
     it("getProjectBySlug returns the matching project", () => {
-      expect(getProjectBySlug("springcloud")?.name).toBe("SpringCloud");
+      expect(getProjectBySlug("springcloud", "en")?.name).toBe("SpringCloud");
     });
 
     it("getProjectBySlug returns undefined for an unknown slug", () => {
-      expect(getProjectBySlug("does-not-exist")).toBeUndefined();
+      expect(getProjectBySlug("does-not-exist", "en")).toBeUndefined();
     });
 
     it("getFeaturedProject returns the featured project", () => {
-      expect(getFeaturedProject().featured).toBe(true);
+      expect(getFeaturedProject("en").featured).toBe(true);
     });
 
     it("getVisibleProjects returns every real project (none are hidden)", () => {
-      expect(getVisibleProjects()).toEqual(projects);
+      expect(getVisibleProjects("en")).toEqual(getProjects("en"));
     });
   });
 
@@ -209,13 +197,13 @@ describe("content", () => {
     const base: Project = {
       slug: "fixture",
       name: "fixture",
-      tagline: { pt: "x", en: "x" },
-      description: { pt: "x", en: "x" },
-      problem: { pt: "x", en: "x" },
-      approach: [{ pt: "x", en: "x" }],
+      tagline: "x",
+      description: "x",
+      problem: "x",
+      approach: ["x"],
       stack: ["x"],
-      role: { pt: "x", en: "x" },
-      highlights: [{ pt: "x", en: "x" }],
+      role: "x",
+      highlights: ["x"],
       repoUrl: "https://github.com/x/x",
       updatedAt: "2026-01-01",
     };
@@ -234,10 +222,8 @@ describe("content", () => {
   });
 
   describe("stack", () => {
-    it("has professional, personal and Languages groups", () => {
-      expect(Object.keys(stack)).toEqual(
-        expect.arrayContaining(["professional", "personal", "Languages"]),
-      );
+    it("has professional and personal groups", () => {
+      expect(Object.keys(stack)).toEqual(expect.arrayContaining(["professional", "personal"]));
     });
 
     it("professional group has expected categories", () => {
@@ -247,21 +233,11 @@ describe("content", () => {
     });
 
     it("each category in both groups has at least 1 item", () => {
-      Object.entries(stack.professional).forEach(([_, items]) => {
+      Object.values(stack.professional).forEach((items) => {
         expect(items.length).toBeGreaterThan(0);
       });
-      Object.entries(stack.personal).forEach(([_, items]) => {
+      Object.values(stack.personal).forEach((items) => {
         expect(items.length).toBeGreaterThan(0);
-      });
-    });
-
-    it("Languages items have both PT and EN", () => {
-      stack.Languages.forEach((l) => {
-        // Languages items can be either string (rare) or LocalizedText
-        if (typeof l !== "string") {
-          expect(l.pt).toBeTruthy();
-          expect(l.en).toBeTruthy();
-        }
       });
     });
 
@@ -282,21 +258,13 @@ describe("content", () => {
         expect(professionalTools.has(tool)).toBe(false);
       });
     });
-  });
 
-  describe("translation helper t()", () => {
-    it("returns PT when lang is pt", () => {
-      const result = tp({ pt: "Olá", en: "Hello" }, "pt" as Lang);
-      expect(result).toBe("Olá");
-    });
-
-    it("returns EN when lang is en", () => {
-      const result = tp({ pt: "Olá", en: "Hello" }, "en" as Lang);
-      expect(result).toBe("Hello");
-    });
-
-    it("handles empty strings", () => {
-      expect(tp({ pt: "", en: "" }, "pt" as Lang)).toBe("");
-    });
+    for (const lang of LANGS) {
+      it(`[${lang}] getSpokenLanguages returns non-empty entries`, () => {
+        const spoken = getSpokenLanguages(lang);
+        expect(spoken.length).toBeGreaterThan(0);
+        spoken.forEach((s) => expect(s).toBeTruthy());
+      });
+    }
   });
 });

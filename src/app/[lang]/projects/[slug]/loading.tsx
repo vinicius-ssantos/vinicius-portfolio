@@ -5,13 +5,13 @@
  * detection as /[lang]/loading.tsx.
  */
 import { usePathname } from "next/navigation";
-import { translations } from "@/lib/translations";
+import { messages } from "@/lib/messages";
 import { detectLocaleFromPathname } from "@/lib/i18n";
 
 export default function Loading() {
   const pathname = usePathname();
   const lang = detectLocaleFromPathname(pathname);
-  const t = translations[lang];
+  const t = messages[lang];
 
   return (
     <div

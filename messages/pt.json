@@ -1,0 +1,156 @@
+{
+  "a11y": {
+    "skipToContent": "Pular para o conteúdo",
+    "loading": "Carregando…",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu",
+    "menuTitle": "Menu de navegação"
+  },
+  "notFound": {
+    "eyebrow": "404 — erro",
+    "title": "Página não encontrada",
+    "description": "A página que você procura não existe ou foi movida.",
+    "back": "Voltar ao portfólio"
+  },
+  "errorPage": {
+    "eyebrow": "Erro",
+    "title": "Algo deu errado",
+    "description": "Ocorreu um erro inesperado ao renderizar a página. Tente recarregar — se persistir, por favor me avise pelas opções de contato.",
+    "errorId": "ID do erro",
+    "tryAgain": "Tentar novamente"
+  },
+  "themeToggle": {
+    "toLight": "Mudar para tema claro",
+    "toDark": "Mudar para tema escuro"
+  },
+  "nav": {
+    "home": "Início",
+    "experience": "Experiência",
+    "stack": "Stack",
+    "projects": "Projetos",
+    "caseStudy": "Case study",
+    "about": "Sobre"
+  },
+  "hero": {
+    "badge": "Engenheiro Backend @ UOL · São Paulo, BR",
+    "getInTouch": "Entrar em contato",
+    "downloadCV": "Baixar CV",
+    "seeProjects": "Ver projetos"
+  },
+  "contactModal": {
+    "title": "Vamos conversar",
+    "subtitle": "Estou aberto a vagas de backend & plataforma, trabalho como contratado, e conversas sobre sistemas distribuídos, operação de k8s, ou arquitetura de MCP servers.",
+    "emailLabel": "Email",
+    "phoneLabel": "Telefone",
+    "linkedinLabel": "LinkedIn",
+    "githubLabel": "GitHub",
+    "copy": "Copiar",
+    "copied": "Copiado!",
+    "openEmailClient": "Abrir cliente de email",
+    "orText": "ou",
+    "formTitle": "Enviar uma mensagem",
+    "formName": "Seu nome",
+    "formEmail": "Seu email",
+    "formMessage": "Mensagem",
+    "formSend": "Enviar mensagem",
+    "formSending": "Enviando...",
+    "formSuccess": "Mensagem enviada! Responderei em breve.",
+    "formError": "Algo deu errado. Tente me enviar um email diretamente.",
+    "formRateLimited": "Muitas tentativas. Aguarde um momento e tente novamente.",
+    "formChallenge": "Desafio de verificação"
+  },
+  "stats": {
+    "heatmapLess": "Menos",
+    "heatmapMore": "Mais",
+    "heatmapTitle": "contribuições no último ano"
+  },
+  "experience": {
+    "eyebrow": "// experiência",
+    "title": "Onde já trabalhei",
+    "description": "Em software e QA desde 2021, com foco em backend desde 2023 — entre software financeiro e serviços de internet em larga escala. O caminho importa tanto quanto o destino.",
+    "current": "Atual",
+    "present": "Presente"
+  },
+  "stack": {
+    "eyebrow": "// stack",
+    "title": "Ferramentas que uso",
+    "description": "No trabalho mantenho o toolkit enxuto e vou fundo. Em projetos pessoais é onde experimento e vou largo.",
+    "professionalTitle": "No dia a dia (profissional)",
+    "personalTitle": "Projetos pessoais & experimentação",
+    "languagesLabel": "Linguagens mais usadas",
+    "languagesLive": "Ao vivo do GitHub"
+  },
+  "projects": {
+    "eyebrow": "// trabalhos selecionados",
+    "title": "Três projetos, três problemas diferentes",
+    "description": "Projetos pessoais que construo para estudar padrões que nem sempre alcanço no trabalho. Escolhidos por profundidade, não para vitrine.",
+    "mostRecent": "Mais recente",
+    "viewDetails": "Ver dossiê"
+  },
+  "caseStudy": {
+    "eyebrow": "// case study",
+    "deepDiveTitle": "Mergulho profundo:",
+    "problem": "O problema",
+    "approach": "A abordagem",
+    "outcomes": "Resultados",
+    "stack": "Stack",
+    "lessonsLearned": "Lições aprendidas",
+    "openRepo": "Abrir repo",
+    "updated": "Atualizado",
+    "local": "Local",
+    "vps": "VPS",
+    "trafficFlow": "fluxo de tráfego"
+  },
+  "education": {
+    "eyebrow": "// formação",
+    "title": "Formação acadêmica",
+    "description": "Uma base técnica seguida de uma pós-graduação deliberada em full stack — para complementar o foco em backend."
+  },
+  "about": {
+    "eyebrow": "// sobre",
+    "title": "Um pouco mais sobre mim",
+    "careerPath": "Trajetória",
+    "howIThink": "Como penso",
+    "currently": "Atualmente",
+    "currentlyLearning": "Estudando agora",
+    "currentlyItems": {
+      "role": "Software Engineer na UOL — auth & proteção de conta",
+      "runningCluster": "Rodando um cluster k3s pessoal em uma VPS",
+      "studying": "Estudando padrões Spring Cloud e MCP servers"
+    },
+    "showPhone": "Mostrar telefone",
+    "hidePhone": "Esconder telefone"
+  },
+  "footer": {
+    "builtWith": "Construído com Next.js."
+  },
+  "projectDetail": {
+    "backToPortfolio": "Voltar ao portfólio",
+    "eyebrow": "// dossiê",
+    "taglineLabel": "Resumo",
+    "problemLabel": "O problema",
+    "approachLabel": "A abordagem",
+    "outcomesLabel": "Resultados",
+    "roleLabel": "Papel",
+    "stackLabel": "Stack",
+    "updatedLabel": "Última atualização",
+    "openRepo": "Abrir repositório",
+    "notFound": "Projeto não encontrado",
+    "notFoundDescription": "Esse projeto não existe ou foi movido. Volte ao portfólio para ver todos.",
+    "status": {
+      "development": "Em desenvolvimento",
+      "beta": "Beta",
+      "stable": "Estável"
+    },
+    "demo": "Demo ao vivo",
+    "docs": "Documentação",
+    "openApi": "Referência da API",
+    "video": "Vídeo demonstrativo",
+    "architectureLabel": "Arquitetura e decisões",
+    "metricsLabel": "Métricas",
+    "testingLabel": "Estratégia de testes",
+    "observabilityLabel": "Observabilidade",
+    "limitationsLabel": "Limitações conhecidas",
+    "nextStepsLabel": "Próximos passos"
+  }
+}

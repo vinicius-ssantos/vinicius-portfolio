@@ -1,9 +1,9 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Github, Linkedin } from "lucide-react";
 import { profile, type Lang } from "@/content";
-import type { Translation } from "@/lib/translations";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageToggle } from "@/components/language-toggle";
 import { trackEvent } from "@/lib/analytics";
@@ -11,7 +11,8 @@ import { useScrollSpy } from "@/hooks/use-scroll-spy";
 import { NAV_SECTION_IDS } from "@/lib/nav-sections";
 import { MobileMenu } from "./mobile-menu";
 
-export function SiteHeader({ t, lang }: { t: Translation; lang: Lang }) {
+export function SiteHeader({ lang }: { lang: Lang }) {
+  const t = useTranslations("nav");
   const activeSection = useScrollSpy(NAV_SECTION_IDS);
 
   return (
@@ -33,7 +34,7 @@ export function SiteHeader({ t, lang }: { t: Translation; lang: Lang }) {
             aria-current={activeSection === "experience" ? "location" : undefined}
             className="nav-link hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
-            {t.nav.experience}
+            {t("experience")}
           </Link>
           <Link
             href={`/${lang}#stack`}
@@ -41,7 +42,7 @@ export function SiteHeader({ t, lang }: { t: Translation; lang: Lang }) {
             aria-current={activeSection === "stack" ? "location" : undefined}
             className="nav-link hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
-            {t.nav.stack}
+            {t("stack")}
           </Link>
           <Link
             href={`/${lang}#projects`}
@@ -49,7 +50,7 @@ export function SiteHeader({ t, lang }: { t: Translation; lang: Lang }) {
             aria-current={activeSection === "projects" ? "location" : undefined}
             className="nav-link hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
-            {t.nav.projects}
+            {t("projects")}
           </Link>
           <Link
             href={`/${lang}#case-study`}
@@ -57,7 +58,7 @@ export function SiteHeader({ t, lang }: { t: Translation; lang: Lang }) {
             aria-current={activeSection === "case-study" ? "location" : undefined}
             className="nav-link hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground lg:inline"
           >
-            {t.nav.caseStudy}
+            {t("caseStudy")}
           </Link>
           <Link
             href={`/${lang}#about`}
@@ -65,12 +66,12 @@ export function SiteHeader({ t, lang }: { t: Translation; lang: Lang }) {
             aria-current={activeSection === "about" ? "location" : undefined}
             className="nav-link hidden px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground lg:inline"
           >
-            {t.nav.about}
+            {t("about")}
           </Link>
 
           <div className="ml-1 flex items-center gap-1">
             <LanguageToggle />
-            <ThemeToggle lang={lang} />
+            <ThemeToggle />
           </div>
 
           <a
@@ -93,7 +94,7 @@ export function SiteHeader({ t, lang }: { t: Translation; lang: Lang }) {
             <Linkedin className="h-4 w-4" />
           </a>
 
-          <MobileMenu t={t} lang={lang} activeSection={activeSection} />
+          <MobileMenu lang={lang} activeSection={activeSection} />
         </nav>
       </div>
     </header>

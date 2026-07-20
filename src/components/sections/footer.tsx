@@ -1,11 +1,12 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Github, Linkedin, Mail } from "lucide-react";
 import { profile } from "@/content";
-import type { Translation } from "@/lib/translations";
 import { trackEvent } from "@/lib/analytics";
 
-export function SiteFooter({ t, onContactOpen }: { t: Translation; onContactOpen: () => void }) {
+export function SiteFooter({ onContactOpen }: { onContactOpen: () => void }) {
+  const t = useTranslations("footer");
   return (
     <footer className="mt-auto border-t border-border/60">
       <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 px-4 py-8 text-sm sm:flex-row sm:px-6">
@@ -14,7 +15,7 @@ export function SiteFooter({ t, onContactOpen }: { t: Translation; onContactOpen
             VS
           </span>
           <span>
-            © {new Date().getFullYear()} {profile.name}. {t.footer.builtWith}
+            © {new Date().getFullYear()} {profile.name}. {t("builtWith")}
           </span>
         </div>
         <div className="flex items-center gap-1">
