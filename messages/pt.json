@@ -148,6 +148,7 @@
     "openApi": "Referência da API",
     "video": "Vídeo demonstrativo",
     "architectureDiagramLabel": "Topologia do sistema",
+    "topology3dExperimentLabel": "protótipo 3D / experimental",
     "architectureLabel": "Arquitetura e decisões",
     "metricsLabel": "Métricas",
     "testingLabel": "Estratégia de testes",

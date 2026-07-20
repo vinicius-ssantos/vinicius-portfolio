@@ -1,0 +1,146 @@
+# Backend System Pulse 3D — spike log (#48)
+
+Running record of the Three.js spike. Each phase appends its findings; the
+Phase D decision at the end is what determines whether any of this ships.
+
+**Status: Phase A complete. Not shipped.** The prototype is gated behind
+`NEXT_PUBLIC_ENABLE_3D_TOPOLOGY`, which is unset everywhere including
+production. Enabling it is a deliberate act, not a default.
+
+## Why it is behind a flag
+
+#48 depends on #56 in the epic's dependency graph, and #56's own text is
+explicit: the measurement "deve existir antes da adoção definitiva do
+Three.js na #48 para permitir comparação antes/depois". That baseline is
+still inconclusive — desktop has a small sample and mobile has none at all
+(see `performance-baseline.md`). So the prototype can be built and measured,
+but the adoption decision cannot be made yet.
+
+The flag fails closed: only the exact string `"true"` enables it, so a typo,
+an empty value, or `"1"` all leave it off.
+
+## Phase A — visual prototype
+
+### Data model: one source, no stored coordinates
+
+#48 sketches a `TopologyNode` carrying an explicit
+`position: [number, number, number]`. The implementation deliberately does
+not do that.
+
+The 2.5D diagram from #47 already derives every position from the graph, and
+#47's scope required avoiding duplicated hardcoded layout. Authoring
+coordinates for the 3D view would mean every content edit needs a matching
+coordinate edit in a second place — which is exactly the "duas arquiteturas
+divergentes" that #48's own single-source requirement exists to prevent.
+
+Instead `src/lib/topology.ts` holds the shared layering, and both views
+consume the same `Architecture` content type:
+
+- `layerArchitecture()` — DAG layering by longest path from a root. Was
+  previously private to the 2.5D component; extracted so both views share it.
+- `toScene()` — projects that layering into 3-space. Pure function of the
+  graph; no content file knows a coordinate exists.
+
+Nodes with no edges (the local dev environment, which genuinely isn't on the
+deployed request path) land on a separate lower shelf rather than being
+offset along the path's own axes, where they would read as a branch off it.
+
+### What the scene does
+
+Seven nodes from the real `personal-platform-infra` content, matching #48's
+5–7 node budget for a prototype:
+
+- perspective floor grid — without it the nodes read as flat circles no
+  matter how the camera is angled, because nothing establishes a ground plane;
+- curved tube connections, with emerald pulses travelling them, staggered so
+  the path reads as traffic rather than a synchronized blink;
+- HTML labels at alternating heights — several captions run long
+  (`namespaces: mcp / bff / vos / monitoring`) and collide at a uniform
+  offset. Real DOM text projected from the camera each frame, not textures;
+- guided camera: a small cursor-driven drift, eased, never a free orbit.
+
+### drei was removed, for an engine conflict rather than for size
+
+The first pass used `@react-three/drei` for its `<Html>` label helper. CI then
+failed with `EBADENGINE`: drei depends on `camera-controls`, which requires
+**Node >= 22**, while this project's baseline is Node 20 (`.nvmrc`, the CI
+workflow, and `engines`). Every other dependency in the tree accepts Node 20;
+`camera-controls` was the sole exception.
+
+Labels were the only thing drei provided, so `LabelProjector` now projects
+world positions to screen space directly and writes `style.transform` on
+plain DOM spans — about 20 lines, no dependency, and the captions stay real
+selectable text.
+
+Worth recording honestly: removing drei was **not** a meaningful bundle win
+(~7 KiB decoded). three.js itself is essentially all of the cost. The reason
+to drop it was the Node baseline conflict.
+
+### Runtime behaviour
+
+| Condition | Result |
+| --- | --- |
+| Offscreen or tab hidden | `frameloop="demand"` — the rAF loop is dropped, not just rendering invisible frames |
+| `prefers-reduced-motion: reduce` | Static frame, pulses parked mid-connection so the path still reads as carrying traffic |
+| Viewport below `lg` (1024px) | 3D never mounts; the 2.5D diagram is the whole experience, per #48's fallback table |
+| WebGL unavailable or throwing | Same as above — probed before the canvas mounts |
+| Flag off | Nothing renders and the chunk is never requested |
+
+Mobile is a hard exclusion rather than a degraded render: at 390px the scene
+is genuinely unreadable — labels clip and overlap — and #48's fallback table
+already routes mobile to the 2.5D topology.
+
+### Bundle cost — the headline number
+
+Measured on `/en/projects/personal-platform-infra`, production build, via
+resource timing so both the compressed download and the parse cost are
+visible. Same page, same method, both builds:
+
+| Build | Wire (compressed) | Decoded (parsed) |
+| --- | --- | --- |
+| Flag off | 299.8 KiB | 936.7 KiB |
+| Flag on | 529.3 KiB | 1803.3 KiB |
+| **Delta** | **+229.5 KiB** | **+866.6 KiB** |
+
+Both columns matter and they say different things: ~230 KiB is what a visitor
+actually downloads, while ~867 KiB is what the main thread has to parse and
+compile. It is one lazily-loaded chunk, essentially all of it three.js.
+
+With the flag off that chunk is emitted to disk but never fetched, which is
+the behaviour #48 requires ("o bundle 3D não deve entrar no carregamento
+inicial"). An e2e test asserts this and fails if the default ever flips.
+
+> **Measurement note.** Two earlier readings of these numbers were wrong
+> because the page was sampled before all chunks had settled, which produced
+> both an inflated flag-on figure and an implausibly low flag-off one. The
+> table above is from runs with a 4 s settle and was cross-checked between
+> configurations. Worth stating plainly so nobody re-derives a decision from
+> the discarded figures.
+
+### Not yet done
+
+- Node selection, camera focus transitions and the detail panel (Phase B).
+- FPS and CPU/GPU measurement on a mid-range mobile device (Phase C) — note
+  this is partly moot given mobile is excluded, but the desktop numbers still
+  need collecting.
+- Keyboard navigation into the canvas. Currently the canvas is `aria-hidden`
+  and the accessible 2.5D diagram renders alongside it, so no information
+  lives only inside WebGL — but that also means the 3D view is presently
+  decorative rather than the primary interface.
+
+### Open question for Phase D
+
+The visual result is legible and on-brand. The honest read after Phase A is
+that ~230 KiB downloaded and ~867 KiB parsed buys a nicer rendering of
+information the 2.5D diagram already conveys accessibly, on desktop only,
+below a section most visitors never scroll to.
+
+That is not obviously disqualifying — the chunk is lazy, gated, and off the
+critical path — but it is real, and the bar #56 sets ("não aprovar Three.js
+apenas porque o desktop permanece rápido") should be applied strictly. The
+deciding evidence is still missing: a representative RUM sample, INP in
+particular, since parse/compile of ~867 KiB lands on the main thread.
+
+The narrower option worth weighing in Phase D: keep the 3D confined to the
+project dossier (as built here) rather than also adopting it in the Hero,
+which would move the cost onto the highest-traffic page.

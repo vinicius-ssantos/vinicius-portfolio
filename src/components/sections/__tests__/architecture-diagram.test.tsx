@@ -3,7 +3,7 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Architecture } from "@/content";
-import { ArchitectureDiagram, layerArchitecture } from "../architecture-diagram";
+import { ArchitectureDiagram } from "../architecture-diagram";
 import { resetViewportObserverPoolsForTests } from "@/lib/viewport-observer";
 
 const labels = { local: "Local", edge: "Edge", vps: "VPS", hint: "Select a node" };
@@ -20,65 +20,6 @@ const linearArchitecture: Architecture = {
     { from: "vps", to: "traefik" },
   ],
 };
-
-describe("layerArchitecture", () => {
-  it("layers a linear chain by longest path and clusters unconnected nodes separately", () => {
-    const { chain, sideCluster } = layerArchitecture(linearArchitecture);
-
-    expect(sideCluster.map((n) => n.id)).toEqual(["a"]);
-    expect(chain.map((layer) => layer.map((n) => n.id))).toEqual([["cf"], ["vps"], ["traefik"]]);
-  });
-
-  it("places a node at the longest path from any root, not the shortest", () => {
-    // b->d is a shortcut; d's true depth is determined by the longer a->b->c->d path.
-    const architecture: Architecture = {
-      nodes: [
-        { id: "a", group: "edge", label: "A", detail: "" },
-        { id: "b", group: "edge", label: "B", detail: "" },
-        { id: "c", group: "edge", label: "C", detail: "" },
-        { id: "d", group: "edge", label: "D", detail: "" },
-      ],
-      edges: [
-        { from: "a", to: "b" },
-        { from: "b", to: "c" },
-        { from: "c", to: "d" },
-        { from: "b", to: "d" },
-      ],
-    };
-
-    const { chain } = layerArchitecture(architecture);
-    expect(chain.map((layer) => layer.map((n) => n.id))).toEqual([["a"], ["b"], ["c"], ["d"]]);
-  });
-
-  it("does not infinite-loop on a cyclic edge list", () => {
-    const cyclic: Architecture = {
-      nodes: [
-        { id: "a", group: "edge", label: "A", detail: "" },
-        { id: "b", group: "edge", label: "B", detail: "" },
-      ],
-      edges: [
-        { from: "a", to: "b" },
-        { from: "b", to: "a" },
-      ],
-    };
-
-    expect(() => layerArchitecture(cyclic)).not.toThrow();
-  });
-
-  it("puts every node in the side cluster when there are no edges", () => {
-    const disconnected: Architecture = {
-      nodes: [
-        { id: "a", group: "local", label: "A", detail: "" },
-        { id: "b", group: "local", label: "B", detail: "" },
-      ],
-      edges: [],
-    };
-
-    const { chain, sideCluster } = layerArchitecture(disconnected);
-    expect(chain).toEqual([]);
-    expect(sideCluster.map((n) => n.id)).toEqual(["a", "b"]);
-  });
-});
 
 beforeEach(() => {
   vi.stubGlobal(
