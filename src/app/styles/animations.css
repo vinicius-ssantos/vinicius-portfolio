@@ -80,6 +80,32 @@
 /* The contribution heatmap uses one data-pattern container reveal instead of
    scheduling an animation for every individual cell. */
 
+/* Backend System Pulse (#46) — discrete data pulses along architecture
+   edges, staggered per edge, paused until the Hero section is in view. */
+@keyframes pulse-flow {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.75);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.animate-pulse-flow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse-flow var(--motion-duration-ambient) var(--motion-ease-in-out) infinite;
+  animation-delay: calc(var(--flow-index, 0) * var(--motion-stagger-flow));
+  animation-play-state: paused;
+}
+
+[data-motion-in-viewport="true"] .animate-pulse-flow {
+  animation-play-state: running;
+}
+
 /* Hero name: the expressive entrance is reserved for the primary identity. */
 @keyframes word-rise {
   from {
@@ -297,7 +323,8 @@ html {
   }
 
   .animate-flow-arrow,
-  .animate-badge-glow {
+  .animate-badge-glow,
+  .animate-pulse-flow {
     animation: none !important;
   }
 }
