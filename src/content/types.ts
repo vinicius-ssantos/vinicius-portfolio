@@ -14,6 +14,37 @@ export type { Lang };
  */
 export type ProjectStatus = "development" | "beta" | "stable";
 
+/**
+ * Where a node sits conceptually — drives which side-cluster it renders in
+ * when it has no edges, and which group label a screen reader announces.
+ * Not a layout coordinate: positions are derived from `edges`, not stored.
+ */
+export type ArchitectureNodeGroup = "local" | "edge" | "vps";
+
+export type ArchitectureNode = {
+  id: string;
+  label: string;
+  group: ArchitectureNodeGroup;
+  /** Short description shown in the shared detail panel on hover/focus/tap. */
+  detail: string;
+};
+
+export type ArchitectureEdge = {
+  from: string;
+  to: string;
+};
+
+/**
+ * A typed node/edge graph. `<ArchitectureDiagram>` derives every position
+ * from this — connected nodes are layered by longest path from a root,
+ * unconnected nodes render as a side cluster grouped by `group`. Keeping
+ * layout implicit means content never hardcodes pixel coordinates.
+ */
+export type Architecture = {
+  nodes: ArchitectureNode[];
+  edges: ArchitectureEdge[];
+};
+
 /** Locale-independent project fields — dates, URLs, stack, flags. */
 export type ProjectMeta = {
   slug: string;
@@ -66,9 +97,7 @@ export type ProjectText = {
   caseStudy?: {
     lessonsLearned: string;
     architectureLabel: string;
-    localNodes: string[];
-    vpsNodes: string[];
-    flowText: string;
+    architecture: Architecture;
   };
 };
 

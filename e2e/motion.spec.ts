@@ -26,17 +26,20 @@ test.describe("motion language", () => {
     await expect(experienceMotion).toHaveAttribute("data-motion-entered", "true");
     await expect(checkmark).toHaveCSS("animation-name", "check-pop");
 
-    const diagram = page.locator('[data-motion="diagram"]').first();
-    const flowArrow = diagram.locator(".animate-flow-arrow").first();
+    const hero = page.locator("section:has(h1)");
+    const pulseDot = hero.locator(".animate-pulse-flow").first();
 
-    await expect(flowArrow).toHaveCSS("animation-play-state", "paused");
-    await diagram.scrollIntoViewIfNeeded();
-    await expect(diagram).toHaveAttribute("data-motion-in-viewport", "true");
-    await expect(flowArrow).toHaveCSS("animation-play-state", "running");
+    // Scrolling to #experience above moved the Hero offscreen.
+    await expect(hero).toHaveAttribute("data-motion-in-viewport", "false");
+    await expect(pulseDot).toHaveCSS("animation-play-state", "paused");
+
+    await hero.scrollIntoViewIfNeeded();
+    await expect(hero).toHaveAttribute("data-motion-in-viewport", "true");
+    await expect(pulseDot).toHaveCSS("animation-play-state", "running");
 
     await experience.scrollIntoViewIfNeeded();
-    await expect(diagram).toHaveAttribute("data-motion-in-viewport", "false");
-    await expect(flowArrow).toHaveCSS("animation-play-state", "paused");
+    await expect(hero).toHaveAttribute("data-motion-in-viewport", "false");
+    await expect(pulseDot).toHaveCSS("animation-play-state", "paused");
   });
 
   test("renders final static states when reduced motion is requested", async ({ page }) => {
@@ -47,7 +50,7 @@ test.describe("motion language", () => {
     const card = page.locator(".card-lift").first();
     const heroWord = page.locator(".hero-word").first();
     const checkmark = page.locator(".check-pop").first();
-    const flowArrow = page.locator(".animate-flow-arrow").first();
+    const pulseDot = page.locator(".animate-pulse-flow").first();
 
     await expect(heading).toHaveCSS("opacity", "1");
     await expect(heading).toHaveCSS("transform", "none");
@@ -57,6 +60,6 @@ test.describe("motion language", () => {
     await expect(heroWord).toHaveCSS("opacity", "1");
     await expect(checkmark).toHaveCSS("animation-name", "none");
     await expect(checkmark).toHaveCSS("opacity", "1");
-    await expect(flowArrow).toHaveCSS("animation-name", "none");
+    await expect(pulseDot).toHaveCSS("animation-name", "none");
   });
 });

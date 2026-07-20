@@ -54,27 +54,27 @@
   will-change: auto;
 }
 
-/* Flow arrow pulse — architecture movement communicates direction. */
-@keyframes flow-pulse {
-  0%,
-  100% {
-    opacity: 0.4;
+/* Architecture Diagram (#47) — the request-path arrows play a short, single
+   reveal when the diagram first enters the viewport. Unlike the ambient
+   flow-arrow pulse above, this never repeats. */
+@keyframes arch-flow-once {
+  from {
+    opacity: 0;
+    transform: translateX(calc(-1 * var(--motion-distance-sm)));
+  }
+  to {
+    opacity: 1;
     transform: translateX(0);
   }
-  50% {
-    opacity: 1;
-    transform: translateX(var(--motion-distance-xs));
-  }
 }
 
-.animate-flow-arrow {
-  animation: flow-pulse var(--motion-duration-flow) var(--motion-ease-in-out) infinite;
-  animation-delay: calc(var(--flow-index, 0) * var(--motion-stagger-flow));
-  animation-play-state: paused;
+.arch-flow-once {
+  opacity: 0;
 }
 
-[data-motion-in-viewport="true"] .animate-flow-arrow {
-  animation-play-state: running;
+[data-motion-entered="true"] .arch-flow-once {
+  animation: arch-flow-once var(--motion-duration-standard) var(--motion-ease-emphasized) forwards;
+  animation-delay: calc(var(--flow-index, 0) * var(--motion-stagger-standard));
 }
 
 /* The contribution heatmap uses one data-pattern container reveal instead of
@@ -315,14 +315,14 @@ html {
   .reveal,
   .reveal-stagger > *,
   .check-pop,
-  .lang-bar-segment {
+  .lang-bar-segment,
+  .arch-flow-once {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
     animation: none !important;
   }
 
-  .animate-flow-arrow,
   .animate-badge-glow,
   .animate-pulse-flow {
     animation: none !important;
@@ -339,7 +339,8 @@ html {
   .reveal-stagger > *,
   .hero-word,
   .check-pop,
-  .lang-bar-segment {
+  .lang-bar-segment,
+  .arch-flow-once {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
@@ -347,7 +348,6 @@ html {
   }
 
   .animate-pulse-flow,
-  .animate-flow-arrow,
   .page-transition,
   .animate-error-shake,
   .animate-badge-glow,

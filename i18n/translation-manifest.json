@@ -125,6 +125,13 @@
     "provider": "manual",
     "updatedAt": "2026-07-20"
   },
+  "caseStudy.edge": {
+    "sourceHash": "sha256:0f82fe727756eb9a80e0e95581f2ef26aeaffb0bf903dcf8106d575878960fb6",
+    "targetHash": "sha256:0f82fe727756eb9a80e0e95581f2ef26aeaffb0bf903dcf8106d575878960fb6",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
   "caseStudy.eyebrow": {
     "sourceHash": "sha256:af55826ec1f95eed0332fd928b4d0b1b7e1cad561f14c0eb9f73f6ead187f68b",
     "targetHash": "sha256:af55826ec1f95eed0332fd928b4d0b1b7e1cad561f14c0eb9f73f6ead187f68b",
@@ -167,16 +174,16 @@
     "provider": "manual",
     "updatedAt": "2026-07-20"
   },
-  "caseStudy.stack": {
-    "sourceHash": "sha256:e551641242ce7246ae460270ed60105e4c8370fd38b7144debd8688931c703f6",
-    "targetHash": "sha256:e551641242ce7246ae460270ed60105e4c8370fd38b7144debd8688931c703f6",
+  "caseStudy.selectNodeHint": {
+    "sourceHash": "sha256:e3337b49ca289095acda673134041cf58ddd9fb7e5ff3cad34aed8cb8769a048",
+    "targetHash": "sha256:093a5514c922b8e43c446af21dab8a3506abc36573ab8a36ad04889eba1c1e5d",
     "status": "reviewed",
     "provider": "manual",
     "updatedAt": "2026-07-20"
   },
-  "caseStudy.trafficFlow": {
-    "sourceHash": "sha256:cac519fdb4b1e378adf6c90ea990b2fbfbad0260f5f2f8d49447e8dcdfe5326a",
-    "targetHash": "sha256:b9ed77b74a2781e82736aa1813abd46d93ec6d5983eac0f82007f85b436b4b04",
+  "caseStudy.stack": {
+    "sourceHash": "sha256:e551641242ce7246ae460270ed60105e4c8370fd38b7144debd8688931c703f6",
+    "targetHash": "sha256:e551641242ce7246ae460270ed60105e4c8370fd38b7144debd8688931c703f6",
     "status": "reviewed",
     "provider": "manual",
     "updatedAt": "2026-07-20"
@@ -534,6 +541,13 @@
   "projectDetail.approachLabel": {
     "sourceHash": "sha256:10fa34883fcc4b901af8768411ca856780e2424ff6844a95f00932f97fbe5ca2",
     "targetHash": "sha256:85aef304fe277c8c599479065fd5222e9ef7144cc6a04e56a41b4abbce75f864",
+    "status": "reviewed",
+    "provider": "manual",
+    "updatedAt": "2026-07-20"
+  },
+  "projectDetail.architectureDiagramLabel": {
+    "sourceHash": "sha256:d3494ec2222d8909aa582f9b5af525ec16dbbec99e3a7a4ac92645d212c26f32",
+    "targetHash": "sha256:1ce32d445dce15d9fa7a267c7f2a5c4c674adda49d037bf622e1e6d7f1e66cdf",
     "status": "reviewed",
     "provider": "manual",
     "updatedAt": "2026-07-20"

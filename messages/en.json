@@ -98,8 +98,9 @@
     "openRepo": "Open repo",
     "updated": "Updated",
     "local": "Local",
+    "edge": "Edge",
     "vps": "VPS",
-    "trafficFlow": "traffic flow"
+    "selectNodeHint": "Hover, focus, or tap a node for details"
   },
   "education": {
     "eyebrow": "// education",
@@ -146,6 +147,7 @@
     "docs": "Documentation",
     "openApi": "API reference",
     "video": "Video walkthrough",
+    "architectureDiagramLabel": "System topology",
     "architectureLabel": "Architecture & decisions",
     "metricsLabel": "Metrics",
     "testingLabel": "Testing strategy",
