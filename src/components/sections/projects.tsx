@@ -1,12 +1,13 @@
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Tag } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getVisibleProjects, type Lang, type Project } from "@/content";
 import { RevealOnScroll } from "@/components/animations/reveal-on-scroll";
 import { TrackedLink } from "@/components/tracked-nav-link";
 import { TrackedExternalLink } from "@/components/tracked-link";
+import { getProjectRepositorySnapshots, parseGitHubRepoUrl, repoKey } from "@/lib/github-repos";
 import { SectionHeading } from "./section-heading";
 import { ProjectStackBadges } from "./project-stack-badges";
 
@@ -16,6 +17,12 @@ export async function FeaturedProjects({ lang }: { lang: Lang }) {
   const t = await getTranslations();
   const projects = getVisibleProjects(lang);
 
+  // Single batched GraphQL call for every card's repo — see github-repos.ts.
+  const repoRefs = projects
+    .map((p) => parseGitHubRepoUrl(p.repoUrl))
+    .filter((r): r is { owner: string; name: string } => r !== null);
+  const snapshots = await getProjectRepositorySnapshots(repoRefs);
+
   return (
     <section id="projects" className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
       <SectionHeading
@@ -24,11 +31,21 @@ export async function FeaturedProjects({ lang }: { lang: Lang }) {
         description={t("projects.description")}
       />
       <RevealOnScroll stagger className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
-        {projects.map((p, idx) => (
-          <div key={p.slug} style={{ "--stagger-index": idx } as React.CSSProperties}>
-            <ProjectCard project={p} priority={idx === 0} t={t} lang={lang} />
-          </div>
-        ))}
+        {projects.map((p, idx) => {
+          const ref = parseGitHubRepoUrl(p.repoUrl);
+          const latestReleaseTag = ref ? snapshots[repoKey(ref)]?.latestRelease?.tag : undefined;
+          return (
+            <div key={p.slug} style={{ "--stagger-index": idx } as React.CSSProperties}>
+              <ProjectCard
+                project={p}
+                priority={idx === 0}
+                t={t}
+                lang={lang}
+                latestReleaseTag={latestReleaseTag}
+              />
+            </div>
+          );
+        })}
       </RevealOnScroll>
     </section>
   );
@@ -39,11 +56,13 @@ function ProjectCard({
   priority,
   t,
   lang,
+  latestReleaseTag,
 }: {
   project: Project;
   priority?: boolean;
   t: TFunc;
   lang: Lang;
+  latestReleaseTag?: string;
 }) {
   const detailHref = `/${lang}/projects/${project.slug}`;
   return (
@@ -113,8 +132,17 @@ function ProjectCard({
       <CardContent className="flex flex-1 flex-col gap-4">
         <p className="text-sm leading-relaxed text-muted-foreground">{project.description}</p>
         <div className="mt-auto">
-          <div className="mb-2">
+          <div className="mb-2 flex flex-wrap items-center gap-1.5">
             <ProjectStackBadges stack={project.stack} limit={5} size="xs" />
+            {latestReleaseTag && (
+              <Badge
+                variant="outline"
+                className="gap-1 font-mono text-[10px] text-muted-foreground"
+              >
+                <Tag className="h-2.5 w-2.5" aria-hidden />
+                {latestReleaseTag}
+              </Badge>
+            )}
           </div>
           <div className="flex items-center gap-3">
             <TrackedLink

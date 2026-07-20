@@ -151,6 +151,13 @@
     "testingLabel": "Estratégia de testes",
     "observabilityLabel": "Observabilidade",
     "limitationsLabel": "Limitações conhecidas",
-    "nextStepsLabel": "Próximos passos"
+    "nextStepsLabel": "Próximos passos",
+    "repositoryLabel": "Repositório",
+    "latestReleaseLabel": "Última release",
+    "licenseLabel": "Licença",
+    "languagesLabel": "Linguagens",
+    "lastActivityLabel": "Última atividade",
+    "archivedBadge": "Arquivado",
+    "viaGitHub": "via GitHub"
   }
 }
