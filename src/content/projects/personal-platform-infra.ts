@@ -47,6 +47,9 @@ const pt: ProjectText = {
     lessonsLearned:
       "Construir uma plataforma pessoal me forçou a fazer trade-offs que não aparecem em tutoriais. Fixar tags de imagem por digest é mais chato do que sempre usar a versão mais recente (latest), mas é a única forma de saber exatamente o que está rodando. SOPS + age adicionam fricção à rotação de segredos, mas significam que posso publicar o repositório publicamente sem vazar nada. A maior lição: documentação escrita para você mesmo daqui a seis meses é a única que realmente é lida — então os ADRs são escritos como uma conversa com esse eu futuro.",
     architectureLabel: "arquitetura / dois ambientes, uma fonte da verdade",
+    // Cada technologies/tradeoffs abaixo é rastreável a um ADR ou ao
+    // architecture.md do próprio repositório personal-platform-infra —
+    // nada aqui foi deduzido da stack geral do projeto.
     architecture: {
       nodes: [
         {
@@ -54,42 +57,69 @@ const pt: ProjectText = {
           group: "local",
           label: "Windows 11 + WSL2",
           detail: "Ambiente de desenvolvimento local no Windows via WSL2.",
+          technologies: ["WSL2 Ubuntu", "Docker Desktop"],
         },
         {
           id: "compose",
           group: "local",
           label: "Docker Compose",
           detail: "Orquestra os serviços localmente para iteração rápida.",
+          technologies: ["Docker Compose"],
+          tradeoffs: [
+            "Overhead mínimo ao custo de baixa paridade com o k3s — mantido como caminho alternativo para iteração rápida (ADR 0005).",
+          ],
         },
         {
           id: "k3d",
           group: "local",
           label: "k3d (validação k8s)",
           detail: "Cluster k3d local para validar manifests antes da VPS.",
+          technologies: ["k3d", "Kustomize"],
+          tradeoffs: [
+            "Escolhido sobre kind e minikube pela paridade com o k3s da VPS (mesmo runtime); custa ~200–400MB e exige Docker rodando (ADR 0005).",
+          ],
         },
         {
           id: "cloudflare",
           group: "edge",
           label: "Cloudflare",
           detail: "DNS, TLS, Access e Tunnel na frente da VPS.",
+          technologies: ["Cloudflare DNS", "Cloudflare Tunnel", "Terraform"],
+          tradeoffs: [
+            "Camada única de rede: TLS automático sem Certbot ou cert-manager, aceitando vendor lock-in e ~10ms de latência de proxy (ADR 0009).",
+          ],
         },
         {
           id: "vps",
           group: "vps",
           label: "Ubuntu + k3s (single-node)",
           detail: "Host único rodando k3s; expõe a porta 80 ao Traefik.",
+          technologies: ["Ubuntu (Hetzner)", "k3s"],
+          tradeoffs: [
+            "Single-node sem HA: ponto único de falha aceito por ~US$5–10/mês vs US$30+ de um cluster multi-nó (ADR 0013).",
+            "Deployments nascem com replicas: 0 e acordam sob demanda — custo proporcional ao uso real (ADR 0001).",
+          ],
         },
         {
           id: "traefik",
           group: "vps",
           label: "Traefik ingress",
           detail: "Roteia cada requisição ao serviço certo por hostname.",
+          technologies: ["Traefik", "KEDA HTTP Add-on"],
+          tradeoffs: [
+            "Ingress nativo do k3s — zero instalação extra; TLS fica no proxy Cloudflare e o Traefik recebe HTTP puro na porta 80 (ADRs 0005/0009).",
+            "Requisições passam pelo interceptor do KEDA, que acorda serviços dormindo em replicas: 0 (ADR 0016).",
+          ],
         },
         {
           id: "namespaces",
           group: "vps",
           label: "namespaces: mcp / bff / vos / monitoring",
           detail: "Quatro namespaces isolam o blast radius por domínio.",
+          tradeoffs: [
+            "Isolamento por domínio funcional prepara RBAC e NetworkPolicy granulares (ADR 0010).",
+            "Chamadas entre namespaces exigem FQDN completo — custo aceito do isolamento (ADR 0010).",
+          ],
         },
       ],
       edges: [
@@ -126,6 +156,9 @@ const en: ProjectText = {
     lessonsLearned:
       "Building a personal platform forced me to make trade-offs that don't show up in tutorials. Pinning image tags by digest is more annoying than tracking latest, but it's the only way to know exactly what's running. SOPS + age adds friction to secret rotation, but means I can publish the repo publicly without leaking anything. The biggest lesson: documentation that you write for yourself six months from now is the only documentation that actually gets read — so the ADRs are written like a conversation with that future me.",
     architectureLabel: "architecture / two environments, one source of truth",
+    // Every technologies/tradeoffs entry below traces to an ADR or to
+    // architecture.md in the personal-platform-infra repository itself —
+    // nothing here was inferred from the project's overall stack list.
     architecture: {
       nodes: [
         {
@@ -133,42 +166,69 @@ const en: ProjectText = {
           group: "local",
           label: "Windows 11 + WSL2",
           detail: "Local development environment on Windows via WSL2.",
+          technologies: ["WSL2 Ubuntu", "Docker Desktop"],
         },
         {
           id: "compose",
           group: "local",
           label: "Docker Compose",
           detail: "Orchestrates services locally for fast iteration.",
+          technologies: ["Docker Compose"],
+          tradeoffs: [
+            "Minimal overhead at the cost of low parity with k3s — kept as the alternative path for fast iteration (ADR 0005).",
+          ],
         },
         {
           id: "k3d",
           group: "local",
           label: "k3d (k8s validation)",
           detail: "Local k3d cluster to validate manifests before the VPS.",
+          technologies: ["k3d", "Kustomize"],
+          tradeoffs: [
+            "Chosen over kind and minikube for parity with the VPS's k3s (same runtime); costs ~200–400MB and needs Docker running (ADR 0005).",
+          ],
         },
         {
           id: "cloudflare",
           group: "edge",
           label: "Cloudflare",
           detail: "DNS, TLS, Access and Tunnel in front of the VPS.",
+          technologies: ["Cloudflare DNS", "Cloudflare Tunnel", "Terraform"],
+          tradeoffs: [
+            "Single network layer: automatic TLS with no Certbot or cert-manager, accepting vendor lock-in and ~10ms of proxy latency (ADR 0009).",
+          ],
         },
         {
           id: "vps",
           group: "vps",
           label: "Ubuntu + k3s (single-node)",
           detail: "Single host running k3s; exposes port 80 to Traefik.",
+          technologies: ["Ubuntu (Hetzner)", "k3s"],
+          tradeoffs: [
+            "Single-node, no HA: a single point of failure accepted at ~US$5–10/month vs US$30+ for a multi-node cluster (ADR 0013).",
+            "Deployments start at replicas: 0 and wake on demand — resource cost proportional to real use (ADR 0001).",
+          ],
         },
         {
           id: "traefik",
           group: "vps",
           label: "Traefik ingress",
           detail: "Routes every request to the right service by hostname.",
+          technologies: ["Traefik", "KEDA HTTP Add-on"],
+          tradeoffs: [
+            "k3s's native ingress — zero extra install; TLS stays at the Cloudflare proxy and Traefik receives plain HTTP on port 80 (ADRs 0005/0009).",
+            "Requests pass through KEDA's interceptor, which wakes services sleeping at replicas: 0 (ADR 0016).",
+          ],
         },
         {
           id: "namespaces",
           group: "vps",
           label: "namespaces: mcp / bff / vos / monitoring",
           detail: "Four namespaces keep blast radius small per domain.",
+          tradeoffs: [
+            "Functional-domain isolation lays the ground for granular RBAC and NetworkPolicy (ADR 0010).",
+            "Cross-namespace calls require the full FQDN — an accepted cost of the isolation (ADR 0010).",
+          ],
         },
       ],
       edges: [
