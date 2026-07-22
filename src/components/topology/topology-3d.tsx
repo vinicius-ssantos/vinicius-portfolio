@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as THREE from "three";
 import type { Scene, SceneEdge, ScenePoint } from "@/lib/topology";
 
@@ -51,8 +52,6 @@ const NODE_RADIUS = 0.34;
 const PULSE_RADIUS = 0.09;
 /** Seconds for one pulse to travel an edge end to end. */
 const PULSE_TRAVEL_SECONDS = 2.4;
-/** How far the camera drifts with the cursor, in world units. */
-const PARALLAX_RANGE = 0.55;
 /**
  * Framing for the whole graph; `toScene` centers geometry on the origin.
  * Pulled back and raised enough to keep the lower side-cluster shelf inside
@@ -295,54 +294,102 @@ function Pulses({
   );
 }
 
-/**
- * Guided camera: a small cursor-driven drift, never a free orbit. Eases
- * toward the target so the scene settles instead of tracking the pointer
- * one-to-one, and stays put entirely under reduced motion.
- *
- * Reads camera and pointer off the per-frame state rather than closing over
- * values destructured during render — mutating those would be a render-scope
- * escape the React compiler (rightly) rejects.
- */
-const lookTarget = new THREE.Vector3(...CAMERA_TARGET);
 const desiredLook = new THREE.Vector3();
 const desiredPosition = new THREE.Vector3();
+const focusPose = new THREE.Vector3();
 
 /**
- * Guided camera. Selecting a node eases the aim toward it and dollies in a
- * little; clearing the selection returns to the overview framing. Both are
- * short, bounded moves — #48 explicitly rules out free-orbit navigation.
+ * Bounded user camera + guided transitions, via three's own OrbitControls
+ * (from examples/jsm — no drei, see the Phase A engine-conflict note).
  *
- * Under reduced motion the same poses are used but snapped rather than eased,
- * so selection still reframes without anything gliding across the screen.
+ * #48's explorer spec allows "zoom com limites, rotação moderada" and rules
+ * out free navigation, so every axis is clamped: no pan, dolly kept between
+ * overview-ish distances, polar locked above the grid, azimuth to a slice
+ * around the initial framing.
+ *
+ * Selecting a node eases target and camera toward it; restore glides back to
+ * the overview pose, which also resets any user zoom. One accessibility rule
+ * shapes the interplay ("evitar movimento automático de câmera após interação
+ * manual inesperada"): the moment the user starts a drag or zoom, guided
+ * easing stops driving the camera — it only resumes on the next explicit
+ * selection change, which re-arms it.
+ *
+ * Under reduced motion the same poses are snapped rather than eased, and the
+ * demand frameloop still redraws on interaction because the controls'
+ * change events invalidate.
  */
-function CameraRig({
-  enabled,
+function CameraControls({
   reducedMotion,
   focus,
 }: {
-  enabled: boolean;
   reducedMotion: boolean;
   focus: [number, number, number] | null;
 }) {
+  const controlsRef = useRef<OrbitControls | null>(null);
+  const userAdjusted = useRef(false);
+  const camera = useThree((s) => s.camera);
+  const gl = useThree((s) => s.gl);
+  const invalidate = useThree((s) => s.invalidate);
+
+  useEffect(() => {
+    const controls = new OrbitControls(camera, gl.domElement);
+    controls.enablePan = false;
+    controls.minDistance = 7;
+    controls.maxDistance = 18;
+    controls.minPolarAngle = 0.55;
+    controls.maxPolarAngle = 1.35;
+    const homeAzimuth = Math.atan2(CAMERA_ORIGIN[0], CAMERA_ORIGIN[2]);
+    controls.minAzimuthAngle = homeAzimuth - 0.9;
+    controls.maxAzimuthAngle = homeAzimuth + 0.9;
+    controls.target.set(...CAMERA_TARGET);
+    const markAdjusted = () => {
+      userAdjusted.current = true;
+    };
+    // invalidate takes an optional frame count — the listener's event object
+    // must not leak into that parameter.
+    const requestFrame = () => invalidate();
+    controls.addEventListener("start", markAdjusted);
+    controls.addEventListener("change", requestFrame);
+    controls.update();
+    controlsRef.current = controls;
+    return () => {
+      controls.removeEventListener("start", markAdjusted);
+      controls.removeEventListener("change", requestFrame);
+      controls.dispose();
+      controlsRef.current = null;
+    };
+  }, [camera, gl, invalidate]);
+
+  // A new selection (or restore) is explicit intent — re-arm the guided move.
+  useEffect(() => {
+    userAdjusted.current = false;
+    invalidate();
+  }, [focus, invalidate]);
+
   useFrame((state) => {
-    desiredLook.set(...(focus ?? CAMERA_TARGET));
+    const controls = controlsRef.current;
+    if (!controls) return;
 
-    desiredPosition.set(...CAMERA_ORIGIN);
-    if (focus) {
-      // Pull partway toward the node instead of flying to it: enough to read
-      // as "we moved to this", not so much that context is lost.
-      desiredPosition.lerp(new THREE.Vector3(focus[0], focus[1] + 2.4, focus[2] + 6.2), 0.55);
-    }
-    if (enabled) {
-      desiredPosition.x += state.pointer.x * PARALLAX_RANGE;
-      desiredPosition.y += state.pointer.y * PARALLAX_RANGE * 0.6;
+    if (!userAdjusted.current) {
+      desiredLook.set(...(focus ?? CAMERA_TARGET));
+      desiredPosition.set(...CAMERA_ORIGIN);
+      if (focus) {
+        // Pull partway toward the node instead of flying to it: enough to
+        // read as "we moved to this", not so much that context is lost.
+        focusPose.set(focus[0], focus[1] + 2.4, focus[2] + 6.2);
+        desiredPosition.lerp(focusPose, 0.55);
+      }
+
+      const ease = reducedMotion ? 1 : 0.06;
+      controls.target.lerp(desiredLook, ease);
+      state.camera.position.lerp(desiredPosition, ease);
+      // Keep the loop converging in demand mode until the glide settles.
+      if (!reducedMotion && state.camera.position.distanceToSquared(desiredPosition) > 1e-4) {
+        state.invalidate();
+      }
     }
 
-    const ease = reducedMotion ? 1 : 0.06;
-    state.camera.position.lerp(desiredPosition, ease);
-    lookTarget.lerp(desiredLook, ease);
-    state.camera.lookAt(lookTarget);
+    controls.update();
   });
 
   return null;
@@ -401,7 +448,7 @@ export default function Topology3D({
         <Connections edges={scene.edges} palette={palette} activeId={activeId} />
         <Pulses edges={scene.edges} palette={palette} animate={animate} />
         <Nodes points={scene.points} palette={palette} activeId={activeId} onSelect={onSelect} />
-        <CameraRig enabled={animate} reducedMotion={reducedMotion} focus={focus} />
+        <CameraControls reducedMotion={reducedMotion} focus={focus} />
         <LabelProjector points={scene.points} elements={labelElements} activeId={activeId} />
       </Canvas>
 
