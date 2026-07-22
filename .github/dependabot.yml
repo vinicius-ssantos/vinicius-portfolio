@@ -6,6 +6,15 @@ updates:
       interval: "weekly"
     open-pull-requests-limit: 10
     groups:
+      # react-dom hard-fails at runtime unless react is the exact same
+      # version ("Incompatible React versions" in react-dom-client), so
+      # separate bump PRs for the pair can never both pass CI — one of them
+      # always carries the mismatch. Seen on PRs #85/#86 bumping
+      # 19.2.7 -> 19.2.8 one package at a time.
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
       dev-dependencies:
         dependency-type: "development"
     ignore:
