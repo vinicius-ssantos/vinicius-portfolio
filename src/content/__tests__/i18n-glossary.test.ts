@@ -47,6 +47,12 @@ function collectStrings(lang: "pt" | "en"): Record<string, string> {
       p.caseStudy.architecture.nodes.forEach((n) => {
         out[`projects.${p.slug}.caseStudy.architecture.${n.id}.label`] = n.label;
         out[`projects.${p.slug}.caseStudy.architecture.${n.id}.detail`] = n.detail;
+        n.technologies?.forEach((tech, i) => {
+          out[`projects.${p.slug}.caseStudy.architecture.${n.id}.technologies.${i}`] = tech;
+        });
+        n.tradeoffs?.forEach((tradeoff, i) => {
+          out[`projects.${p.slug}.caseStudy.architecture.${n.id}.tradeoffs.${i}`] = tradeoff;
+        });
       });
     }
   });

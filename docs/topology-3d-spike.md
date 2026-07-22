@@ -3,7 +3,7 @@
 Running record of the Three.js spike. Each phase appends its findings; the
 Phase D decision at the end is what determines whether any of this ships.
 
-**Status: Phases A and B complete. Not shipped.** The prototype is gated behind
+**Status: Phases A–C complete. Not shipped; Phase D (the adoption decision) waits on #56.** The prototype is gated behind
 `NEXT_PUBLIC_ENABLE_3D_TOPOLOGY`, which is unset everywhere including
 production. Enabling it is a deliberate act, not a default.
 
@@ -170,11 +170,61 @@ code one.
 
 ### Not yet done
 
-- FPS and CPU/GPU measurement (Phase C) — partly moot for mobile given it is
-  excluded, but desktop numbers still need collecting, and INP matters most
-  because parse/compile lands on the main thread.
 - Zoom limits and moderate rotation. Only selection-driven camera moves exist
   today; #48 permits bounded zoom/rotation, which is not built.
+
+## Phase C — performance
+
+### A bug worth being honest about first
+
+Measuring found that the scene had **never actually animated**. `useViewportMotion`
+grabs its ref once, in an effect whose dependencies never change — and
+`TopologyShowcase`'s first render returned `null` (the server snapshot of its
+viewport/WebGL gates), so when the div appeared one render later it was never
+observed. `inViewport` stayed false forever, the canvas stayed in demand mode,
+and every "animated" screenshot from Phases A and B was actually a frozen
+demand-rendered frame that happened to catch the pulses mid-flight.
+
+The measurement caught it as "0 rendered frames per second while animating".
+Fixed by splitting the gates into an outer component so the inner one's first
+render always includes the observed element. The practical lesson recorded
+for the codebase: **don't conditionally return `null` on the first render of
+a component that hands a ref to `useViewportMotion`** — the hook will never
+see the element. The showcase now exposes `data-topology-animating` so tests
+and future measurement can assert the loop state directly instead of
+inferring it.
+
+### Numbers (lab, desktop, production build, SwiftShader)
+
+| Metric | Flag on | Flag off |
+| --- | --- | --- |
+| Rendered frames/s, scene in view | **60.3** | — |
+| rAF calls/s, scene scrolled away | **0.0** | — |
+| rAF calls/s, tab hidden | **0.0** | — |
+| Long tasks during node selection | none | — |
+| Long tasks, load → settle | 0–3 (max 130 ms, run-dependent) | 0 |
+| Lab LCP (dossier page) | 248 ms | 276 ms |
+| Lab CLS | 0 | 0 |
+
+- LCP/CLS are statistically identical — the chunk is lazy and below the fold,
+  so it never touches the critical path. The difference shown is run noise.
+- The occasional long tasks on load are three.js parse/compile — the
+  ~867 KiB decoded cost from Phase A materialising. It lands after lazy-load,
+  not during initial paint, but it is main-thread time and would count
+  against INP if the user interacts at that exact moment.
+- With WebGL disabled at the browser level (`--disable-webgl`): canvas absent,
+  accessible diagram fully functional, zero page errors — the fallback path
+  holds under real failure, not just under the probe.
+- Software rendering (SwiftShader) hits a locked 60 fps; real GPUs have more
+  headroom. These are lab numbers on one desktop — they bound the best case,
+  not the field.
+
+### What Phase C did not measure
+
+RUM. Lab numbers can't stand in for the #56 baseline — that remains the gate
+for Phase D, and mobile RUM is doubly moot here since the scene never mounts
+below `lg`. The remaining unknown is INP on mid-range hardware if a visitor
+interacts exactly while the chunk parses.
 
 ### Open question for Phase D
 
