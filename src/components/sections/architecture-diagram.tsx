@@ -164,6 +164,29 @@ export function ArchitectureDiagram({
             <span className="text-primary">{activeNode.label}</span>
             {" — "}
             {activeNode.detail}
+            {/* Optional authored content (#48): rendered only when the node
+                actually has it, so unauthored nodes stay a single line. */}
+            {activeNode.technologies && activeNode.technologies.length > 0 && (
+              <span className="mt-2 flex flex-wrap gap-1.5">
+                {activeNode.technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    className="rounded border border-border/60 bg-card/50 px-1.5 py-0.5 text-[10px]"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </span>
+            )}
+            {activeNode.tradeoffs && activeNode.tradeoffs.length > 0 && (
+              <span className="mt-2 block space-y-1">
+                {activeNode.tradeoffs.map((tradeoff) => (
+                  <span key={tradeoff} className="block text-foreground/80">
+                    ↳ {tradeoff}
+                  </span>
+                ))}
+              </span>
+            )}
           </>
         ) : (
           labels.hint

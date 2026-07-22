@@ -119,4 +119,36 @@ describe("ArchitectureDiagram", () => {
     expect(screen.queryByText("Select a node")).not.toBeInTheDocument();
     expect(screen.getByText(/Edge termination\./)).toBeInTheDocument();
   });
+
+  it("renders authored technologies and trade-offs, and nothing extra when a node has none", () => {
+    const authored: Architecture = {
+      nodes: [
+        {
+          id: "rich",
+          group: "vps",
+          label: "Rich node",
+          detail: "Has authored content.",
+          technologies: ["Traefik v3", "Cloudflare Tunnel"],
+          tradeoffs: ["Chosen over nginx for automatic service discovery"],
+        },
+        { id: "plain", group: "vps", label: "Plain node", detail: "Just a line." },
+      ],
+      edges: [{ from: "rich", to: "plain" }],
+    };
+
+    render(
+      <ArchitectureDiagram architectureLabel="test" architecture={authored} labels={labels} />,
+    );
+
+    const detail = screen.getByText("Select a node");
+
+    act(() => screen.getByRole("button", { name: "Rich node" }).focus());
+    expect(screen.getByText("Traefik v3")).toBeInTheDocument();
+    expect(screen.getByText("Cloudflare Tunnel")).toBeInTheDocument();
+    expect(detail.textContent).toContain("Chosen over nginx");
+
+    act(() => screen.getByRole("button", { name: "Plain node" }).focus());
+    expect(detail.textContent).toBe("Plain node — Just a line.");
+    expect(screen.queryByText("Traefik v3")).not.toBeInTheDocument();
+  });
 });

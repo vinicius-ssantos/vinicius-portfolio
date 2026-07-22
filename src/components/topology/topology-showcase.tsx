@@ -103,6 +103,13 @@ function useWebGLSupported(): boolean | null {
   return useSyncExternalStore(noopSubscribe, probeWebGL, () => null);
 }
 
+type ShowcaseProps = {
+  architecture: Architecture;
+  label: string;
+  activeId: string | null;
+  onSelect: (id: string | null) => void;
+};
+
 /**
  * The #48 prototype canvas.
  *
@@ -110,54 +117,59 @@ function useWebGLSupported(): boolean | null {
  * accessible HTML topology, so no information lives only inside WebGL.
  * Returns nothing at all when WebGL is missing or the viewport is narrow,
  * which is the same end state as the flag being off.
+ *
+ * The gates live here, in an outer component, and the observed markup in an
+ * inner one. This is load-bearing, not style: `useViewportMotion` grabs its
+ * ref once, in an effect whose dependencies never change — so if the first
+ * render returns null (as the server snapshot of these gates does during
+ * hydration), the element appears later and is simply never observed.
+ * `inViewport` then stays false forever and the scene silently never leaves
+ * demand mode. Splitting the component means the inner one's first render
+ * always includes the div, so the observer always has its target. Found in
+ * Phase C when the "animating" scene measured 0 rendered frames per second.
  */
-export function TopologyShowcase({
-  architecture,
-  label,
-  activeId,
-  onSelect,
-}: {
-  architecture: Architecture;
-  label: string;
-  activeId: string | null;
-  onSelect: (id: string | null) => void;
-}) {
+export function TopologyShowcase(props: ShowcaseProps) {
+  const webglSupported = useWebGLSupported();
+  const wideViewport = useWideViewport();
+
+  // Both paths leave the accessible 2.5D diagram as the whole experience,
+  // which is the documented fallback rather than a degraded state.
+  if (webglSupported !== true || !wideViewport) return null;
+
+  return <MountedShowcase {...props} />;
+}
+
+function MountedShowcase({ architecture, label, activeId, onSelect }: ShowcaseProps) {
   const { ref, inViewport } = useViewportMotion<HTMLDivElement>({
     rootMargin: "0px",
     threshold: 0,
   });
   const tabVisible = useTabVisible();
   const reducedMotion = usePrefersReducedMotion();
-  const webglSupported = useWebGLSupported();
-  const wideViewport = useWideViewport();
 
   const scene = useMemo(() => toScene(architecture), [architecture]);
-
-  // Both paths leave the accessible 2.5D diagram as the whole experience,
-  // which is the documented fallback rather than a degraded state.
-  if (webglSupported === false || !wideViewport) return null;
+  const active = inViewport && tabVisible;
 
   return (
     <div
       ref={ref}
       data-topology-3d="true"
+      // Observable from e2e/measurement scripts; also what the Phase C debug
+      // session needed and didn't have.
+      data-topology-animating={active && !reducedMotion ? "true" : "false"}
       aria-hidden="true"
       className="relative mb-4 h-64 overflow-hidden rounded-lg border border-border/60 bg-secondary/20 sm:h-80"
     >
       <div className="absolute left-3 top-2 z-10 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
         {label}
       </div>
-      {/* `null` until the probe resolves, so the canvas never mounts on a
-          device that turns out not to support it. */}
-      {webglSupported ? (
-        <Topology3D
-          scene={scene}
-          active={inViewport && tabVisible}
-          reducedMotion={reducedMotion}
-          activeId={activeId}
-          onSelect={onSelect}
-        />
-      ) : null}
+      <Topology3D
+        scene={scene}
+        active={active}
+        reducedMotion={reducedMotion}
+        activeId={activeId}
+        onSelect={onSelect}
+      />
     </div>
   );
 }

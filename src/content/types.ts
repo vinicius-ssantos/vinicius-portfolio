@@ -27,6 +27,15 @@ export type ArchitectureNode = {
   group: ArchitectureNodeGroup;
   /** Short description shown in the shared detail panel on hover/focus/tap. */
   detail: string;
+  /**
+   * Optional richer panel content (#48 asks the explorer to show these).
+   * Deliberately unpopulated until authored by hand: assigning the project's
+   * overall stack to individual nodes, or writing trade-offs nobody made,
+   * would fabricate architecture claims — see AGENTS.md's content rules.
+   * The panel renders these sections only when they exist.
+   */
+  technologies?: string[];
+  tradeoffs?: string[];
 };
 
 export type ArchitectureEdge = {
