@@ -47,7 +47,7 @@ npm install
 npm run dev   # open http://localhost:3000 (redirects to /pt or /en)
 ```
 
-Requires Node 20+ (see `.nvmrc`).
+Requires Node 22.12+ (see `.nvmrc`, which pins 24).
 
 ## Canonical commands
 
