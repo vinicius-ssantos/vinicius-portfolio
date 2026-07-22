@@ -168,10 +168,32 @@ inventing them from the project's overall stack list would be fabrication, and
 the repo's content rules forbid that. Adding them is a content task, not a
 code one.
 
+### Bounded camera controls
+
+The explorer's control spec ("zoom com limites, rotação moderada e botão para
+restaurar a câmera") is implemented with three's own `OrbitControls` from
+`examples/jsm` — no drei, per the Phase A engine-conflict note. Every axis is
+clamped: no pan, dolly between 7–18 world units, polar locked above the grid,
+azimuth to a ±0.9 rad slice around the home framing. Free navigation stays
+impossible by construction.
+
+The interplay with guided moves follows #48's accessibility rule ("evitar
+movimento automático de câmera após interação manual inesperada"): the moment
+the user starts a drag or zoom, selection-driven easing stops touching the
+camera. It re-arms only on the next explicit selection change or restore —
+and restore glides back to the home pose, which also resets any user zoom.
+Verified in a real browser: rotate → zoom → select (glides to the node) →
+restore (returns to the exact overview framing).
+
+In demand mode (reduced motion) the controls still work: their change events
+invalidate, so interaction redraws without a running loop, and guided moves
+snap instead of easing.
+
 ### Not yet done
 
-- Zoom limits and moderate rotation. Only selection-driven camera moves exist
-  today; #48 permits bounded zoom/rotation, which is not built.
+- Matching the canvas palette to the computed oklch tokens pixel-for-pixel
+  (static sRGB approximations today) — cosmetic, only worth it if Phase D
+  adopts the scene.
 
 ## Phase C — performance
 
