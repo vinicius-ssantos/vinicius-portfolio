@@ -135,14 +135,14 @@ describe("content", () => {
   });
 
   describe("projects", () => {
-    it("has 3 projects", () => {
-      expect(getProjects("en")).toHaveLength(3);
+    it("has 4 projects", () => {
+      expect(getProjects("en")).toHaveLength(4);
     });
 
-    it("first project is the featured one (most recent)", () => {
+    it("first project is the most recently updated one", () => {
       const projects = getProjects("en");
-      expect(projects[0]?.featured).toBe(true);
-      expect(projects[0]?.name).toBe("personal-platform-infra");
+      expect(projects[0]?.name).toBe("Sentinel Ledger");
+      expect(projects[0]?.updatedAt).toBe("2026-07-23");
     });
 
     it("each project has a screenshot image", () => {
@@ -165,6 +165,16 @@ describe("content", () => {
           expect(p.repoUrl).toMatch(/^https:\/\/github\.com\//);
         });
       });
+
+      it(`[${lang}] publishes Sentinel Ledger with explicit non-production limits`, () => {
+        const project = getProjectBySlug("sentinel-ledger", lang);
+        expect(project?.status).toBe("development");
+        expect(project?.visible).toBe(true);
+        expect(project?.repoUrl).toBe("https://github.com/vinicius-ssantos/sentinel-ledger");
+        expect(project?.limitations?.join(" ")).toMatch(
+          lang === "pt" ? /não processa pagamentos reais/i : /does not process real payments/i,
+        );
+      });
     }
 
     it("projects are in reverse chronological order (by updatedAt)", () => {
@@ -184,8 +194,10 @@ describe("content", () => {
       expect(getProjectBySlug("does-not-exist", "en")).toBeUndefined();
     });
 
-    it("getFeaturedProject returns the featured project", () => {
-      expect(getFeaturedProject("en").featured).toBe(true);
+    it("getFeaturedProject keeps personal-platform-infra as the featured project", () => {
+      const featured = getFeaturedProject("en");
+      expect(featured.featured).toBe(true);
+      expect(featured.slug).toBe("personal-platform-infra");
     });
 
     it("getVisibleProjects returns every real project (none are hidden)", () => {
