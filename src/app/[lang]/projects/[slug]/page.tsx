@@ -23,6 +23,8 @@ import { getProjectRepositorySnapshots, parseGitHubRepoUrl, repoKey } from "@/li
 
 type Params = Promise<{ lang: string; slug: string }>;
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   const out: { lang: string; slug: string }[] = [];
   for (const lang of ["pt", "en"] as const) {
