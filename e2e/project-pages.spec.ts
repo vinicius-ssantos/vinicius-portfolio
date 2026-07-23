@@ -15,22 +15,20 @@ test.describe("project detail pages", () => {
     });
   }
 
-  test("an unknown slug renders the localized 404 page", async ({ page }) => {
-    // KNOWN LIMITATION (found while writing this suite, verified against
-    // both `next start` and the live deployment): this responds with
-    // HTTP 200, not 404. `/[lang]/loading.tsx` wraps the whole locale
-    // subtree in a Suspense boundary, so the 200 status header is flushed
-    // with the loading fallback before notFound() resolves further down —
-    // by then the status code can no longer change. Fixing it means
-    // trading away the instant-loading-state UX (which the home page
-    // genuinely needs for its live GitHub stats fetch) for correct status
-    // codes on 404s — that's a product tradeoff, not something to decide
-    // inside a test suite, so this asserts what's actually true today:
-    // the content is correct even though the status code isn't.
-    const res = await page.goto("/en/projects/does-not-exist");
+  test("a valid Portuguese project slug responds with 200", async ({ page }) => {
+    const res = await page.goto("/pt/projects/personal-platform-infra");
     expect(res?.status()).toBe(200);
-    await expect(page.getByText(/page not found/i)).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   });
+
+  for (const locale of ["en", "pt"] as const) {
+    test(`an unknown slug returns the localized 404 page in ${locale}`, async ({ page }) => {
+      const res = await page.goto(`/${locale}/projects/does-not-exist`);
+      expect(res?.status()).toBe(404);
+      await expect(page.locator("html")).toHaveAttribute("lang", locale);
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    });
+  }
 
   test("home links to every visible project's detail page", async ({ page }) => {
     await page.goto("/en");
