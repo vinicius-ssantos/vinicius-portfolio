@@ -2,9 +2,9 @@ import { test, expect } from "@playwright/test";
 
 test.describe("desktop navigation", () => {
   test("language toggle preserves the current path", async ({ page }) => {
-    await page.goto("/en/projects/sentinel-ledger");
+    await page.goto("/en/projects/accountshield-orchestrator");
     await page.getByRole("button", { name: /switch to português|mudar para português/i }).click();
-    await expect(page).toHaveURL("/pt/projects/sentinel-ledger");
+    await expect(page).toHaveURL("/pt/projects/accountshield-orchestrator");
   });
 
   test("nav links jump to their section anchors", async ({ page, viewport }) => {
