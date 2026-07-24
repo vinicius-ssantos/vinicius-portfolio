@@ -20,8 +20,8 @@ test.describe("accessibility", () => {
     expect(blocking, JSON.stringify(blocking, null, 2)).toEqual([]);
   });
 
-  test("the AccountShield detail page has no serious or critical violations", async ({ page }) => {
-    await page.goto("/en/projects/accountshield-orchestrator");
+  test("the FlagForge detail page has no serious or critical violations", async ({ page }) => {
+    await page.goto("/en/projects/flagforge");
     const results = await new AxeBuilder({ page }).analyze();
     const blocking = results.violations.filter((v) =>
       ["serious", "critical"].includes(v.impact ?? ""),

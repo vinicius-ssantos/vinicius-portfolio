@@ -3,6 +3,7 @@ import { test, expect } from "@playwright/test";
 const PROJECT_SLUGS = [
   "accountshield-orchestrator",
   "sentinel-ledger",
+  "flagforge",
   "personal-platform-infra",
   "springcloud",
   "api-rest-aplicativo-cars",
@@ -21,15 +22,11 @@ test.describe("project detail pages", () => {
     });
   }
 
-  test("AccountShield responds with 200 and localized content in Portuguese", async ({ page }) => {
-    const res = await page.goto("/pt/projects/accountshield-orchestrator");
+  test("FlagForge responds with 200 and localized M0 limits in Portuguese", async ({ page }) => {
+    const res = await page.goto("/pt/projects/flagforge");
     expect(res?.status()).toBe(200);
-    await expect(
-      page.getByRole("heading", { level: 1, name: "AccountShield Orchestrator" }),
-    ).toBeVisible();
-    await expect(
-      page.getByText(/não deve ser usado como mecanismo principal de proteção para contas reais/i),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "FlagForge" })).toBeVisible();
+    await expect(page.getByText(/ainda não permite criar, publicar ou avaliar/i)).toBeVisible();
   });
 
   for (const locale of ["en", "pt"] as const) {

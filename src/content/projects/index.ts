@@ -5,6 +5,7 @@ import {
   getAccountShieldOrchestrator,
 } from "./accountshield-orchestrator";
 import { sentinelLedgerMeta, getSentinelLedger } from "./sentinel-ledger";
+import { flagForgeMeta, getFlagForge } from "./flagforge";
 import { personalPlatformInfraMeta, getPersonalPlatformInfra } from "./personal-platform-infra";
 import { springcloudMeta, getSpringcloud } from "./springcloud";
 import { apiRestAplicativoCarsMeta, getApiRestAplicativoCars } from "./api-rest-aplicativo-cars";
@@ -13,6 +14,7 @@ import { apiRestAplicativoCarsMeta, getApiRestAplicativoCars } from "./api-rest-
 const projectMetas = [
   accountShieldOrchestratorMeta,
   sentinelLedgerMeta,
+  flagForgeMeta,
   personalPlatformInfraMeta,
   springcloudMeta,
   apiRestAplicativoCarsMeta,
@@ -21,6 +23,7 @@ const projectMetas = [
 const projectGetters: Record<string, (lang: Lang) => Project> = {
   "accountshield-orchestrator": getAccountShieldOrchestrator,
   "sentinel-ledger": getSentinelLedger,
+  flagforge: getFlagForge,
   "personal-platform-infra": getPersonalPlatformInfra,
   springcloud: getSpringcloud,
   "api-rest-aplicativo-cars": getApiRestAplicativoCars,

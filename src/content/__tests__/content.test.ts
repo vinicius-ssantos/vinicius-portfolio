@@ -135,8 +135,8 @@ describe("content", () => {
   });
 
   describe("projects", () => {
-    it("has 5 projects", () => {
-      expect(getProjects("en")).toHaveLength(5);
+    it("has 6 projects", () => {
+      expect(getProjects("en")).toHaveLength(6);
     });
 
     it("first project is the most recently updated one", () => {
@@ -186,6 +186,19 @@ describe("content", () => {
         expect(project?.limitations?.join(" ")).toMatch(/RBAC/);
         expect(project?.limitations?.join(" ")).toMatch(
           lang === "pt" ? /simulados/i : /simulated/i,
+        );
+      });
+
+      it(`[${lang}] publishes FlagForge as an M0 foundation without an evaluator`, () => {
+        const project = getProjectBySlug("flagforge", lang);
+        expect(project?.status).toBe("development");
+        expect(project?.visible).toBe(true);
+        expect(project?.repoUrl).toBe("https://github.com/vinicius-ssantos/flagforge");
+        expect(project?.metrics?.find(({ value }) => value === "0")?.label).toMatch(/evaluators/i);
+        expect(project?.limitations?.join(" ")).toMatch(
+          lang === "pt"
+            ? /não permite criar, publicar ou avaliar/i
+            : /cannot create, publish or evaluate/i,
         );
       });
     }
