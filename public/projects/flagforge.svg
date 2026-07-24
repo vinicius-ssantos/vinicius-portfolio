@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">FlagForge M0 architecture foundation cover</title>
+  <desc id="desc">A technical diagram showing the implemented Control API and PostgreSQL foundation, with future evaluation, cache and SDK components clearly marked as planned.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="0.55" stop-color="#15172b"/>
+      <stop offset="1" stop-color="#0b1320"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="42%" cy="44%" r="62%">
+      <stop offset="0" stop-color="#b98cff" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#b98cff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="forge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d8b4fe"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#d8c7ff" stroke-opacity="0.055"/>
+    </pattern>
+    <filter id="blur" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="14" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1000" rx="48" fill="url(#bg)"/>
+  <rect width="1600" height="1000" rx="48" fill="url(#glow)"/>
+  <rect x="40" y="40" width="1520" height="920" rx="32" fill="url(#grid)" stroke="#3a3f62"/>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace">
+    <text x="92" y="118" fill="#f4efff" font-size="44" font-weight="700">FLAGFORGE</text>
+    <text x="92" y="160" fill="#c5a4ff" font-size="20" letter-spacing="5">M0 • ARCHITECTURE FOUNDATION</text>
+    <text x="1508" y="118" fill="#a89bc8" font-size="16" text-anchor="end">JAVA 25 • SPRING BOOT 4.1</text>
+    <text x="1508" y="146" fill="#6f6988" font-size="14" text-anchor="end">CURRENT MAIN: 0ef6c06</text>
+  </g>
+
+  <g fill="none" stroke="#a978ef" stroke-width="4" stroke-linecap="round">
+    <path d="M330 360H535"/>
+    <path d="M795 360H1000"/>
+  </g>
+
+  <g fill="#11172a" stroke="#57527a" stroke-width="2">
+    <rect x="92" y="270" width="238" height="180" rx="24"/>
+    <rect x="535" y="242" width="260" height="236" rx="30" stroke="#b98cff"/>
+    <rect x="1000" y="270" width="260" height="180" rx="24"/>
+  </g>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace">
+    <g fill="#f3eeff" font-size="24" font-weight="700">
+      <text x="211" y="326" text-anchor="middle">MAVEN BUILD</text>
+      <text x="665" y="304" text-anchor="middle">CONTROL API</text>
+      <text x="1130" y="326" text-anchor="middle">POSTGRESQL</text>
+    </g>
+    <g fill="#9e97b8" font-size="16">
+      <text x="211" y="366" text-anchor="middle">JDK 25 enforced</text>
+      <text x="211" y="396" text-anchor="middle">multi-module baseline</text>
+      <text x="665" y="346" text-anchor="middle">Spring Modulith</text>
+      <text x="665" y="376" text-anchor="middle">health + info</text>
+      <text x="665" y="406" text-anchor="middle">graceful shutdown</text>
+      <text x="1130" y="366" text-anchor="middle">Flyway schema</text>
+      <text x="1130" y="396" text-anchor="middle">Testcontainers proof</text>
+    </g>
+  </g>
+
+  <g transform="translate(665 457)" filter="url(#blur)">
+    <path d="M-40-18h80l18 28-18 28h-80L-58 10Z" fill="url(#forge)" opacity="0.9"/>
+    <path d="M-22 10h44M0-12v44" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+  </g>
+
+  <g fill="#0d1323" stroke="#4b4964" stroke-width="2" stroke-dasharray="10 10">
+    <rect x="92" y="574" width="292" height="154" rx="24"/>
+    <rect x="438" y="574" width="292" height="154" rx="24"/>
+    <rect x="784" y="574" width="292" height="154" rx="24"/>
+    <rect x="1130" y="574" width="292" height="154" rx="24"/>
+  </g>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace">
+    <g fill="#847d9e" font-size="14" letter-spacing="3">
+      <text x="238" y="610" text-anchor="middle">PLANNED M1</text>
+      <text x="584" y="610" text-anchor="middle">PLANNED M2</text>
+      <text x="930" y="610" text-anchor="middle">PLANNED M3</text>
+      <text x="1276" y="610" text-anchor="middle">PLANNED M4</text>
+    </g>
+    <g fill="#d8d1ea" font-size="21" font-weight="700">
+      <text x="238" y="654" text-anchor="middle">EVALUATOR</text>
+      <text x="584" y="654" text-anchor="middle">SNAPSHOTS</text>
+      <text x="930" y="654" text-anchor="middle">CACHE + SDK</text>
+      <text x="1276" y="654" text-anchor="middle">ROLLOUTS</text>
+    </g>
+    <g fill="#77718d" font-size="15">
+      <text x="238" y="690" text-anchor="middle">tenants • flags • rules</text>
+      <text x="584" y="690" text-anchor="middle">audit • rollback</text>
+      <text x="930" y="690" text-anchor="middle">Redis • OpenFeature</text>
+      <text x="1276" y="690" text-anchor="middle">health gates • UI</text>
+    </g>
+  </g>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace">
+    <rect x="92" y="790" width="1416" height="106" rx="22" fill="#0e1425" stroke="#403b5f"/>
+    <text x="128" y="832" fill="#c5a4ff" font-size="16" letter-spacing="3">HONEST CURRENT BOUNDARY</text>
+    <text x="128" y="868" fill="#ece7f7" font-size="20">NO FLAG API • NO EVALUATION • NO TENANT MODEL • NO CACHE • NO SDK</text>
+    <text x="1472" y="850" fill="#8e86a8" font-size="17" text-anchor="end">FOUNDATION, NOT SaaS</text>
+  </g>
+
+  <circle cx="330" cy="360" r="7" fill="#c7a5ff"/>
+  <circle cx="535" cy="360" r="7" fill="#c7a5ff"/>
+  <circle cx="795" cy="360" r="7" fill="#c7a5ff"/>
+  <circle cx="1000" cy="360" r="7" fill="#c7a5ff"/>
+</svg>
