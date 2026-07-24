@@ -28,7 +28,9 @@ export function proxy(request: NextRequest) {
     // call notFound(), which otherwise locks the HTTP status at 200. Mark an
     // unknown project path as 404 here, before streaming starts; the App
     // Router still renders the existing localized not-found UI.
-    const response = NextResponse.next(isUnknownProjectPath(pathname) ? { status: 404 } : undefined);
+    const response = NextResponse.next(
+      isUnknownProjectPath(pathname) ? { status: 404 } : undefined,
+    );
     response.cookies.set(LOCALE_COOKIE, firstSegment, {
       path: "/",
       maxAge: 60 * 60 * 24 * 365,
