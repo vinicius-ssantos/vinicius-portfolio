@@ -53,6 +53,26 @@ For each snapshot, add:
 - **Known limitations**: sample size is far below what's needed for a confident comparison; mobile is entirely unmeasured so far; no per-locale breakdown available.
 - **Conclusion**: **Inconclusive as a formal baseline** — but every desktop metric that does have data clears its target with margin, and there's no current signal of a performance problem to fix before #46. Re-check this dashboard after #46/#47 ship real traffic (or after enough time passes) before drawing any before/after comparison — a mobile sample is required before that comparison can be trusted.
 
+## Closure decision — 2026-07-24
+
+Issue #56 is closed with an explicit **low-volume exception**, not with a claim that the snapshot became representative.
+
+The repository contains no newer representative field snapshot than the one above. The available evidence remains approximately 25 visits, desktop-only data and no mobile sample. Generating synthetic production traffic to satisfy a sample target would contaminate the Real User Monitoring dataset and contradict the collection rules in this document.
+
+The issue's durable deliverables are complete:
+
+- Speed Insights runs once in the production locale layout;
+- preview, test and local environments do not contribute measurements;
+- privacy boundaries and p75 targets are documented;
+- the first production snapshot records period, deployment, sample size, route grouping, device gap and metric values;
+- the investigation and before/after comparison process remains available for future changes.
+
+This exception does **not** approve a broad or site-wide Three.js rollout. It supports the limited Phase D decision in #48: Three.js may be enabled only on explicitly selected project-detail pages, initially the `personal-platform-infra` dossier, while Hero, home, cards and mobile continue to use the existing 2.5D/HTML experience.
+
+The limited rollout remains lazy-loaded, below the fold, desktop/WebGL-only and reversible through `NEXT_PUBLIC_ENABLE_3D_TOPOLOGY`. Missing mobile RUM is not used as approval evidence; mobile never mounts the scene. Missing representative field INP is handled through narrow scope, a preserved accessible fallback and an immediate kill switch rather than through a fabricated performance claim.
+
+Reopen or append a new snapshot when organic traffic provides enough observations to support route/device comparisons. Until then, the recorded result remains inconclusive and must not be quoted as a production performance guarantee or as evidence for expanding Three.js beyond selected dossier pages.
+
 ## Visual-change comparison
 
 Before approving #46, #47 or #48:

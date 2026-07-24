@@ -13,7 +13,7 @@ import { ProjectStackBadges } from "@/components/sections/project-stack-badges";
 import { RepositorySnapshot } from "@/components/sections/repository-snapshot";
 import { ArchitectureDiagram } from "@/components/sections/architecture-diagram";
 import { TopologyExplorer } from "@/components/topology/topology-explorer";
-import { isTopology3DEnabled } from "@/lib/feature-flags";
+import { isTopology3DProjectEnabled } from "@/lib/feature-flags";
 import { TrackedExternalLink } from "@/components/tracked-link";
 import { getAllProjectMetas, getProjectBySlug, type Lang } from "@/content";
 import { isLocale } from "@/lib/i18n";
@@ -234,7 +234,7 @@ export default async function ProjectPage({ params }: { params: Params }) {
                   explorer wraps the same accessible diagram with a canvas
                   that mirrors its selection. The flag-off branch is exactly
                   what shipped before the spike existed. */}
-              {isTopology3DEnabled() ? (
+              {isTopology3DProjectEnabled(project.slug) ? (
                 <TopologyExplorer
                   architectureLabel={project.caseStudy.architectureLabel}
                   architecture={project.caseStudy.architecture}
