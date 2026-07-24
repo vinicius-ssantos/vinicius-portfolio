@@ -196,7 +196,9 @@ describe("content", () => {
         expect(project?.repoUrl).toBe("https://github.com/vinicius-ssantos/flagforge");
         expect(project?.metrics?.find(({ value }) => value === "0")?.label).toMatch(/evaluators/i);
         expect(project?.limitations?.join(" ")).toMatch(
-          lang === "pt" ? /não permite criar, publicar ou avaliar/i : /cannot create, publish or evaluate/i,
+          lang === "pt"
+            ? /não permite criar, publicar ou avaliar/i
+            : /cannot create, publish or evaluate/i,
         );
       });
     }
