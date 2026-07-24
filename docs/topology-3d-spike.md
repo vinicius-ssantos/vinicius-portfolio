@@ -3,9 +3,9 @@
 Running record of the Three.js spike. Each phase appends its findings; the
 Phase D decision at the end is what determines whether any of this ships.
 
-**Status: Phases A–C complete. Not shipped; Phase D (the adoption decision) waits on #56.** The prototype is gated behind
+**Status: Phases A–D complete. The prototype is not adopted as a production feature.** It remains gated behind
 `NEXT_PUBLIC_ENABLE_3D_TOPOLOGY`, which is unset everywhere including
-production. Enabling it is a deliberate act, not a default.
+production. Enabling it is limited to explicit local or preview evaluation; it is not a default product path.
 
 ## Why it is behind a flag
 
@@ -264,3 +264,38 @@ particular, since parse/compile of ~867 KiB lands on the main thread.
 The narrower option worth weighing in Phase D: keep the 3D confined to the
 project dossier (as built here) rather than also adopting it in the Hero,
 which would move the cost onto the highest-traffic page.
+
+## Phase D — decision
+
+**Decision on 2026-07-24: do not adopt the Three.js experience in production. Preserve it only as an explicit opt-in engineering prototype, disabled by default.**
+
+This is a conservative product decision, not a claim that the scene failed technically. Phases A–C proved that the implementation can be lazy-loaded, paused outside the viewport, made accessible through shared HTML controls and recovered through the 2.5D fallback. They also exposed the real trade-off:
+
+- approximately **+229.5 KiB compressed** and **+866.6 KiB decoded** for the Three.js path;
+- occasional parse/compile long tasks after lazy loading;
+- no representative field INP sample;
+- no mobile RUM sample, while mobile intentionally never mounts the scene;
+- the 3D view communicates substantially the same architecture already available in the lighter, accessible 2.5D diagram;
+- the experience lives below the fold on a project dossier rather than on a primary conversion path.
+
+The #56 dataset remains formally inconclusive and is closed through the documented low-volume exception in `performance-baseline.md`. Missing field evidence cannot justify turning the feature on, so the uncertainty is resolved by choosing the lower-risk production path rather than by treating the desktop laboratory result as approval.
+
+### Production outcome
+
+- the 2.5D topology remains the canonical architecture experience;
+- the Hero, cards and home case study do not load Three.js;
+- production keeps `NEXT_PUBLIC_ENABLE_3D_TOPOLOGY` unset;
+- the Three.js chunk is not requested in the default path;
+- mobile, reduced-motion and WebGL-failure behavior continue to use the existing accessible fallback;
+- the prototype code and tests remain available for code review, local demonstration and future re-evaluation without becoming a shipped promise.
+
+### Re-evaluation gate
+
+A future issue may reconsider the prototype only when at least one of these materially changes:
+
+1. organic traffic provides a representative desktop INP baseline and route-level comparison;
+2. the decoded/parse cost is reduced substantially through a different renderer or architecture;
+3. the 3D view gains unique explanatory value that the 2.5D version cannot provide;
+4. an explicit, reversible production rollout plan is defined with field monitoring and a kill switch.
+
+Until one of those conditions exists, enabling the flag in production would contradict this decision. Issue #48 is complete because the requested adoption/limitation/discard decision is now explicit, measurable and versioned.
