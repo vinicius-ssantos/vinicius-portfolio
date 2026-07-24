@@ -184,7 +184,9 @@ describe("content", () => {
           "https://github.com/vinicius-ssantos/accountshield-orchestrator",
         );
         expect(project?.limitations?.join(" ")).toMatch(/RBAC/);
-        expect(project?.limitations?.join(" ")).toMatch(lang === "pt" ? /simulados/i : /simulated/i);
+        expect(project?.limitations?.join(" ")).toMatch(
+          lang === "pt" ? /simulados/i : /simulated/i,
+        );
       });
     }
 

@@ -21,9 +21,7 @@ test.describe("project detail pages", () => {
     });
   }
 
-  test("AccountShield responds with 200 and localized content in Portuguese", async ({
-    page,
-  }) => {
+  test("AccountShield responds with 200 and localized content in Portuguese", async ({ page }) => {
     const res = await page.goto("/pt/projects/accountshield-orchestrator");
     expect(res?.status()).toBe(200);
     await expect(
