@@ -34,7 +34,6 @@ jobs:
       - name: Format Phase D files
         run: |
           npx prettier --write \
-            .env.example \
             docs/performance-baseline.md \
             docs/topology-3d-spike.md \
             src/lib/feature-flags.ts \
