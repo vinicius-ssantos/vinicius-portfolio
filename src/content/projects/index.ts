@@ -1,5 +1,9 @@
 import type { Lang } from "@/lib/i18n";
 import type { Project } from "../types";
+import {
+  accountShieldOrchestratorMeta,
+  getAccountShieldOrchestrator,
+} from "./accountshield-orchestrator";
 import { sentinelLedgerMeta, getSentinelLedger } from "./sentinel-ledger";
 import { personalPlatformInfraMeta, getPersonalPlatformInfra } from "./personal-platform-infra";
 import { springcloudMeta, getSpringcloud } from "./springcloud";
@@ -7,6 +11,7 @@ import { apiRestAplicativoCarsMeta, getApiRestAplicativoCars } from "./api-rest-
 
 // Reverse chronological order (most recently updated first).
 const projectMetas = [
+  accountShieldOrchestratorMeta,
   sentinelLedgerMeta,
   personalPlatformInfraMeta,
   springcloudMeta,
@@ -14,6 +19,7 @@ const projectMetas = [
 ];
 
 const projectGetters: Record<string, (lang: Lang) => Project> = {
+  "accountshield-orchestrator": getAccountShieldOrchestrator,
   "sentinel-ledger": getSentinelLedger,
   "personal-platform-infra": getPersonalPlatformInfra,
   springcloud: getSpringcloud,
