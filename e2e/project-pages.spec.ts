@@ -20,12 +20,17 @@ test.describe("project detail pages", () => {
     });
   }
 
-  test("Sentinel Ledger responds with 200 and localized content in Portuguese", async ({ page }) => {
-    const res = await page.goto("/pt/projects/sentinel-ledger");
-    expect(res?.status()).toBe(200);
-    await expect(page.getByRole("heading", { level: 1, name: "Sentinel Ledger" })).toBeVisible();
-    await expect(page.getByText(/não processa pagamentos reais/i)).toBeVisible();
-  });
+  test(
+    "Sentinel Ledger responds with 200 and localized content in Portuguese",
+    async ({ page }) => {
+      const res = await page.goto("/pt/projects/sentinel-ledger");
+      expect(res?.status()).toBe(200);
+      await expect(
+        page.getByRole("heading", { level: 1, name: "Sentinel Ledger" }),
+      ).toBeVisible();
+      await expect(page.getByText(/não processa pagamentos reais/i)).toBeVisible();
+    },
+  );
 
   for (const locale of ["en", "pt"] as const) {
     test(`an unknown slug returns the localized 404 page in ${locale}`, async ({ page }) => {
