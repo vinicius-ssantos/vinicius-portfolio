@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">AccountShield Orchestrator architecture cover</title>
+  <desc id="desc">A dark technical diagram showing account protection signals flowing through risk and policy decisions into simulated challenges, recovery, audit, and an outbox.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071018"/>
+      <stop offset="0.55" stop-color="#0b1722"/>
+      <stop offset="1" stop-color="#07131c"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="46%" r="58%">
+      <stop offset="0" stop-color="#36d6a2" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#36d6a2" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="shield" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#47e0b0"/>
+      <stop offset="1" stop-color="#139a7b"/>
+    </linearGradient>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#9edfcf" stroke-opacity="0.055"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="1000" rx="48" fill="url(#background)"/>
+  <rect width="1600" height="1000" rx="48" fill="url(#glow)"/>
+  <rect x="40" y="40" width="1520" height="920" rx="32" fill="url(#grid)" stroke="#2a4651" stroke-opacity="0.7"/>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace">
+    <text x="92" y="118" fill="#dff8f1" font-size="42" font-weight="700">ACCOUNTSHIELD</text>
+    <text x="92" y="160" fill="#63d8ba" font-size="20" letter-spacing="5">DECISION + ORCHESTRATION</text>
+    <text x="1508" y="118" fill="#8cb8ae" font-size="16" text-anchor="end">MODULAR MONOLITH</text>
+    <text x="1508" y="146" fill="#587f78" font-size="14" text-anchor="end">EXPLAINABLE • VERSIONED • AUDITABLE</text>
+  </g>
+
+  <g fill="none" stroke="#3dcba5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.82">
+    <path d="M292 350H448"/>
+    <path d="M646 350H770"/>
+    <path d="M994 350H1122"/>
+    <path d="M1262 404V516"/>
+    <path d="M1122 588H1002"/>
+    <path d="M778 588H650"/>
+    <path d="M448 588H326"/>
+  </g>
+
+  <g fill="#071b20" stroke="#315662" stroke-width="2">
+    <rect x="92" y="274" width="200" height="152" rx="22"/>
+    <rect x="448" y="274" width="198" height="152" rx="22"/>
+    <rect x="770" y="248" width="224" height="204" rx="28" stroke="#42d6aa"/>
+    <rect x="1122" y="274" width="280" height="130" rx="22"/>
+    <rect x="1122" y="516" width="280" height="144" rx="22"/>
+    <rect x="778" y="516" width="224" height="144" rx="22"/>
+    <rect x="448" y="516" width="202" height="144" rx="22"/>
+    <rect x="92" y="516" width="234" height="144" rx="22"/>
+  </g>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace">
+    <g fill="#dff8f1" font-size="22" font-weight="700">
+      <text x="192" y="326" text-anchor="middle">SIGNALS</text>
+      <text x="547" y="326" text-anchor="middle">RISK</text>
+      <text x="882" y="302" text-anchor="middle">POLICY</text>
+      <text x="1262" y="326" text-anchor="middle">DECISION</text>
+      <text x="1262" y="568" text-anchor="middle">CHALLENGE</text>
+      <text x="890" y="568" text-anchor="middle">RECOVERY</text>
+      <text x="549" y="568" text-anchor="middle">AUDIT</text>
+      <text x="209" y="568" text-anchor="middle">OUTBOX</text>
+    </g>
+    <g fill="#7daaa1" font-size="15">
+      <text x="192" y="362" text-anchor="middle">device • network</text>
+      <text x="192" y="388" text-anchor="middle">session • behavior</text>
+      <text x="547" y="362" text-anchor="middle">deterministic score</text>
+      <text x="547" y="388" text-anchor="middle">ordered reasons</text>
+      <text x="882" y="338" text-anchor="middle">immutable versions</text>
+      <text x="882" y="364" text-anchor="middle">shadow evaluation</text>
+      <text x="882" y="390" text-anchor="middle">deterministic replay</text>
+      <text x="1262" y="362" text-anchor="middle">allow • step-up</text>
+      <text x="1262" y="386" text-anchor="middle">block • recover</text>
+      <text x="1262" y="604" text-anchor="middle">purpose • expiry • budget</text>
+      <text x="1262" y="630" text-anchor="middle">SIMULATED PROVIDERS</text>
+      <text x="890" y="604" text-anchor="middle">single-use authorization</text>
+      <text x="890" y="630" text-anchor="middle">risk-gated state machine</text>
+      <text x="549" y="604" text-anchor="middle">append-only evidence</text>
+      <text x="549" y="630" text-anchor="middle">correlation + provenance</text>
+      <text x="209" y="604" text-anchor="middle">transactional write</text>
+      <text x="209" y="630" text-anchor="middle">simulated relay</text>
+    </g>
+  </g>
+
+  <g transform="translate(882 404)" filter="url(#softGlow)">
+    <path d="M0-62C30-48 59-43 78-42v50c0 51-31 91-78 111C-47 99-78 59-78 8v-50c19-1 48-6 78-20Z" fill="url(#shield)" opacity="0.92"/>
+    <path d="m-28 17 18 18 39-45" fill="none" stroke="#eafff9" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace">
+    <rect x="92" y="754" width="1416" height="126" rx="22" fill="#081a20" stroke="#274b53"/>
+    <text x="128" y="800" fill="#62d9bb" font-size="16" letter-spacing="3">CURRENT BOUNDARY</text>
+    <text x="128" y="840" fill="#d7eee8" font-size="21">NO PASSWORD STORAGE • NO PRODUCTION TOKENS • NO REAL MFA PROVIDERS</text>
+    <text x="1472" y="800" fill="#62d9bb" font-size="16" text-anchor="end">PORTFOLIO LAB</text>
+    <text x="1472" y="840" fill="#779d95" font-size="17" text-anchor="end">JAVA 25 • SPRING BOOT 4.1 • POSTGRESQL</text>
+  </g>
+
+  <circle cx="448" cy="350" r="6" fill="#73e6c7"/>
+  <circle cx="770" cy="350" r="6" fill="#73e6c7"/>
+  <circle cx="1122" cy="350" r="6" fill="#73e6c7"/>
+  <circle cx="1262" cy="516" r="6" fill="#73e6c7"/>
+  <circle cx="1002" cy="588" r="6" fill="#73e6c7"/>
+  <circle cx="650" cy="588" r="6" fill="#73e6c7"/>
+  <circle cx="326" cy="588" r="6" fill="#73e6c7"/>
+</svg>
