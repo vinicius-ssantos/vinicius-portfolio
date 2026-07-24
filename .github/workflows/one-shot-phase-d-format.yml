@@ -1,0 +1,60 @@
+name: One-shot Phase D format
+
+on:
+  push:
+    branches:
+      - docs/issues-56-48-phase-d-decision
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    name: Apply exact Prettier output
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Activate the pinned npm
+        uses: ./.github/actions/pinned-npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Format Phase D files
+        run: |
+          npx prettier --write \
+            .env.example \
+            docs/performance-baseline.md \
+            docs/topology-3d-spike.md \
+            src/lib/feature-flags.ts \
+            src/lib/__tests__/feature-flags.test.ts \
+            'src/app/[lang]/projects/[slug]/page.tsx'
+
+      - name: Remove one-shot workflow
+        run: rm .github/workflows/one-shot-phase-d-format.yml
+
+      - name: Commit exact formatter output
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            .env.example \
+            docs/performance-baseline.md \
+            docs/topology-3d-spike.md \
+            src/lib/feature-flags.ts \
+            src/lib/__tests__/feature-flags.test.ts \
+            'src/app/[lang]/projects/[slug]/page.tsx' \
+            .github/workflows/one-shot-phase-d-format.yml
+          git commit -m "style: apply exact Phase D formatting"
+          git push origin HEAD:${{ github.ref_name }}
