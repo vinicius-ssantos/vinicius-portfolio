@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 const PROJECT_SLUGS = [
+  "accountshield-orchestrator",
   "sentinel-ledger",
   "personal-platform-infra",
   "springcloud",
@@ -20,13 +21,15 @@ test.describe("project detail pages", () => {
     });
   }
 
-  test("Sentinel Ledger responds with 200 and localized content in Portuguese", async ({
-    page,
-  }) => {
-    const res = await page.goto("/pt/projects/sentinel-ledger");
+  test("AccountShield responds with 200 and localized content in Portuguese", async ({ page }) => {
+    const res = await page.goto("/pt/projects/accountshield-orchestrator");
     expect(res?.status()).toBe(200);
-    await expect(page.getByRole("heading", { level: 1, name: "Sentinel Ledger" })).toBeVisible();
-    await expect(page.getByText(/não processa pagamentos reais/i)).toBeVisible();
+    await expect(
+      page.getByRole("heading", { level: 1, name: "AccountShield Orchestrator" }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/não deve ser usado como mecanismo principal de proteção para contas reais/i),
+    ).toBeVisible();
   });
 
   for (const locale of ["en", "pt"] as const) {

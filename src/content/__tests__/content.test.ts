@@ -135,13 +135,13 @@ describe("content", () => {
   });
 
   describe("projects", () => {
-    it("has 4 projects", () => {
-      expect(getProjects("en")).toHaveLength(4);
+    it("has 5 projects", () => {
+      expect(getProjects("en")).toHaveLength(5);
     });
 
     it("first project is the most recently updated one", () => {
       const projects = getProjects("en");
-      expect(projects[0]?.name).toBe("Sentinel Ledger");
+      expect(projects[0]?.name).toBe("AccountShield Orchestrator");
       expect(projects[0]?.updatedAt).toBe("2026-07-23");
     });
 
@@ -173,6 +173,19 @@ describe("content", () => {
         expect(project?.repoUrl).toBe("https://github.com/vinicius-ssantos/sentinel-ledger");
         expect(project?.limitations?.join(" ")).toMatch(
           lang === "pt" ? /não processa pagamentos reais/i : /does not process real payments/i,
+        );
+      });
+
+      it(`[${lang}] publishes AccountShield with simulated providers and planned RBAC`, () => {
+        const project = getProjectBySlug("accountshield-orchestrator", lang);
+        expect(project?.status).toBe("development");
+        expect(project?.visible).toBe(true);
+        expect(project?.repoUrl).toBe(
+          "https://github.com/vinicius-ssantos/accountshield-orchestrator",
+        );
+        expect(project?.limitations?.join(" ")).toMatch(/RBAC/);
+        expect(project?.limitations?.join(" ")).toMatch(
+          lang === "pt" ? /simulados/i : /simulated/i,
         );
       });
     }
