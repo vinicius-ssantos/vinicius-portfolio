@@ -67,9 +67,11 @@ The issue's durable deliverables are complete:
 - the first production snapshot records period, deployment, sample size, route grouping, device gap and metric values;
 - the investigation and before/after comparison process remains available for future changes.
 
-This exception does **not** approve an unmeasured visual feature. It leads to the conservative Phase D decision in #48: Three.js remains disabled in production, while the existing 2.5D topology stays as the canonical experience. Therefore the missing representative RUM sample does not transfer risk to users or become an invented performance claim.
+This exception does **not** approve a broad or site-wide Three.js rollout. It supports the limited Phase D decision in #48: Three.js may be enabled only on explicitly selected project-detail pages, initially the `personal-platform-infra` dossier, while Hero, home, cards and mobile continue to use the existing 2.5D/HTML experience.
 
-Reopen or append a new snapshot when organic traffic provides enough desktop and mobile observations to support route/device comparisons. Until then, the recorded result remains inconclusive and must not be quoted as a production performance guarantee.
+The limited rollout remains lazy-loaded, below the fold, desktop/WebGL-only and reversible through `NEXT_PUBLIC_ENABLE_3D_TOPOLOGY`. Missing mobile RUM is not used as approval evidence; mobile never mounts the scene. Missing representative field INP is handled through narrow scope, a preserved accessible fallback and an immediate kill switch rather than through a fabricated performance claim.
+
+Reopen or append a new snapshot when organic traffic provides enough observations to support route/device comparisons. Until then, the recorded result remains inconclusive and must not be quoted as a production performance guarantee or as evidence for expanding Three.js beyond selected dossier pages.
 
 ## Visual-change comparison
 
