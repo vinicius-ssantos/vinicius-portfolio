@@ -20,17 +20,16 @@ test.describe("accessibility", () => {
     expect(blocking, JSON.stringify(blocking, null, 2)).toEqual([]);
   });
 
-  test(
-    "the Sentinel Ledger detail page has no serious or critical violations",
-    async ({ page }) => {
-      await page.goto("/en/projects/sentinel-ledger");
-      const results = await new AxeBuilder({ page }).analyze();
-      const blocking = results.violations.filter((v) =>
-        ["serious", "critical"].includes(v.impact ?? ""),
-      );
-      expect(blocking, JSON.stringify(blocking, null, 2)).toEqual([]);
-    },
-  );
+  test("the Sentinel Ledger detail page has no serious or critical violations", async ({
+    page,
+  }) => {
+    await page.goto("/en/projects/sentinel-ledger");
+    const results = await new AxeBuilder({ page }).analyze();
+    const blocking = results.violations.filter((v) =>
+      ["serious", "critical"].includes(v.impact ?? ""),
+    );
+    expect(blocking, JSON.stringify(blocking, null, 2)).toEqual([]);
+  });
 
   test("the open mobile menu has no serious or critical violations", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
