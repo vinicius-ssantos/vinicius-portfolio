@@ -1,13 +1,20 @@
 import type { Lang } from "@/lib/i18n";
 import type { Project } from "../types";
+import { sentinelLedgerMeta, getSentinelLedger } from "./sentinel-ledger";
 import { personalPlatformInfraMeta, getPersonalPlatformInfra } from "./personal-platform-infra";
 import { springcloudMeta, getSpringcloud } from "./springcloud";
 import { apiRestAplicativoCarsMeta, getApiRestAplicativoCars } from "./api-rest-aplicativo-cars";
 
 // Reverse chronological order (most recently updated first).
-const projectMetas = [personalPlatformInfraMeta, springcloudMeta, apiRestAplicativoCarsMeta];
+const projectMetas = [
+  sentinelLedgerMeta,
+  personalPlatformInfraMeta,
+  springcloudMeta,
+  apiRestAplicativoCarsMeta,
+];
 
 const projectGetters: Record<string, (lang: Lang) => Project> = {
+  "sentinel-ledger": getSentinelLedger,
   "personal-platform-infra": getPersonalPlatformInfra,
   springcloud: getSpringcloud,
   "api-rest-aplicativo-cars": getApiRestAplicativoCars,

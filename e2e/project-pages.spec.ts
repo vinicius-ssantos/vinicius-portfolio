@@ -1,6 +1,11 @@
 import { test, expect } from "@playwright/test";
 
-const PROJECT_SLUGS = ["personal-platform-infra", "springcloud", "api-rest-aplicativo-cars"];
+const PROJECT_SLUGS = [
+  "sentinel-ledger",
+  "personal-platform-infra",
+  "springcloud",
+  "api-rest-aplicativo-cars",
+];
 
 test.describe("project detail pages", () => {
   for (const slug of PROJECT_SLUGS) {
@@ -15,10 +20,13 @@ test.describe("project detail pages", () => {
     });
   }
 
-  test("a valid Portuguese project slug responds with 200", async ({ page }) => {
-    const res = await page.goto("/pt/projects/personal-platform-infra");
+  test("Sentinel Ledger responds with 200 and localized content in Portuguese", async ({
+    page,
+  }) => {
+    const res = await page.goto("/pt/projects/sentinel-ledger");
     expect(res?.status()).toBe(200);
-    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Sentinel Ledger" })).toBeVisible();
+    await expect(page.getByText(/não processa pagamentos reais/i)).toBeVisible();
   });
 
   for (const locale of ["en", "pt"] as const) {
