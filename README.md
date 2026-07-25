@@ -1,44 +1,48 @@
 # Vinicius Santos — Backend Engineer Portfolio
 
-A single-page portfolio website for Vinicius de Oliveira Santos, Backend Software Engineer at UOL (São Paulo, Brazil).
+A bilingual portfolio and project-dossier hub for Vinicius de Oliveira Santos, Backend Software Engineer at UOL in São Paulo, Brazil.
 
-Built with Next.js 16, TypeScript, Tailwind CSS 4, and shadcn/ui. Dark-themed with an emerald-on-zinc palette that reflects the "infra/DevOps" aesthetic of modern backend engineering.
+Built with Next.js 16, React 19, TypeScript, Tailwind CSS 4, and shadcn/ui. The product combines verified career content with architecture storytelling, accessible interaction, production observability, and quality gates intended to demonstrate backend-engineering depth rather than only visual polish.
 
 ## What's inside
 
-- **Hero** with availability badge and primary CTA
-- **Experience** — 3 jobs in chronological order (UOL, Autbank as dev, Autbank as QA), each with summary, bullets, and stack
-- **Stack** — focused toolkit organized by category (Backend, Quality, Data, DevOps, Infrastructure, Methods)
-- **Selected Work** — 3 personal projects from GitHub, picked for depth
-- **Project detail pages** — each project has a dedicated deep-dive page at `/{lang}/projects/{slug}` with full problem/approach/outcomes
-- **Case Study** — deep dive on `personal-platform-infra` with architecture diagram, problem, approach, outcomes
-- **Education** — FATEC Ferraz de Vasconcelos + Full Stack Developer postgraduate at Faculdade Impacta
-- **About** — long-form narrative of the QA-to-backend path
-- **Footer** with email, GitHub, and LinkedIn
+- **Hero and career positioning** with availability state, primary CTA, verified statistics, and a lightweight Backend System Pulse 2.5D
+- **Experience** — UOL and the QA-to-backend path at Autbank, with responsibilities, outcomes, and stack
+- **Focused stack** organized across backend, data, quality, DevOps, infrastructure, and engineering methods
+- **Six project pages** generated from typed content: AccountShield Orchestrator, Sentinel Ledger, FlagForge, Personal Platform Infra, Spring Cloud, and API REST Cars
+- **Four flagship dossiers** with problem framing, architecture, decisions, trade-offs, delivery status, repository evidence, and localized content
+- **Architecture exploration** backed by one typed topology model: accessible HTML/2.5D for every device and an allowlisted Three.js explorer only for selected desktop dossiers
+- **Production integrations** for GitHub metadata, Vercel Analytics and Speed Insights, protected contact delivery, and distributed rate limiting
+- **Education, about, CV, contact, theme, and locale navigation** designed as one recruiter-oriented flow
 
 All content reflects the real CV — no fabricated experience or projects.
 
 ## Internationalization
 
-Bilingual (PT/EN) is implemented as **real locale routing** (not cookie-only):
+Bilingual PT/EN support uses `next-intl` with real, indexable locale routes:
 
-- `/pt` and `/en` are distinct, indexable URLs with proper `hreflang` alternates.
-- The proxy (`src/proxy.ts`) detects the visitor locale (cookie → `Accept-Language`) and redirects `/` to the right locale. In Next.js 16 the middleware file was renamed to `proxy.ts`, but the role is the same.
-- The language toggle navigates between locale URLs, preserving the current path.
-- Metadata (`title`, `description`, `openGraph.locale`) is localized per route.
+- `/pt` and `/en` are distinct URLs with localized metadata, canonical URLs, and `hreflang` alternates.
+- `src/proxy.ts` resolves the preferred locale from the cookie and `Accept-Language`, then redirects `/` without hiding the locale from the URL.
+- UI messages live in `messages/pt.json` and `messages/en.json`; typed portfolio content remains colocated under `src/content/`.
+- The language toggle preserves the current project path when switching locales.
+- Translation automation runs outside the application runtime through reviewable scripts, a versioned manifest, a technical glossary, and editorial quality gates.
+- DeepL is an optional provider for incremental translation; generated text remains subject to repository review before publication.
 
 ## Tech stack
 
 | Layer | Choice |
 |---|---|
-| Framework | Next.js 16 (App Router) |
+| Framework | Next.js 16 App Router + React 19 |
 | Language | TypeScript 5 |
-| Styling | Tailwind CSS 4 |
-| UI components | shadcn/ui (New York style) + Lucide icons |
-| Font | Geist Sans + Geist Mono (via `next/font`) |
-| Images | `next/image` (AVIF/WebP, responsive) |
-| i18n | Locale routing (`/pt`, `/en`) via middleware |
-| Theme | Dark/light via `next-themes`, emerald on zinc |
+| Styling | Tailwind CSS 4 + semantic motion tokens |
+| UI components | shadcn/ui primitives, Radix UI, and Lucide icons |
+| i18n | `next-intl`, locale routing, glossary, manifest, and optional DeepL workflow |
+| Architecture visuals | HTML/SVG 2.5D plus Three.js and React Three Fiber behind a project allowlist and kill switch |
+| Backend integrations | Next.js route handlers, Resend, Cloudflare Turnstile, Upstash Redis, and distributed rate limiting |
+| Observability | Vercel Analytics, Vercel Speed Insights, and verified GitHub repository snapshots |
+| Quality | ESLint, TypeScript, Prettier, Vitest, Playwright, and axe-core |
+| Delivery | GitHub Actions, Dependabot, Vercel previews, and production deployment |
+| Theme and media | `next-themes`, Geist, `next/image`, AVIF/WebP, and responsive SVG assets |
 
 ## Local development
 
@@ -82,7 +86,7 @@ Both Playwright projects (`Desktop Chrome`, `Mobile Chrome`) run on every PR via
 
 **Lighthouse CI was evaluated and deferred for now** — running it reliably needs either a self-hosted runner or enough retries to absorb shared-GitHub-runner CPU variance, and flaky performance budgets are worse than no performance budget (they train people to ignore red CI). Vercel's own preview deployments already surface Core Web Vitals per-PR without that infra, which covers the immediate need; revisit `@lhci/cli` if a hard performance regression ever slips through unnoticed.
 
-Two E2E findings from building this suite were fixed directly (not just documented): a color-contrast failure on the light theme's primary/accent tokens, and a horizontally-scrollable heatmap region that wasn't keyboard-focusable. One is tracked as a known, documented limitation rather than fixed here: `/en/projects/<unknown-slug>` responds `200` instead of `404` — `/[lang]/loading.tsx`'s Suspense boundary flushes the 200 status before `notFound()` resolves further down the tree, and removing that loading state trades away real UX (the home page's live GitHub stats fetch benefits from it) for correct status codes on a comparatively rare path. See the comment in `e2e/project-pages.spec.ts` for the full explanation.
+The E2E suite has already exposed and driven fixes for light-theme contrast, keyboard access to horizontally scrollable architecture content, and project soft 404 behavior. Unknown project slugs now return a real HTTP 404 in both PT and EN while preserving the intended loading experience. These regressions remain covered by automated tests rather than documented as accepted limitations.
 
 ## Build for production
 
@@ -116,27 +120,27 @@ All SEO-facing URLs (canonical, hreflang alternates, sitemap, robots.txt, JSON-L
 src/
 ├── app/
 │   ├── [lang]/
-│   │   ├── layout.tsx              # Root layout: localized metadata, JSON-LD, fonts
-│   │   ├── page.tsx                # Home (server component)
-│   │   └── projects/[slug]/page.tsx# Project detail pages (SSG)
-│   ├── robots.ts                   # Dynamic robots.txt (references sitemap)
-│   ├── sitemap.ts                  # Sitemap with hreflang alternates + images
-│   ├── error.tsx / not-found.tsx
-│   └── globals.css
+│   │   ├── layout.tsx               # Localized metadata, JSON-LD, analytics, and providers
+│   │   ├── page.tsx                 # Home composition
+│   │   └── projects/[slug]/         # SSG dossier, loading state, and dynamic OG image
+│   ├── api/contact/                 # Turnstile, rate limiting, validation, and Resend delivery
+│   ├── robots.ts / sitemap.ts       # Canonical SEO resources
+│   └── styles/                      # Tokens, motion, and print rules
 ├── components/
-│   ├── sections/                   # Server + client section components
-│   ├── site-chrome.tsx             # Header + footer + contact modal wrapper
-│   ├── contact-modal.tsx
-│   ├── language-toggle.tsx         # Navigates between /pt and /en
-│   ├── theme-toggle.tsx
-│   └── ui/                         # shadcn/ui primitives
-├── content/                        # Portfolio content domain (no React dependency)
-│   ├── types.ts                    # Project/Experience/Education/LocalizedText + t()/yearsSince()
-│   ├── profile.ts / stack.ts / experience.ts / education.ts
-│   └── projects/                   # One file per project + selectors (getProjectBySlug, etc.)
-└── lib/
-    ├── i18n.ts                     # Locale config + helpers
-    └── translations.ts             # UI strings (PT + EN)
+│   ├── sections/                    # Portfolio and dossier sections
+│   ├── topology/                    # Shared 2.5D/3D architecture explorer
+│   ├── animations/                  # Viewport-aware and reduced-motion-safe behavior
+│   └── ui/                          # Reusable interface primitives
+├── content/
+│   ├── projects/                    # One typed source file per project and shared selectors
+│   └── profile.ts / stack.ts / experience.ts / education.ts
+├── hooks/                           # Scroll-spy and interaction lifecycle helpers
+└── lib/                             # i18n, SEO, GitHub metadata, analytics, and feature flags
+
+messages/                             # next-intl PT/EN UI catalogs
+scripts/                              # i18n, environment, cleanup, and doctor tooling
+e2e/                                  # Desktop/mobile Playwright and axe coverage
+docs/                                 # ADRs, motion, performance, translation, and Three.js decisions
 ```
 
 To update content (job history, stack, projects), edit the relevant file under `src/content/` — the UI and sitemap update automatically.
