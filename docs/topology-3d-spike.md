@@ -3,9 +3,8 @@
 Running record of the Three.js spike. Each phase appends its findings; the
 Phase D decision at the end is what determines whether any of this ships.
 
-**Status: Phases A–C complete. Not shipped; Phase D (the adoption decision) waits on #56.** The prototype is gated behind
-`NEXT_PUBLIC_ENABLE_3D_TOPOLOGY`, which is unset everywhere including
-production. Enabling it is a deliberate act, not a default.
+**Status: Phases A–D complete. The prototype is adopted only for selected project-detail pages.** It remains gated behind
+`NEXT_PUBLIC_ENABLE_3D_TOPOLOGY` and is excluded from the Hero, home, cards and mobile. The initial eligible route is the `personal-platform-infra` dossier, with the 2.5D/HTML view preserved as the canonical fallback.
 
 ## Why it is behind a flag
 
@@ -264,3 +263,39 @@ particular, since parse/compile of ~867 KiB lands on the main thread.
 The narrower option worth weighing in Phase D: keep the 3D confined to the
 project dossier (as built here) rather than also adopting it in the Hero,
 which would move the cost onto the highest-traffic page.
+
+## Phase D — decision
+
+**Decision on 2026-07-24: adopt Three.js in a deliberately limited production scope — selected project dossiers only, initially `personal-platform-infra`. Do not expand it to the Hero, home, cards or mobile.**
+
+This is a conservative product decision, not a claim that the scene failed technically. Phases A–C proved that the implementation can be lazy-loaded, paused outside the viewport, made accessible through shared HTML controls and recovered through the 2.5D fallback. They also exposed the real trade-off:
+
+- approximately **+229.5 KiB compressed** and **+866.6 KiB decoded** for the Three.js path;
+- occasional parse/compile long tasks after lazy loading;
+- no representative field INP sample;
+- no mobile RUM sample, while mobile intentionally never mounts the scene;
+- the 3D view communicates substantially the same architecture already available in the lighter, accessible 2.5D diagram;
+- the experience lives below the fold on a project dossier rather than on a primary conversion path.
+
+The #56 dataset remains formally inconclusive and is closed through the documented low-volume exception in `performance-baseline.md`. That evidence is insufficient for a broad rollout, but it does support a controlled, reversible dossier-only scope because the scene is below the fold, lazy-loaded, desktop-only and backed by the complete 2.5D/HTML experience. The laboratory result is treated as a feasibility bound, not as a production performance guarantee.
+
+### Production outcome
+
+- Three.js is eligible only on explicitly selected project-detail pages, initially `personal-platform-infra`;
+- the 2.5D topology remains the canonical architecture experience and complete fallback;
+- the Hero, cards, home case study and mobile do not load Three.js;
+- `NEXT_PUBLIC_ENABLE_3D_TOPOLOGY` remains the immediate kill switch for the limited rollout;
+- the Three.js chunk is requested only after the eligible dossier section becomes relevant on a supported desktop;
+- reduced-motion and WebGL-failure behavior continue to use the existing accessible fallback;
+- adding another project requires real topology content, explicit inclusion and a review of explanatory value and cost — the feature must never become globally automatic.
+
+### Re-evaluation gate
+
+A future issue may reconsider the prototype only when at least one of these materially changes:
+
+1. organic traffic provides a representative desktop INP baseline and route-level comparison;
+2. the decoded/parse cost is reduced substantially through a different renderer or architecture;
+3. the 3D view gains unique explanatory value that the 2.5D version cannot provide;
+4. an explicit, reversible production rollout plan is defined with field monitoring and a kill switch.
+
+Those conditions are required before expanding beyond the initial selected dossier or moving Three.js to a higher-traffic surface. The current limited activation is consistent with this decision only while the allowlisted route, fallback and kill switch remain intact. Issue #48 is complete because the requested adoption/limitation/discard decision is now explicit, measurable and versioned.

@@ -7,16 +7,27 @@
  * value directly. Same shape as `shouldEnableSpeedInsights`.
  */
 
+const TOPOLOGY_3D_PROJECT_SLUGS = new Set(["personal-platform-infra"]);
+
 /**
- * Gates the experimental Three.js topology (#48 spike).
+ * Global kill switch for the limited Three.js topology rollout (#48).
  *
- * Defaults to OFF: the spike ships behind this flag so the 3D bundle and its
- * runtime cost stay out of the public site until the before/after Web Vitals
- * comparison required by #56 actually has a representative sample — mobile
- * included. Only an explicit "true" enables it; anything else (unset, empty,
- * "false", a typo) stays off, because a flag that fails open would defeat the
- * point of gating it.
+ * Only an exact "true" enables the capability. Eligibility is checked
+ * separately so adding a case study never opts a project into WebGL by
+ * accident.
  */
 export function isTopology3DEnabled(value = process.env.NEXT_PUBLIC_ENABLE_3D_TOPOLOGY): boolean {
   return value === "true";
+}
+
+/**
+ * Three.js is limited to explicitly selected project-detail pages.
+ * Hero, home, cards, mobile and every non-allowlisted dossier retain the
+ * accessible 2.5D/HTML path even when the global flag is enabled.
+ */
+export function isTopology3DProjectEnabled(
+  slug: string,
+  value = process.env.NEXT_PUBLIC_ENABLE_3D_TOPOLOGY,
+): boolean {
+  return isTopology3DEnabled(value) && TOPOLOGY_3D_PROJECT_SLUGS.has(slug);
 }
