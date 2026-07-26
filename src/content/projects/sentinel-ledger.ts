@@ -23,6 +23,7 @@ export const sentinelLedgerMeta: ProjectMeta = {
   updatedAt: "2026-07-23",
   status: "development",
   visible: true,
+  featured: true,
   links: {
     docs: "https://github.com/vinicius-ssantos/sentinel-ledger/tree/main/docs",
   },
