@@ -220,10 +220,14 @@ describe("content", () => {
       expect(getProjectBySlug("does-not-exist", "en")).toBeUndefined();
     });
 
-    it("getFeaturedProject keeps personal-platform-infra as the featured project", () => {
+    it("getFeaturedProject returns Sentinel Ledger as the primary backend case", () => {
       const featured = getFeaturedProject("en");
       expect(featured.featured).toBe(true);
-      expect(featured.slug).toBe("personal-platform-infra");
+      expect(featured.slug).toBe("sentinel-ledger");
+    });
+
+    it("has exactly one featured project", () => {
+      expect(getProjects("en").filter((project) => project.featured)).toHaveLength(1);
     });
 
     it("getVisibleProjects returns every real project (none are hidden)", () => {
