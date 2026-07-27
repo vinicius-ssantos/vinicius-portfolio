@@ -3,7 +3,12 @@ import Image from "next/image";
 import { ArrowUpRight, Tag } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { getVisibleProjects, type Lang, type Project } from "@/content";
+import {
+  getPrimaryProjects,
+  getPreviousProjects,
+  type Lang,
+  type Project,
+} from "@/content";
 import { RevealOnScroll } from "@/components/animations/reveal-on-scroll";
 import { TrackedLink } from "@/components/tracked-nav-link";
 import { TrackedExternalLink } from "@/components/tracked-link";
@@ -12,10 +17,13 @@ import { SectionHeading } from "./section-heading";
 import { ProjectStackBadges } from "./project-stack-badges";
 
 type TFunc = Awaited<ReturnType<typeof getTranslations>>;
+type RepositorySnapshots = Awaited<ReturnType<typeof getProjectRepositorySnapshots>>;
 
 export async function FeaturedProjects({ lang }: { lang: Lang }) {
   const t = await getTranslations();
-  const projects = getVisibleProjects(lang);
+  const primaryProjects = getPrimaryProjects(lang);
+  const previousProjects = getPreviousProjects(lang);
+  const projects = [...primaryProjects, ...previousProjects];
 
   // Single batched GraphQL call for every card's repo — see github-repos.ts.
   const repoRefs = projects
@@ -30,15 +38,74 @@ export async function FeaturedProjects({ lang }: { lang: Lang }) {
         title={t("projects.title")}
         description={t("projects.description")}
       />
-      <RevealOnScroll stagger className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
-        {projects.map((p, idx) => {
-          const ref = parseGitHubRepoUrl(p.repoUrl);
+
+      <ProjectGroup
+        id="primary-projects"
+        title={t("projects.primaryTitle")}
+        description={t("projects.primaryDescription")}
+        projects={primaryProjects}
+        snapshots={snapshots}
+        t={t}
+        lang={lang}
+      />
+
+      <ProjectGroup
+        id="previous-projects"
+        title={t("projects.previousTitle")}
+        description={t("projects.previousDescription")}
+        projects={previousProjects}
+        snapshots={snapshots}
+        t={t}
+        lang={lang}
+        separated
+      />
+    </section>
+  );
+}
+
+function ProjectGroup({
+  id,
+  title,
+  description,
+  projects,
+  snapshots,
+  t,
+  lang,
+  separated = false,
+}: {
+  id: string;
+  title: string;
+  description: string;
+  projects: Project[];
+  snapshots: RepositorySnapshots;
+  t: TFunc;
+  lang: Lang;
+  separated?: boolean;
+}) {
+  if (projects.length === 0) return null;
+
+  return (
+    <div className={separated ? "mt-14 border-t border-border/60 pt-10" : "mt-10"}>
+      <div className="mb-5 max-w-2xl">
+        <h3 id={id} className="font-mono text-sm font-semibold uppercase tracking-wider text-primary">
+          {title}
+        </h3>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
+      </div>
+
+      <RevealOnScroll
+        stagger
+        aria-labelledby={id}
+        className="grid grid-cols-1 gap-5 lg:grid-cols-2"
+      >
+        {projects.map((project, index) => {
+          const ref = parseGitHubRepoUrl(project.repoUrl);
           const latestReleaseTag = ref ? snapshots[repoKey(ref)]?.latestRelease?.tag : undefined;
           return (
-            <div key={p.slug} style={{ "--stagger-index": idx } as React.CSSProperties}>
+            <div key={project.slug} style={{ "--stagger-index": index } as React.CSSProperties}>
               <ProjectCard
-                project={p}
-                priority={idx === 0}
+                project={project}
+                primaryCase={project.featured === true}
                 t={t}
                 lang={lang}
                 latestReleaseTag={latestReleaseTag}
@@ -47,30 +114,26 @@ export async function FeaturedProjects({ lang }: { lang: Lang }) {
           );
         })}
       </RevealOnScroll>
-    </section>
+    </div>
   );
 }
 
 function ProjectCard({
   project,
-  priority,
+  primaryCase,
   t,
   lang,
   latestReleaseTag,
 }: {
   project: Project;
-  priority?: boolean;
+  primaryCase: boolean;
   t: TFunc;
   lang: Lang;
   latestReleaseTag?: string;
 }) {
   const detailHref = `/${lang}/projects/${project.slug}`;
   return (
-    <Card
-      className={`card-lift group relative flex flex-col overflow-hidden border-border/60 bg-card/50 hover:border-primary/40 hover:bg-card ${
-        priority ? "lg:col-span-1" : ""
-      }`}
-    >
+    <Card className="card-lift group relative flex h-full flex-col overflow-hidden border-border/60 bg-card/50 hover:border-primary/40 hover:bg-card">
       {project.image && (
         <TrackedLink
           href={detailHref}
@@ -83,9 +146,9 @@ function ProjectCard({
             src={project.image}
             alt={`${project.name} — project screenshot`}
             fill
-            sizes="(max-width: 1024px) 100vw, 33vw"
-            className="object-cover object-top opacity-80 transition-all duration-300 group-hover:opacity-100 group-hover:scale-[1.02]"
-            priority={priority}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover object-top opacity-80 transition-all duration-300 group-hover:scale-[1.02] group-hover:opacity-100"
+            priority={primaryCase}
           />
           <div className="absolute inset-0 flex items-center justify-center bg-background/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <div className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground">
@@ -105,12 +168,12 @@ function ProjectCard({
                 {t(`projectDetail.status.${project.status}`)}
               </Badge>
             )}
-            {priority && (
+            {primaryCase && (
               <Badge
                 variant="outline"
-                className="border-primary/40 text-primary font-mono text-[10px] uppercase"
+                className="border-primary/40 font-mono text-[10px] uppercase text-primary"
               >
-                {t("projects.mostRecent")}
+                {t("projects.primaryCase")}
               </Badge>
             )}
           </div>
