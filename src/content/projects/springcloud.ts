@@ -20,7 +20,6 @@ export const springcloudMeta: ProjectMeta = {
   repoUrl: "https://github.com/vinicius-ssantos/SpringCloud",
   image: "/projects/springcloud.png",
   updatedAt: "2026-04-27",
-  featured: true,
 };
 
 const pt: ProjectText = {
