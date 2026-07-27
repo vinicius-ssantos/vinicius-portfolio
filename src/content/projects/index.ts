@@ -57,6 +57,14 @@ export function getVisibleProjects(lang: Lang): Project[] {
   return getProjects(lang).filter(isProjectVisible);
 }
 
+export function getPrimaryProjects(lang: Lang): Project[] {
+  return getVisibleProjects(lang).filter((project) => project.portfolioTier === "primary");
+}
+
+export function getPreviousProjects(lang: Lang): Project[] {
+  return getVisibleProjects(lang).filter((project) => project.portfolioTier === "previous");
+}
+
 export function getVisibleProjectSlugs(): string[] {
   return projectMetas.filter(isProjectVisible).map((p) => p.slug);
 }

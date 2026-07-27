@@ -25,6 +25,7 @@ export const exampleProjectMeta: ProjectMeta = {
   stack: ["Java", "Spring"],
   repoUrl: "https://github.com/vinicius-ssantos/example-project",
   updatedAt: "2026-01-01", // ISO date, bump manually when content changes
+  portfolioTier: "primary", // "primary" for current work, "previous" for earlier work
 
   // --- Optional fields below — omit entirely rather than leaving empty ---
 

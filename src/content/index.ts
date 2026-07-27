@@ -9,6 +9,8 @@ export {
   getProjectBySlug,
   getFeaturedProject,
   getVisibleProjects,
+  getPrimaryProjects,
+  getPreviousProjects,
   getVisibleProjectSlugs,
   getVisibleProjectMetas,
   getAllProjectMetas,

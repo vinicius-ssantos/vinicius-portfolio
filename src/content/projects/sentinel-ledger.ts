@@ -21,6 +21,7 @@ export const sentinelLedgerMeta: ProjectMeta = {
   repoUrl: "https://github.com/vinicius-ssantos/sentinel-ledger",
   image: "/projects/sentinel-ledger.svg",
   updatedAt: "2026-07-23",
+  portfolioTier: "primary",
   status: "development",
   visible: true,
   featured: true,

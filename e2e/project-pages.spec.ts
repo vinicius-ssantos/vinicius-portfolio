@@ -38,6 +38,30 @@ test.describe("project detail pages", () => {
     });
   }
 
+  test("home separates primary projects from earlier work", async ({ page }) => {
+    await page.goto("/en");
+
+    const primaryHeading = page.getByRole("heading", { level: 3, name: "Primary projects" });
+    const previousHeading = page.getByRole("heading", { level: 3, name: "Earlier projects" });
+    await expect(primaryHeading).toBeVisible();
+    await expect(previousHeading).toBeVisible();
+
+    const primaryGroup = primaryHeading.locator("xpath=../..");
+    const previousGroup = previousHeading.locator("xpath=../..");
+
+    for (const slug of PROJECT_SLUGS.slice(0, 4)) {
+      await expect(primaryGroup.locator(`a[href="/en/projects/${slug}"]`).first()).toBeVisible();
+      await expect(previousGroup.locator(`a[href="/en/projects/${slug}"]`)).toHaveCount(0);
+    }
+
+    for (const slug of PROJECT_SLUGS.slice(4)) {
+      await expect(previousGroup.locator(`a[href="/en/projects/${slug}"]`).first()).toBeVisible();
+      await expect(primaryGroup.locator(`a[href="/en/projects/${slug}"]`)).toHaveCount(0);
+    }
+
+    await expect(page.getByText("Primary case", { exact: true })).toHaveCount(1);
+  });
+
   test("home links to every visible project's detail page", async ({ page }) => {
     await page.goto("/en");
     for (const slug of PROJECT_SLUGS) {

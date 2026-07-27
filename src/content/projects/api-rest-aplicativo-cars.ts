@@ -8,6 +8,7 @@ export const apiRestAplicativoCarsMeta: ProjectMeta = {
   repoUrl: "https://github.com/vinicius-ssantos/api_rest_aplicativo_cars",
   image: "/projects/api-rest-cars.png",
   updatedAt: "2024-08-10",
+  portfolioTier: "previous",
 };
 
 const pt: ProjectText = {

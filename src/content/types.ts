@@ -14,6 +14,9 @@ export type { Lang };
  */
 export type ProjectStatus = "development" | "beta" | "stable";
 
+/** Editorial grouping on the portfolio home — independent from chronology. */
+export type ProjectPortfolioTier = "primary" | "previous";
+
 /**
  * Where a node sits conceptually — drives which side-cluster it renders in
  * when it has no edges, and which group label a screen reader announces.
@@ -63,6 +66,8 @@ export type ProjectMeta = {
   liveUrl?: string;
   image?: string;
   updatedAt: string;
+  /** Distinguishes current portfolio work from earlier projects. */
+  portfolioTier: ProjectPortfolioTier;
   featured?: boolean;
   status?: ProjectStatus;
   /**

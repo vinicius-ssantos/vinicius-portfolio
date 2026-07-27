@@ -21,6 +21,7 @@ export const accountShieldOrchestratorMeta: ProjectMeta = {
   repoUrl: "https://github.com/vinicius-ssantos/accountshield-orchestrator",
   image: "/projects/accountshield-orchestrator.svg",
   updatedAt: "2026-07-23",
+  portfolioTier: "primary",
   status: "development",
   visible: true,
   links: {
