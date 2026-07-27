@@ -252,7 +252,9 @@ describe("content", () => {
     });
 
     it("primary and previous tiers partition every visible project exactly once", () => {
-      const visibleSlugs = getVisibleProjects("en").map((project) => project.slug).sort();
+      const visibleSlugs = getVisibleProjects("en")
+        .map((project) => project.slug)
+        .sort();
       const tieredSlugs = [...getPrimaryProjects("en"), ...getPreviousProjects("en")]
         .map((project) => project.slug)
         .sort();
