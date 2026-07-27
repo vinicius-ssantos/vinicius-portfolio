@@ -85,7 +85,10 @@ function ProjectGroup({
   if (projects.length === 0) return null;
 
   return (
-    <div className={separated ? "mt-14 border-t border-border/60 pt-10" : "mt-10"}>
+    <div
+      aria-labelledby={id}
+      className={separated ? "mt-14 border-t border-border/60 pt-10" : "mt-10"}
+    >
       <div className="mb-5 max-w-2xl">
         <h3 id={id} className="font-mono text-sm font-semibold uppercase tracking-wider text-primary">
           {title}
@@ -93,11 +96,7 @@ function ProjectGroup({
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
       </div>
 
-      <RevealOnScroll
-        stagger
-        aria-labelledby={id}
-        className="grid grid-cols-1 gap-5 lg:grid-cols-2"
-      >
+      <RevealOnScroll stagger className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         {projects.map((project, index) => {
           const ref = parseGitHubRepoUrl(project.repoUrl);
           const latestReleaseTag = ref ? snapshots[repoKey(ref)]?.latestRelease?.tag : undefined;
