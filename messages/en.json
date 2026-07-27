@@ -81,10 +81,14 @@
     "languagesLive": "Live from GitHub"
   },
   "projects": {
-    "eyebrow": "// selected work",
-    "title": "Three projects, three different problems",
-    "description": "Personal projects I build to study patterns I can't always reach at work. Picked for depth, not for showcase value.",
-    "mostRecent": "Most recent",
+    "eyebrow": "// selected projects",
+    "title": "Backend systems built for technical depth",
+    "description": "An editorial selection of systems exploring financial truth, account security, progressive delivery and platform operations — with explicit scope, evidence and limitations.",
+    "primaryTitle": "Primary projects",
+    "primaryDescription": "The current systems that best represent my focus on Java, Spring, modular architecture, reliability and operations.",
+    "previousTitle": "Earlier projects",
+    "previousDescription": "Work that documents earlier stages of my technical progression and remains available as a reference.",
+    "primaryCase": "Primary case",
     "viewDetails": "View case file"
   },
   "caseStudy": {
