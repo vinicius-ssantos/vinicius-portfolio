@@ -90,7 +90,10 @@ function ProjectGroup({
       className={separated ? "mt-14 border-t border-border/60 pt-10" : "mt-10"}
     >
       <div className="mb-5 max-w-2xl">
-        <h3 id={id} className="font-mono text-sm font-semibold uppercase tracking-wider text-primary">
+        <h3
+          id={id}
+          className="font-mono text-sm font-semibold uppercase tracking-wider text-primary"
+        >
           {title}
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
@@ -99,9 +102,14 @@ function ProjectGroup({
       <RevealOnScroll stagger className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         {projects.map((project, index) => {
           const ref = parseGitHubRepoUrl(project.repoUrl);
-          const latestReleaseTag = ref ? snapshots[repoKey(ref)]?.latestRelease?.tag : undefined;
+          const latestReleaseTag = ref
+            ? snapshots[repoKey(ref)]?.latestRelease?.tag
+            : undefined;
           return (
-            <div key={project.slug} style={{ "--stagger-index": index } as React.CSSProperties}>
+            <div
+              key={project.slug}
+              style={{ "--stagger-index": index } as React.CSSProperties}
+            >
               <ProjectCard
                 project={project}
                 primaryCase={project.featured === true}
@@ -132,7 +140,9 @@ function ProjectCard({
 }) {
   const detailHref = `/${lang}/projects/${project.slug}`;
   return (
-    <Card className="card-lift group relative flex h-full flex-col overflow-hidden border-border/60 bg-card/50 hover:border-primary/40 hover:bg-card">
+    <Card
+      className="card-lift group relative flex h-full flex-col overflow-hidden border-border/60 bg-card/50 hover:border-primary/40 hover:bg-card"
+    >
       {project.image && (
         <TrackedLink
           href={detailHref}
