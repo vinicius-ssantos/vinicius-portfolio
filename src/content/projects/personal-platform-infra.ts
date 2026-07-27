@@ -19,7 +19,6 @@ export const personalPlatformInfraMeta: ProjectMeta = {
   repoUrl: "https://github.com/vinicius-ssantos/personal-platform-infra",
   image: "/projects/personal-platform-infra.png",
   updatedAt: "2026-07-02",
-  featured: true,
 };
 
 const pt: ProjectText = {
