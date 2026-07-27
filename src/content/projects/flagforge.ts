@@ -19,6 +19,7 @@ export const flagForgeMeta: ProjectMeta = {
   repoUrl: "https://github.com/vinicius-ssantos/flagforge",
   image: "/projects/flagforge.svg",
   updatedAt: "2026-07-16",
+  portfolioTier: "primary",
   status: "development",
   visible: true,
   links: {
