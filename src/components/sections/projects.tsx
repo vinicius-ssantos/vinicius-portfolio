@@ -102,14 +102,9 @@ function ProjectGroup({
       <RevealOnScroll stagger className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         {projects.map((project, index) => {
           const ref = parseGitHubRepoUrl(project.repoUrl);
-          const latestReleaseTag = ref
-            ? snapshots[repoKey(ref)]?.latestRelease?.tag
-            : undefined;
+          const latestReleaseTag = ref ? snapshots[repoKey(ref)]?.latestRelease?.tag : undefined;
           return (
-            <div
-              key={project.slug}
-              style={{ "--stagger-index": index } as React.CSSProperties}
-            >
+            <div key={project.slug} style={{ "--stagger-index": index } as React.CSSProperties}>
               <ProjectCard
                 project={project}
                 primaryCase={project.featured === true}
