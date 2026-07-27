@@ -81,10 +81,14 @@
     "languagesLive": "Ao vivo do GitHub"
   },
   "projects": {
-    "eyebrow": "// trabalhos selecionados",
-    "title": "Três projetos, três problemas diferentes",
-    "description": "Projetos pessoais que construo para estudar padrões que nem sempre alcanço no trabalho. Escolhidos por profundidade, não para vitrine.",
-    "mostRecent": "Mais recente",
+    "eyebrow": "// projetos selecionados",
+    "title": "Sistemas backend construídos para profundidade técnica",
+    "description": "Uma seleção editorial de sistemas que exploram verdade financeira, segurança de contas, progressive delivery e operação de plataforma — com escopo, evidências e limitações explícitas.",
+    "primaryTitle": "Projetos principais",
+    "primaryDescription": "Os sistemas atuais que melhor representam meu foco em Java, Spring, arquitetura modular, confiabilidade e operação.",
+    "previousTitle": "Projetos anteriores",
+    "previousDescription": "Trabalhos que registram etapas anteriores da minha evolução técnica e permanecem disponíveis como referência.",
+    "primaryCase": "Case principal",
     "viewDetails": "Ver dossiê"
   },
   "caseStudy": {
