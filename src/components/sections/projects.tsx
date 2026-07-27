@@ -3,12 +3,7 @@ import Image from "next/image";
 import { ArrowUpRight, Tag } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  getPrimaryProjects,
-  getPreviousProjects,
-  type Lang,
-  type Project,
-} from "@/content";
+import { getPrimaryProjects, getPreviousProjects, type Lang, type Project } from "@/content";
 import { RevealOnScroll } from "@/components/animations/reveal-on-scroll";
 import { TrackedLink } from "@/components/tracked-nav-link";
 import { TrackedExternalLink } from "@/components/tracked-link";
@@ -135,9 +130,7 @@ function ProjectCard({
 }) {
   const detailHref = `/${lang}/projects/${project.slug}`;
   return (
-    <Card
-      className="card-lift group relative flex h-full flex-col overflow-hidden border-border/60 bg-card/50 hover:border-primary/40 hover:bg-card"
-    >
+    <Card className="card-lift group relative flex h-full flex-col overflow-hidden border-border/60 bg-card/50 hover:border-primary/40 hover:bg-card">
       {project.image && (
         <TrackedLink
           href={detailHref}
