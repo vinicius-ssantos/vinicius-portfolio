@@ -24,7 +24,14 @@ export const exampleProjectMeta: ProjectMeta = {
   name: "example-project",
   stack: ["Java", "Spring"],
   repoUrl: "https://github.com/vinicius-ssantos/example-project",
-  updatedAt: "2026-01-01", // ISO date, bump manually when content changes
+  startedAt: "2026-01-01", // repository creation date
+  updatedAt: "2026-01-01", // editorial review date, bump manually when content changes
+  stage: "foundation", // "foundation" | "operational" | "maintained" | "completed"
+  evidence: [
+    { type: "documentation", url: "https://github.com/vinicius-ssantos/example-project/blob/main/README.md" },
+    { type: "ci", url: "https://github.com/vinicius-ssantos/example-project/actions" },
+    { type: "roadmap", url: "https://github.com/vinicius-ssantos/example-project/issues" },
+  ],
   portfolioTier: "primary", // "primary" for current work, "previous" for earlier work
 
   // --- Optional fields below — omit entirely rather than leaving empty ---
