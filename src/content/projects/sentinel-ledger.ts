@@ -20,7 +20,9 @@ export const sentinelLedgerMeta: ProjectMeta = {
   ],
   repoUrl: "https://github.com/vinicius-ssantos/sentinel-ledger",
   image: "/projects/sentinel-ledger.svg",
+  startedAt: "2026-07-14",
   updatedAt: "2026-07-23",
+  stage: "implementation",
   portfolioTier: "primary",
   status: "development",
   visible: true,
@@ -28,6 +30,24 @@ export const sentinelLedgerMeta: ProjectMeta = {
   links: {
     docs: "https://github.com/vinicius-ssantos/sentinel-ledger/tree/main/docs",
   },
+  evidence: [
+    {
+      kind: "architecture",
+      href: "https://github.com/vinicius-ssantos/sentinel-ledger/blob/main/docs/ARCHITECTURE.md",
+    },
+    {
+      kind: "ci",
+      href: "https://github.com/vinicius-ssantos/sentinel-ledger/actions/workflows/build.yml",
+    },
+    {
+      kind: "runbook",
+      href: "https://github.com/vinicius-ssantos/sentinel-ledger/blob/main/docs/DEMO_RUNBOOK.md",
+    },
+    {
+      kind: "tests",
+      href: "https://github.com/vinicius-ssantos/sentinel-ledger/tree/main/src/test",
+    },
+  ],
 };
 
 const pt: ProjectText = {
