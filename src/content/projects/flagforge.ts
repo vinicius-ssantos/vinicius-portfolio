@@ -18,13 +18,29 @@ export const flagForgeMeta: ProjectMeta = {
   ],
   repoUrl: "https://github.com/vinicius-ssantos/flagforge",
   image: "/projects/flagforge.svg",
+  startedAt: "2026-07-14",
   updatedAt: "2026-07-16",
+  stage: "foundation",
   portfolioTier: "primary",
   status: "development",
   visible: true,
   links: {
     docs: "https://github.com/vinicius-ssantos/flagforge/tree/main/docs",
   },
+  evidence: [
+    {
+      kind: "architecture",
+      href: "https://github.com/vinicius-ssantos/flagforge/blob/main/docs/ARCHITECTURE.md",
+    },
+    {
+      kind: "ci",
+      href: "https://github.com/vinicius-ssantos/flagforge/actions/workflows/ci.yml",
+    },
+    {
+      kind: "tests",
+      href: "https://github.com/vinicius-ssantos/flagforge/blob/main/docs/TEST_STRATEGY.md",
+    },
+  ],
 };
 
 const pt: ProjectText = {
