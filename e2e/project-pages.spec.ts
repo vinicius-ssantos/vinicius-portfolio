@@ -29,6 +29,29 @@ test.describe("project detail pages", () => {
     await expect(page.getByText(/ainda não permite criar, publicar ou avaliar/i)).toBeVisible();
   });
 
+  test("Sentinel dossier distinguishes lifecycle metadata and public evidence", async ({ page }) => {
+    const res = await page.goto("/en/projects/sentinel-ledger");
+    expect(res?.status()).toBe(200);
+
+    await expect(page.getByText(/Stage: Foundation in progress/i)).toBeVisible();
+    await expect(page.getByText(/Started: 2026-07-14/i)).toBeVisible();
+    await expect(page.getByText(/Editorial review: 2026-07-23/i)).toBeVisible();
+    await expect(page.getByText("Verifiable evidence", { exact: true })).toBeVisible();
+
+    await expect(page.getByRole("link", { name: "Technical documentation" })).toHaveAttribute(
+      "href",
+      /sentinel-ledger\/blob\/main\/README\.md$/,
+    );
+    await expect(page.getByRole("link", { name: "CI pipelines" })).toHaveAttribute(
+      "href",
+      /sentinel-ledger\/actions$/,
+    );
+    await expect(page.getByRole("link", { name: "Roadmap and issues" })).toHaveAttribute(
+      "href",
+      /sentinel-ledger\/issues$/,
+    );
+  });
+
   for (const locale of ["en", "pt"] as const) {
     test(`an unknown slug returns the localized 404 page in ${locale}`, async ({ page }) => {
       const res = await page.goto(`/${locale}/projects/does-not-exist`);
