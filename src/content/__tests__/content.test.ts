@@ -218,7 +218,9 @@ describe("content", () => {
         const hrefs = project.evidence?.map((item) => item.href) ?? [];
         expect(new Set(hrefs).size).toBe(hrefs.length);
         project.evidence?.forEach((item) => {
-          expect(["architecture", "ci", "tests", "runbook", "contract"]).toContain(item.kind);
+          expect(["architecture", "ci", "tests", "runbook", "contract"]).toContain(
+            item.kind,
+          );
           expect(item.href).toMatch(/^https:\/\//);
         });
       });
