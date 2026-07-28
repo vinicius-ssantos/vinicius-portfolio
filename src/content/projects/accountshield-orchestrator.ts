@@ -20,7 +20,17 @@ export const accountShieldOrchestratorMeta: ProjectMeta = {
   ],
   repoUrl: "https://github.com/vinicius-ssantos/accountshield-orchestrator",
   image: "/projects/accountshield-orchestrator.svg",
+  startedAt: "2026-07-14",
   updatedAt: "2026-07-23",
+  stage: "foundation",
+  evidence: [
+    {
+      type: "documentation",
+      url: "https://github.com/vinicius-ssantos/accountshield-orchestrator/blob/main/README.md",
+    },
+    { type: "ci", url: "https://github.com/vinicius-ssantos/accountshield-orchestrator/actions" },
+    { type: "roadmap", url: "https://github.com/vinicius-ssantos/accountshield-orchestrator/issues" },
+  ],
   portfolioTier: "primary",
   status: "development",
   visible: true,
