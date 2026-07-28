@@ -29,7 +29,10 @@ export const accountShieldOrchestratorMeta: ProjectMeta = {
       url: "https://github.com/vinicius-ssantos/accountshield-orchestrator/blob/main/README.md",
     },
     { type: "ci", url: "https://github.com/vinicius-ssantos/accountshield-orchestrator/actions" },
-    { type: "roadmap", url: "https://github.com/vinicius-ssantos/accountshield-orchestrator/issues" },
+    {
+      type: "roadmap",
+      url: "https://github.com/vinicius-ssantos/accountshield-orchestrator/issues",
+    },
   ],
   portfolioTier: "primary",
   status: "development",
