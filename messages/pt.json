@@ -138,7 +138,22 @@
     "outcomesLabel": "Resultados",
     "roleLabel": "Papel",
     "stackLabel": "Stack",
-    "updatedLabel": "Última atualização",
+    "startedLabel": "Iniciado em",
+    "updatedLabel": "Revisão editorial",
+    "stageLabel": "Estágio",
+    "stage": {
+      "foundation": "Fundação em construção",
+      "operational": "Operacional",
+      "maintained": "Mantido",
+      "completed": "Concluído"
+    },
+    "evidenceLabel": "Evidências verificáveis",
+    "evidenceDescription": "Links públicos para inspecionar documentação, automação e planejamento do projeto.",
+    "evidence": {
+      "documentation": "Documentação técnica",
+      "ci": "Pipelines de CI",
+      "roadmap": "Roadmap e issues"
+    },
     "openRepo": "Abrir repositório",
     "notFound": "Projeto não encontrado",
     "notFoundDescription": "Esse projeto não existe ou foi movido. Volte ao portfólio para ver todos.",
