@@ -7,7 +7,9 @@ export const apiRestAplicativoCarsMeta: ProjectMeta = {
   stack: ["Kotlin", "Spring Boot", "Spring Data JPA", "Hibernate", "H2", "Gradle"],
   repoUrl: "https://github.com/vinicius-ssantos/api_rest_aplicativo_cars",
   image: "/projects/api-rest-cars.png",
+  startedAt: "2024-03-18",
   updatedAt: "2024-08-10",
+  stage: "completed",
   portfolioTier: "previous",
 };
 
