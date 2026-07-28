@@ -28,7 +28,10 @@ export const exampleProjectMeta: ProjectMeta = {
   updatedAt: "2026-01-01", // editorial review date, bump manually when content changes
   stage: "foundation", // "foundation" | "operational" | "maintained" | "completed"
   evidence: [
-    { type: "documentation", url: "https://github.com/vinicius-ssantos/example-project/blob/main/README.md" },
+    {
+      type: "documentation",
+      url: "https://github.com/vinicius-ssantos/example-project/blob/main/README.md",
+    },
     { type: "ci", url: "https://github.com/vinicius-ssantos/example-project/actions" },
     { type: "roadmap", url: "https://github.com/vinicius-ssantos/example-project/issues" },
   ],
