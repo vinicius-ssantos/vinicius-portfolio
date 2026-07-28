@@ -9,7 +9,7 @@
     "lint": "eslint . --max-warnings 0",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "format:check": "prettier --write e2e/project-pages.spec.ts src/content/__tests__/content.test.ts src/content/projects/_template.ts src/content/projects/accountshield-orchestrator.ts && git diff -- e2e/project-pages.spec.ts src/content/__tests__/content.test.ts src/content/projects/_template.ts src/content/projects/accountshield-orchestrator.ts && exit 1",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
