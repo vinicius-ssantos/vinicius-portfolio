@@ -20,7 +20,17 @@ export const sentinelLedgerMeta: ProjectMeta = {
   ],
   repoUrl: "https://github.com/vinicius-ssantos/sentinel-ledger",
   image: "/projects/sentinel-ledger.svg",
+  startedAt: "2026-07-14",
   updatedAt: "2026-07-23",
+  stage: "foundation",
+  evidence: [
+    {
+      type: "documentation",
+      url: "https://github.com/vinicius-ssantos/sentinel-ledger/blob/main/README.md",
+    },
+    { type: "ci", url: "https://github.com/vinicius-ssantos/sentinel-ledger/actions" },
+    { type: "roadmap", url: "https://github.com/vinicius-ssantos/sentinel-ledger/issues" },
+  ],
   portfolioTier: "primary",
   status: "development",
   visible: true,
