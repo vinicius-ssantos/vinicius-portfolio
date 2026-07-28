@@ -14,6 +14,15 @@ export type { Lang };
  */
 export type ProjectStatus = "development" | "beta" | "stable";
 
+export type ProjectStage = "foundation" | "operational" | "maintained" | "completed";
+
+export type ProjectEvidenceType = "documentation" | "ci" | "roadmap";
+
+export type ProjectEvidence = {
+  type: ProjectEvidenceType;
+  url: string;
+};
+
 /** Editorial grouping on the portfolio home — independent from chronology. */
 export type ProjectPortfolioTier = "primary" | "previous";
 
@@ -65,7 +74,12 @@ export type ProjectMeta = {
   repoUrl: string;
   liveUrl?: string;
   image?: string;
+  /** Repository creation date, used as the project lifecycle start. */
+  startedAt: string;
+  /** Last editorial review of this portfolio entry, not repository activity. */
   updatedAt: string;
+  stage: ProjectStage;
+  evidence?: ProjectEvidence[];
   /** Distinguishes current portfolio work from earlier projects. */
   portfolioTier: ProjectPortfolioTier;
   featured?: boolean;
