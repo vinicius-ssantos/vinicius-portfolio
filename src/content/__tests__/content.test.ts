@@ -165,6 +165,10 @@ describe("content", () => {
           expect(p.highlights.length).toBeGreaterThan(0);
           expect(p.stack.length).toBeGreaterThan(0);
           expect(p.repoUrl).toMatch(/^https:\/\/github\.com\//);
+          expect(p.startedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+          expect(p.updatedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+          expect(new Date(p.startedAt).getTime()).toBeLessThanOrEqual(new Date(p.updatedAt).getTime());
+          expect(["foundation", "operational", "maintained", "completed"]).toContain(p.stage);
           expect(["primary", "previous"]).toContain(p.portfolioTier);
         });
       });
@@ -244,6 +248,20 @@ describe("content", () => {
       ]);
     });
 
+    it("gives every primary project public documentation, CI and roadmap evidence", () => {
+      getPrimaryProjects("en").forEach((project) => {
+        expect(project.evidence?.map((item) => item.type)).toEqual([
+          "documentation",
+          "ci",
+          "roadmap",
+        ]);
+        project.evidence?.forEach((item) => {
+          expect(item.url).toMatch(/^https:\/\//);
+          expect(item.url).toContain(project.repoUrl);
+        });
+      });
+    });
+
     it("returns the two previous projects in reverse chronological order", () => {
       expect(getPreviousProjects("en").map((project) => project.slug)).toEqual([
         "springcloud",
@@ -280,7 +298,9 @@ describe("content", () => {
       role: "x",
       highlights: ["x"],
       repoUrl: "https://github.com/x/x",
+      startedAt: "2026-01-01",
       updatedAt: "2026-01-01",
+      stage: "foundation",
       portfolioTier: "primary",
     };
 
