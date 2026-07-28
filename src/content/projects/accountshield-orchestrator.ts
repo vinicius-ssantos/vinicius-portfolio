@@ -20,13 +20,33 @@ export const accountShieldOrchestratorMeta: ProjectMeta = {
   ],
   repoUrl: "https://github.com/vinicius-ssantos/accountshield-orchestrator",
   image: "/projects/accountshield-orchestrator.svg",
+  startedAt: "2026-07-14",
   updatedAt: "2026-07-23",
+  stage: "implementation",
   portfolioTier: "primary",
   status: "development",
   visible: true,
   links: {
     docs: "https://github.com/vinicius-ssantos/accountshield-orchestrator/tree/main/docs",
   },
+  evidence: [
+    {
+      kind: "architecture",
+      href: "https://github.com/vinicius-ssantos/accountshield-orchestrator/blob/main/docs/architecture/README.md",
+    },
+    {
+      kind: "ci",
+      href: "https://github.com/vinicius-ssantos/accountshield-orchestrator/actions/workflows/ci.yml",
+    },
+    {
+      kind: "contract",
+      href: "https://github.com/vinicius-ssantos/accountshield-orchestrator/blob/main/docs/contracts/asyncapi.yaml",
+    },
+    {
+      kind: "tests",
+      href: "https://github.com/vinicius-ssantos/accountshield-orchestrator/tree/main/src/test",
+    },
+  ],
 };
 
 const pt: ProjectText = {
