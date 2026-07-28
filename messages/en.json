@@ -138,7 +138,8 @@
     "outcomesLabel": "Outcomes",
     "roleLabel": "Role",
     "stackLabel": "Stack",
-    "updatedLabel": "Last updated",
+    "startedLabel": "Started",
+    "updatedLabel": "Editorial update",
     "openRepo": "Open repository",
     "notFound": "Project not found",
     "notFoundDescription": "This project doesn't exist or has been moved. Head back to the portfolio to see all of them.",
@@ -146,6 +147,12 @@
       "development": "In development",
       "beta": "Beta",
       "stable": "Stable"
+    },
+    "stage": {
+      "foundation": "Architecture foundation",
+      "implementation": "Active implementation",
+      "operational": "Active operations",
+      "reference": "Reference project"
     },
     "demo": "Live demo",
     "docs": "Documentation",
@@ -160,6 +167,15 @@
     "observabilityLabel": "Observability",
     "limitationsLabel": "Known limitations",
     "nextStepsLabel": "Next steps",
+    "evidenceLabel": "Verifiable evidence",
+    "evidenceDescription": "Public links to documentation, automation and tests supporting the claims in this case file.",
+    "evidence": {
+      "architecture": "Documented architecture",
+      "ci": "CI pipeline",
+      "tests": "Tests and strategy",
+      "runbook": "Reproducible runbook",
+      "contract": "Technical contract"
+    },
     "repositoryLabel": "Repository",
     "latestReleaseLabel": "Latest release",
     "licenseLabel": "License",
