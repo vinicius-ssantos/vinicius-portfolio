@@ -167,7 +167,9 @@ describe("content", () => {
           expect(p.repoUrl).toMatch(/^https:\/\/github\.com\//);
           expect(p.startedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
           expect(p.updatedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-          expect(new Date(p.startedAt).getTime()).toBeLessThanOrEqual(new Date(p.updatedAt).getTime());
+          expect(new Date(p.startedAt).getTime()).toBeLessThanOrEqual(
+            new Date(p.updatedAt).getTime(),
+          );
           expect(["foundation", "operational", "maintained", "completed"]).toContain(p.stage);
           expect(["primary", "previous"]).toContain(p.portfolioTier);
         });
