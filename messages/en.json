@@ -138,7 +138,22 @@
     "outcomesLabel": "Outcomes",
     "roleLabel": "Role",
     "stackLabel": "Stack",
-    "updatedLabel": "Last updated",
+    "startedLabel": "Started",
+    "updatedLabel": "Editorial review",
+    "stageLabel": "Stage",
+    "stage": {
+      "foundation": "Foundation in progress",
+      "operational": "Operational",
+      "maintained": "Maintained",
+      "completed": "Completed"
+    },
+    "evidenceLabel": "Verifiable evidence",
+    "evidenceDescription": "Public links for inspecting project documentation, automation and planning.",
+    "evidence": {
+      "documentation": "Technical documentation",
+      "ci": "CI pipelines",
+      "roadmap": "Roadmap and issues"
+    },
     "openRepo": "Open repository",
     "notFound": "Project not found",
     "notFoundDescription": "This project doesn't exist or has been moved. Head back to the portfolio to see all of them.",
