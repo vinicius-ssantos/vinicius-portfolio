@@ -18,7 +18,17 @@ export const personalPlatformInfraMeta: ProjectMeta = {
   ],
   repoUrl: "https://github.com/vinicius-ssantos/personal-platform-infra",
   image: "/projects/personal-platform-infra.png",
+  startedAt: "2026-05-28",
   updatedAt: "2026-07-02",
+  stage: "operational",
+  evidence: [
+    {
+      type: "documentation",
+      url: "https://github.com/vinicius-ssantos/personal-platform-infra/blob/main/README.md",
+    },
+    { type: "ci", url: "https://github.com/vinicius-ssantos/personal-platform-infra/actions" },
+    { type: "roadmap", url: "https://github.com/vinicius-ssantos/personal-platform-infra/issues" },
+  ],
   portfolioTier: "primary",
 };
 
