@@ -34,15 +34,23 @@ test.describe("project detail pages", () => {
 
     await expect(page.getByText("Active implementation", { exact: true })).toBeVisible();
     await expect(page.getByText("Started: 2026-07-14", { exact: true })).toBeVisible();
-    await expect(page.getByText("Editorial update: 2026-07-23", { exact: true })).toBeVisible();
+    await expect(
+      page.getByText("Editorial update: 2026-07-23", { exact: true }),
+    ).toBeVisible();
 
     const evidenceHeading = page.getByRole("heading", { name: "Verifiable evidence" });
     await expect(evidenceHeading).toBeVisible();
     const evidenceSection = evidenceHeading.locator("xpath=../..");
-    await expect(evidenceSection.getByRole("link", { name: "Documented architecture" })).toBeVisible();
+    await expect(
+      evidenceSection.getByRole("link", { name: "Documented architecture" }),
+    ).toBeVisible();
     await expect(evidenceSection.getByRole("link", { name: "CI pipeline" })).toBeVisible();
-    await expect(evidenceSection.getByRole("link", { name: "Reproducible runbook" })).toBeVisible();
-    await expect(evidenceSection.getByRole("link", { name: "Tests and strategy" })).toBeVisible();
+    await expect(
+      evidenceSection.getByRole("link", { name: "Reproducible runbook" }),
+    ).toBeVisible();
+    await expect(
+      evidenceSection.getByRole("link", { name: "Tests and strategy" }),
+    ).toBeVisible();
   });
 
   for (const locale of ["en", "pt"] as const) {
