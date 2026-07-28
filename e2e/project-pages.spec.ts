@@ -29,7 +29,9 @@ test.describe("project detail pages", () => {
     await expect(page.getByText(/ainda não permite criar, publicar ou avaliar/i)).toBeVisible();
   });
 
-  test("Sentinel dossier distinguishes lifecycle metadata and public evidence", async ({ page }) => {
+  test("Sentinel dossier distinguishes lifecycle metadata and public evidence", async ({
+    page,
+  }) => {
     const res = await page.goto("/en/projects/sentinel-ledger");
     expect(res?.status()).toBe(200);
 
