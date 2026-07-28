@@ -168,9 +168,7 @@ describe("content", () => {
           expect(p.startedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
           expect(p.updatedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
           expect(p.startedAt <= p.updatedAt).toBe(true);
-          expect(["foundation", "implementation", "operational", "reference"]).toContain(
-            p.stage,
-          );
+          expect(["foundation", "implementation", "operational", "reference"]).toContain(p.stage);
           expect(["primary", "previous"]).toContain(p.portfolioTier);
         });
       });
@@ -218,9 +216,7 @@ describe("content", () => {
         const hrefs = project.evidence?.map((item) => item.href) ?? [];
         expect(new Set(hrefs).size).toBe(hrefs.length);
         project.evidence?.forEach((item) => {
-          expect(["architecture", "ci", "tests", "runbook", "contract"]).toContain(
-            item.kind,
-          );
+          expect(["architecture", "ci", "tests", "runbook", "contract"]).toContain(item.kind);
           expect(item.href).toMatch(/^https:\/\//);
         });
       });
