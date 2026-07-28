@@ -103,6 +103,12 @@ export default async function ProjectPage({ params }: { params: Params }) {
               </Badge>
             )}
             <Badge variant="outline" className="font-mono text-[10px] uppercase">
+              {t(`projectDetail.stage.${project.stage}`)}
+            </Badge>
+            <Badge variant="outline" className="font-mono text-[10px] uppercase">
+              {t("projectDetail.startedLabel")}: {project.startedAt}
+            </Badge>
+            <Badge variant="outline" className="font-mono text-[10px] uppercase">
               {t("projectDetail.updatedLabel")}: {project.updatedAt}
             </Badge>
             <Badge variant="outline" className="font-mono text-[10px] uppercase">
@@ -210,6 +216,30 @@ export default async function ProjectPage({ params }: { params: Params }) {
           <Section label={t("projectDetail.stackLabel")}>
             <ProjectStackBadges stack={project.stack} />
           </Section>
+
+          {project.evidence && project.evidence.length > 0 && (
+            <Section label={t("projectDetail.evidenceLabel")}>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {t("projectDetail.evidenceDescription")}
+              </p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {project.evidence.map((item) => (
+                  <a
+                    key={`${item.kind}:${item.href}`}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between gap-3 rounded-md border border-border/60 bg-card/40 px-4 py-3 text-sm transition-colors hover:border-primary/40 hover:bg-card"
+                  >
+                    <span className="font-medium text-foreground/90">
+                      {t(`projectDetail.evidence.${item.kind}`)}
+                    </span>
+                    <ArrowUpRight className="h-4 w-4 flex-shrink-0 text-primary transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </a>
+                ))}
+              </div>
+            </Section>
+          )}
 
           {showRepoSection && snapshot && (
             <Section label={t("projectDetail.repositoryLabel")}>
