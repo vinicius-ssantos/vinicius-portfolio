@@ -19,7 +19,9 @@ export const springcloudMeta: ProjectMeta = {
   ],
   repoUrl: "https://github.com/vinicius-ssantos/SpringCloud",
   image: "/projects/springcloud.png",
+  startedAt: "2024-03-10",
   updatedAt: "2026-04-27",
+  stage: "maintained",
   portfolioTier: "previous",
 };
 
