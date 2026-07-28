@@ -165,6 +165,10 @@ describe("content", () => {
           expect(p.highlights.length).toBeGreaterThan(0);
           expect(p.stack.length).toBeGreaterThan(0);
           expect(p.repoUrl).toMatch(/^https:\/\/github\.com\//);
+          expect(p.startedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+          expect(p.updatedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+          expect(p.startedAt <= p.updatedAt).toBe(true);
+          expect(["foundation", "implementation", "operational", "reference"]).toContain(p.stage);
           expect(["primary", "previous"]).toContain(p.portfolioTier);
         });
       });
@@ -205,6 +209,18 @@ describe("content", () => {
         );
       });
     }
+
+    it("primary projects expose unique HTTPS evidence links", () => {
+      getPrimaryProjects("en").forEach((project) => {
+        expect(project.evidence?.length).toBeGreaterThanOrEqual(3);
+        const hrefs = project.evidence?.map((item) => item.href) ?? [];
+        expect(new Set(hrefs).size).toBe(hrefs.length);
+        project.evidence?.forEach((item) => {
+          expect(["architecture", "ci", "tests", "runbook", "contract"]).toContain(item.kind);
+          expect(item.href).toMatch(/^https:\/\//);
+        });
+      });
+    });
 
     it("projects are in reverse chronological order (by updatedAt)", () => {
       const dates = getProjects("en").map((p) => p.updatedAt);
@@ -280,7 +296,9 @@ describe("content", () => {
       role: "x",
       highlights: ["x"],
       repoUrl: "https://github.com/x/x",
+      startedAt: "2026-01-01",
       updatedAt: "2026-01-01",
+      stage: "foundation",
       portfolioTier: "primary",
     };
 

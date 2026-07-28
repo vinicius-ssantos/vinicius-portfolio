@@ -13,6 +13,13 @@ export type { Lang };
  * needs to see.
  */
 export type ProjectStatus = "development" | "beta" | "stable";
+export type ProjectStage = "foundation" | "implementation" | "operational" | "reference";
+export type ProjectEvidenceKind = "architecture" | "ci" | "tests" | "runbook" | "contract";
+
+export type ProjectEvidence = {
+  kind: ProjectEvidenceKind;
+  href: string;
+};
 
 /** Editorial grouping on the portfolio home — independent from chronology. */
 export type ProjectPortfolioTier = "primary" | "previous";
@@ -65,7 +72,12 @@ export type ProjectMeta = {
   repoUrl: string;
   liveUrl?: string;
   image?: string;
+  /** Repository creation date, used as the factual project start date. */
+  startedAt: string;
+  /** Last editorial review of the portfolio content, not repository activity. */
   updatedAt: string;
+  /** Current lifecycle stage, separate from release stability. */
+  stage: ProjectStage;
   /** Distinguishes current portfolio work from earlier projects. */
   portfolioTier: ProjectPortfolioTier;
   featured?: boolean;
@@ -85,6 +97,8 @@ export type ProjectMeta = {
     openApi?: string;
     video?: string;
   };
+  /** Curated public proof points; repository metadata is rendered separately. */
+  evidence?: ProjectEvidence[];
 };
 
 /** Translatable project fields, resolved for one locale. */

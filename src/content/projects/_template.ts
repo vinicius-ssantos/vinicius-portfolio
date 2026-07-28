@@ -24,7 +24,9 @@ export const exampleProjectMeta: ProjectMeta = {
   name: "example-project",
   stack: ["Java", "Spring"],
   repoUrl: "https://github.com/vinicius-ssantos/example-project",
-  updatedAt: "2026-01-01", // ISO date, bump manually when content changes
+  startedAt: "2026-01-01", // repository creation date
+  updatedAt: "2026-01-01", // editorial review date, not repository activity
+  stage: "foundation", // "foundation" | "implementation" | "operational" | "reference"
   portfolioTier: "primary", // "primary" for current work, "previous" for earlier work
 
   // --- Optional fields below — omit entirely rather than leaving empty ---
@@ -42,6 +44,10 @@ export const exampleProjectMeta: ProjectMeta = {
   //   openApi: "https://example-project.example.com/swagger",
   //   video: "https://youtube.com/watch?v=...",
   // },
+  // evidence: [
+  //   { kind: "architecture", href: "https://github.com/.../docs/ARCHITECTURE.md" },
+  //   { kind: "ci", href: "https://github.com/.../actions/workflows/ci.yml" },
+  // ],
 };
 
 const pt: ProjectText = {

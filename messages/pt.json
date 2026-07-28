@@ -138,7 +138,8 @@
     "outcomesLabel": "Resultados",
     "roleLabel": "Papel",
     "stackLabel": "Stack",
-    "updatedLabel": "Última atualização",
+    "startedLabel": "Iniciado em",
+    "updatedLabel": "Atualização editorial",
     "openRepo": "Abrir repositório",
     "notFound": "Projeto não encontrado",
     "notFoundDescription": "Esse projeto não existe ou foi movido. Volte ao portfólio para ver todos.",
@@ -146,6 +147,12 @@
       "development": "Em desenvolvimento",
       "beta": "Beta",
       "stable": "Estável"
+    },
+    "stage": {
+      "foundation": "Fundação arquitetural",
+      "implementation": "Implementação ativa",
+      "operational": "Operação ativa",
+      "reference": "Projeto de referência"
     },
     "demo": "Demo ao vivo",
     "docs": "Documentação",
@@ -160,6 +167,15 @@
     "observabilityLabel": "Observabilidade",
     "limitationsLabel": "Limitações conhecidas",
     "nextStepsLabel": "Próximos passos",
+    "evidenceLabel": "Evidências verificáveis",
+    "evidenceDescription": "Links públicos para documentação, automação e testes que sustentam as afirmações deste dossiê.",
+    "evidence": {
+      "architecture": "Arquitetura documentada",
+      "ci": "Pipeline de CI",
+      "tests": "Testes e estratégia",
+      "runbook": "Runbook reproduzível",
+      "contract": "Contrato técnico"
+    },
     "repositoryLabel": "Repositório",
     "latestReleaseLabel": "Última release",
     "licenseLabel": "Licença",
