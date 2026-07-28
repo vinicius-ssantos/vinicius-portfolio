@@ -103,6 +103,12 @@ export default async function ProjectPage({ params }: { params: Params }) {
               </Badge>
             )}
             <Badge variant="outline" className="font-mono text-[10px] uppercase">
+              {t("projectDetail.stageLabel")}: {t(`projectDetail.stage.${project.stage}`)}
+            </Badge>
+            <Badge variant="outline" className="font-mono text-[10px] uppercase">
+              {t("projectDetail.startedLabel")}: {project.startedAt}
+            </Badge>
+            <Badge variant="outline" className="font-mono text-[10px] uppercase">
               {t("projectDetail.updatedLabel")}: {project.updatedAt}
             </Badge>
             <Badge variant="outline" className="font-mono text-[10px] uppercase">
@@ -210,6 +216,28 @@ export default async function ProjectPage({ params }: { params: Params }) {
           <Section label={t("projectDetail.stackLabel")}>
             <ProjectStackBadges stack={project.stack} />
           </Section>
+
+          {project.evidence && project.evidence.length > 0 && (
+            <Section label={t("projectDetail.evidenceLabel")}>
+              <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
+                {t("projectDetail.evidenceDescription")}
+              </p>
+              <div className="grid gap-3 sm:grid-cols-3">
+                {project.evidence.map((evidence) => (
+                  <a
+                    key={evidence.type}
+                    href={evidence.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between gap-3 rounded-lg border border-border/60 bg-card/40 px-4 py-3 text-sm font-medium transition-colors hover:border-primary/40 hover:bg-card"
+                  >
+                    <span>{t(`projectDetail.evidence.${evidence.type}`)}</span>
+                    <ArrowUpRight className="h-3.5 w-3.5 flex-shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
+                  </a>
+                ))}
+              </div>
+            </Section>
+          )}
 
           {showRepoSection && snapshot && (
             <Section label={t("projectDetail.repositoryLabel")}>
