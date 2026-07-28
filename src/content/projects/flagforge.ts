@@ -18,7 +18,17 @@ export const flagForgeMeta: ProjectMeta = {
   ],
   repoUrl: "https://github.com/vinicius-ssantos/flagforge",
   image: "/projects/flagforge.svg",
+  startedAt: "2026-07-14",
   updatedAt: "2026-07-16",
+  stage: "foundation",
+  evidence: [
+    {
+      type: "documentation",
+      url: "https://github.com/vinicius-ssantos/flagforge/blob/main/README.md",
+    },
+    { type: "ci", url: "https://github.com/vinicius-ssantos/flagforge/actions" },
+    { type: "roadmap", url: "https://github.com/vinicius-ssantos/flagforge/issues" },
+  ],
   portfolioTier: "primary",
   status: "development",
   visible: true,
