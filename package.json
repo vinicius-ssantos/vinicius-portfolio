@@ -30,7 +30,7 @@
     "deploy:prod": "npm run preflight && npx vercel --prod"
   },
   "dependencies": {
-    "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-dialog": "^1.1.23",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-toast": "^1.2.14",
     "@react-three/fiber": "^9.6.1",
